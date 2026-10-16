@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aim High — English Learning Games</title>
+  <meta name="description" content="Interactive English learning games for Grade 8, 10, and 11. Based on Aim High coursebook. Play vocabulary, grammar, reading and writing games.">
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --c1: #4f46e5; --c2: #7c3aed; --c3: #0ea5e9;
+      --gold: #f59e0b; --green: #10b981; --red: #ef4444;
+      --bg: #0f0c29; --card: rgba(255,255,255,0.07);
+      --border: rgba(255,255,255,0.12);
+    }
+
+    body {
+      font-family: 'Outfit', 'Segoe UI', system-ui, sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+      background-attachment: fixed;
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    /* ── STARS BACKGROUND ── */
+    #stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+    .star {
+      position: absolute; border-radius: 50%; background: #fff;
+      animation: twinkle var(--d, 3s) ease-in-out infinite;
+      opacity: var(--o, 0.6);
+    }
+    @keyframes twinkle { 0%,100%{opacity:var(--o,0.6)} 50%{opacity:0.1} }
+
+    /* ── FLOATING ORBS ── */
+    .orb {
+      position: fixed; border-radius: 50%; filter: blur(80px);
+      pointer-events: none; z-index: 0; animation: drift var(--d,20s) ease-in-out infinite alternate;
+    }
+    .orb1 { width:400px;height:400px;background:rgba(79,70,229,.35);top:-100px;left:-100px; --d:18s; }
+    .orb2 { width:350px;height:350px;background:rgba(124,58,237,.3);bottom:-100px;right:-50px; --d:22s; }
+    .orb3 { width:300px;height:300px;background:rgba(14,165,233,.25);top:50%;left:50%; --d:16s; }
+    @keyframes drift { from{transform:translate(0,0) scale(1)} to{transform:translate(30px,20px) scale(1.08)} }
+
+    /* ── LAYOUT ── */
+    #app { position: relative; z-index: 1; min-height: 100vh; }
+
+    /* ── HEADER ── */
+    header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 40px; border-bottom: 1px solid var(--border);
+      background: rgba(255,255,255,0.04); backdrop-filter: blur(20px);
+    }
+    .logo-area { display:flex; align-items:center; gap:14px; }
+    .logo-img {
+      width: 52px; height: 52px; border-radius: 12px; object-fit: cover;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+    }
+    .logo-text { font-family: 'Baloo 2', sans-serif; font-weight: 800; }
+    .logo-text .line1 { font-size: 22px; background: linear-gradient(90deg,#a78bfa,#60a5fa); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+    .logo-text .line2 { font-size: 12px; color: rgba(255,255,255,0.5); letter-spacing: 2px; text-transform: uppercase; -webkit-text-fill-color: rgba(255,255,255,0.5); }
+
+    .nav-badge {
+      background: rgba(255,255,255,0.1); border: 1px solid var(--border);
+      border-radius: 999px; padding: 6px 16px; font-size: 13px; color: rgba(255,255,255,0.7);
+    }
+
+    /* ── HERO ── */
+    .hero {
+      text-align: center; padding: 80px 20px 60px;
+    }
+    .hero-badge {
+      display: inline-block; background: rgba(99,102,241,0.25); border: 1px solid rgba(99,102,241,0.5);
+      border-radius: 999px; padding: 6px 20px; font-size: 13px; color: #a5b4fc;
+      margin-bottom: 24px; letter-spacing: 1px; text-transform: uppercase;
+    }
+    .hero h1 {
+      font-family: 'Baloo 2', sans-serif; font-size: clamp(2.4rem, 6vw, 4.5rem);
+      font-weight: 800; line-height: 1.1; margin-bottom: 20px;
+      background: linear-gradient(135deg, #fff 0%, #a78bfa 50%, #60a5fa 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      font-size: 1.15rem; color: rgba(255,255,255,0.65); max-width: 560px;
+      margin: 0 auto 48px; line-height: 1.7;
+    }
+
+    /* ── GRADE CARDS ── */
+    .section-label {
+      text-align: center; font-size: 13px; letter-spacing: 3px; text-transform: uppercase;
+      color: rgba(255,255,255,0.4); margin-bottom: 32px;
+    }
+    .grades-grid {
+      display: flex; gap: 28px; justify-content: center; flex-wrap: wrap;
+      padding: 0 20px 80px;
+    }
+    .grade-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 28px; padding: 40px 36px; text-align: center;
+      cursor: pointer; text-decoration: none; color: #fff;
+      transition: transform .25s, border-color .25s, box-shadow .25s;
+      backdrop-filter: blur(20px); min-width: 240px; max-width: 300px; flex: 1;
+      position: relative; overflow: hidden;
+    }
+    .grade-card::before {
+      content: ''; position: absolute; inset: 0;
+      background: var(--grad); opacity: 0; transition: opacity .3s;
+      border-radius: inherit;
+    }
+    .grade-card:hover { transform: translateY(-8px); box-shadow: 0 24px 60px rgba(0,0,0,0.5); }
+    .grade-card:hover::before { opacity: 1; }
+    .grade-card:hover { border-color: var(--accent); }
+
+    .grade-card.g8  { --grad: linear-gradient(135deg,rgba(16,185,129,.15),rgba(5,150,105,.05)); --accent: #34d399; }
+    .grade-card.g10 { --grad: linear-gradient(135deg,rgba(79,70,229,.2),rgba(124,58,237,.1));  --accent: #818cf8; }
+    .grade-card.g11 { --grad: linear-gradient(135deg,rgba(245,158,11,.18),rgba(239,68,68,.08)); --accent: #fbbf24; }
+
+    .grade-icon {
+      font-size: 56px; margin-bottom: 20px; display: block;
+      filter: drop-shadow(0 4px 16px rgba(0,0,0,0.4));
+      position: relative; z-index: 1;
+    }
+    .grade-number {
+      font-family: 'Baloo 2', sans-serif; font-size: 3.2rem; font-weight: 800;
+      margin-bottom: 4px; position: relative; z-index: 1;
+      background: var(--num-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .grade-card.g8  .grade-number { --num-grad: linear-gradient(135deg,#34d399,#059669); }
+    .grade-card.g10 .grade-number { --num-grad: linear-gradient(135deg,#818cf8,#6366f1); }
+    .grade-card.g11 .grade-number { --num-grad: linear-gradient(135deg,#fbbf24,#f59e0b); }
+
+    .grade-label {
+      font-size: 15px; color: rgba(255,255,255,0.5); margin-bottom: 24px;
+      position: relative; z-index: 1;
+    }
+    .grade-stats {
+      display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+      position: relative; z-index: 1;
+    }
+    .stat-pill {
+      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 999px; padding: 4px 12px; font-size: 12px; color: rgba(255,255,255,0.65);
+    }
+    .grade-cta {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 999px; padding: 10px 22px; font-size: 14px; font-weight: 600;
+      color: #fff; cursor: pointer; margin-top: 24px;
+      transition: background .2s, transform .15s;
+      position: relative; z-index: 1;
+    }
+    .grade-cta:hover { background: rgba(255,255,255,0.18); transform: scale(1.05); }
+
+    /* ── FEATURES STRIP ── */
+    .features {
+      display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;
+      padding: 0 20px 80px;
+    }
+    .feat {
+      background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+      border-radius: 20px; padding: 28px 32px; text-align: center;
+      min-width: 180px; flex: 1; max-width: 220px;
+    }
+    .feat-icon { font-size: 32px; margin-bottom: 10px; }
+    .feat-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .feat-desc { font-size: 12px; color: rgba(255,255,255,0.45); }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center; padding: 32px 20px;
+      border-top: 1px solid var(--border); color: rgba(255,255,255,0.3);
+      font-size: 13px;
+    }
+
+    @media(max-width:640px) {
+      header { padding: 16px 20px; }
+      .grade-card { min-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Stars -->
+<div id="stars"></div>
+
+<!-- Orbs -->
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="orb orb3"></div>
+
+<div id="app">
+  <header>
+    <div class="logo-area">
+      <img src="assets/logo.jpg" alt="School Logo" class="logo-img" onerror="this.style.display='none'">
+      <div class="logo-text">
+        <div class="line1">Aim High</div>
+        <div class="line2">English Learning Games</div>
+      </div>
+    </div>
+    <div class="nav-badge">🎮 Interactive Learning Platform</div>
+  </header>
+
+  <main>
+    <div class="hero">
+      <div class="hero-badge">✨ Oxford Aim High Series</div>
+      <h1>Learn English<br>Through Play</h1>
+      <p>Interactive vocabulary, grammar, reading and writing games for Grades 8, 10 and 11 — based on your Aim High coursebooks.</p>
+    </div>
+
+    <p class="section-label">▸ Select Your Grade</p>
+
+    <div class="grades-grid">
+      <!-- Grade 8 -->
+      <a href="grade-8/index.html" class="grade-card g8">
+        <span class="grade-icon">📗</span>
+        <div class="grade-number">8</div>
+        <div class="grade-label">Aim High 2</div>
+        <div class="grade-stats">
+          <span class="stat-pill">🎮 Games</span>
+          <span class="stat-pill">📝 Worksheets</span>
+          <span class="stat-pill">Units 3·4·6</span>
+        </div>
+        <div class="grade-cta">Start Playing →</div>
+      </a>
+
+      <!-- Grade 10 -->
+      <a href="grade-10/index.html" class="grade-card g10">
+        <span class="grade-icon">📘</span>
+        <div class="grade-number">10</div>
+        <div class="grade-label">Aim High 4</div>
+        <div class="grade-stats">
+          <span class="stat-pill">🎮 Games</span>
+          <span class="stat-pill">📝 Worksheets</span>
+          <span class="stat-pill">Units 3·4·5</span>
+        </div>
+        <div class="grade-cta">Start Playing →</div>
+      </a>
+
+      <!-- Grade 11 -->
+      <a href="grade-11/index.html" class="grade-card g11">
+        <span class="grade-icon">📙</span>
+        <div class="grade-number">11</div>
+        <div class="grade-label">Aim High 5</div>
+        <div class="grade-stats">
+          <span class="stat-pill">🎮 Games</span>
+          <span class="stat-pill">📝 Worksheets</span>
+          <span class="stat-pill">Units 3·4·5</span>
+        </div>
+        <div class="grade-cta">Start Playing →</div>
+      </a>
+    </div>
+
+    <!-- Features -->
+    <div class="features">
+      <div class="feat"><div class="feat-icon">🧩</div><div class="feat-title">Interactive Games</div><div class="feat-desc">Fill-in-the-blank, matching & MCQ challenges</div></div>
+      <div class="feat"><div class="feat-icon">⚡</div><div class="feat-title">Instant Feedback</div><div class="feat-desc">Know your score right away</div></div>
+      <div class="feat"><div class="feat-icon">📄</div><div class="feat-title">Downloadable Worksheets</div><div class="feat-desc">Normal & weak student versions</div></div>
+      <div class="feat"><div class="feat-icon">🏆</div><div class="feat-title">Score Tracking</div><div class="feat-desc">Confetti celebration when you win!</div></div>
+      <div class="feat"><div class="feat-icon">📱</div><div class="feat-title">Works Everywhere</div><div class="feat-desc">Phone, tablet, or computer</div></div>
+    </div>
+  </main>
+
+  <footer>
+    &copy; 2026 English Learning Games Platform &nbsp;·&nbsp; Based on Oxford Aim High Series
+  </footer>
+</div>
+
+<script>
+  // Generate stars
+  const starsEl = document.getElementById('stars');
+  for (let i = 0; i < 120; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const size = Math.random() * 2.5 + 0.5;
+    s.style.cssText = `
+      width:${size}px; height:${size}px;
+      top:${Math.random()*100}%; left:${Math.random()*100}%;
+      --o:${Math.random()*0.7+0.1}; --d:${Math.random()*4+2}s;
+      animation-delay:${Math.random()*4}s;
+    `;
+    starsEl.appendChild(s);
+  }
+</script>
+</body>
+</html>

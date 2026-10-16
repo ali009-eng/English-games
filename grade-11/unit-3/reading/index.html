@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Marketing — Reading | Grade 11 English Games</title>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    button{font-family:inherit;cursor:pointer}
+    body{font-family:'Outfit',system-ui,sans-serif;min-height:100vh;color:#fff;overflow-x:hidden;
+      background:linear-gradient(160deg,#312e81 0%,#4338ca 50%,#0f172a 100%);background-attachment:fixed;}
+    input{user-select:text;-webkit-user-select:text}
+    #bgstars{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+    .st{position:absolute;border-radius:50%;background:#fff;animation:tw var(--d,3s) ease-in-out infinite;opacity:var(--o,.4)}
+    @keyframes tw{0%,100%{opacity:var(--o,.4)}50%{opacity:.04}}
+    #confetti{position:fixed;inset:0;pointer-events:none;z-index:900}
+    #toast-layer{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:950;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none}
+    .toast{background:rgba(15,12,41,.95);backdrop-filter:blur(12px);color:#fff;padding:11px 26px;border-radius:99px;font-weight:700;font-size:15px;opacity:0;transform:translateY(-12px);transition:.3s;box-shadow:0 8px 24px rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.1)}
+    .toast.show{opacity:1;transform:translateY(0)}
+    .fpt{position:fixed;z-index:910;transform:translateX(-50%);font-weight:900;font-size:22px;pointer-events:none;text-shadow:0 2px 0 rgba(0,0,0,.3);animation:fup 1.1s forwards}
+    @keyframes fup{from{opacity:1;transform:translate(-50%,0)}to{opacity:0;transform:translate(-50%,-56px)}}
+    #app{position:relative;z-index:1;min-height:100vh}
+    
+    header{display:flex;align-items:center;gap:14px;padding:12px 24px;background:rgba(255,255,255,.04);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.1)}
+    .back-btn{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:6px 14px;font-size:13px;color:#fff;text-decoration:none;transition:background .2s}
+    .back-btn:hover{background:rgba(255,255,255,.2)}
+    .logo-img{width:34px;height:34px;border-radius:8px;object-fit:cover}
+    .hdr-title{font-family:'Baloo 2',sans-serif;font-size:16px;font-weight:800;background:linear-gradient(90deg,#a5b4fc,#e0e7ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    
+    /* Template switcher tabs in header */
+    .mode-bar{display:flex;gap:6px;background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.1);border-radius:999px;padding:4px;margin-left:auto}
+    .mode-tab{background:transparent;border:none;border-radius:999px;padding:5px 12px;font-size:12px;font-weight:700;color:rgba(255,255,255,.7);transition:all .2s}
+    .mode-tab:hover{color:#fff}
+    .mode-tab.active{background:#a5b4fc;color:#0f172a;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+    
+    .score-chip{display:flex;gap:8px;margin-left:10px}
+    .chip{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:5px 14px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:5px}
+    .chip.pulse{animation:pulse .5s}
+    @keyframes pulse{40%{transform:scale(1.2)}}
+    
+    .screen{display:none;min-height:calc(100vh - 60px)}
+    .screen.active{display:flex;flex-direction:column;align-items:center}
+    
+    /* Welcome screen */
+    #welcome{justify-content:center;padding:36px 20px;text-align:center;gap:18px}
+    .welcome-emoji{font-size:72px;animation:bob 2.5s ease-in-out infinite}
+    @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+    #welcome h1{font-family:'Baloo 2',sans-serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:800;background:linear-gradient(135deg,#fff,#e0e7ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .welcome-sub{color:rgba(255,255,255,.6);font-size:1rem;max-width:520px;line-height:1.6}
+    
+    /* Template selector cards */
+    .template-card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;width:100%;max-width:680px;margin:12px 0}
+    .tpl-card{background:rgba(255,255,255,.06);border:2px solid rgba(255,255,255,.15);border-radius:18px;padding:16px 12px;text-align:center;cursor:pointer;transition:all .2s;color:#fff}
+    .tpl-card:hover{background:rgba(255,255,255,.12);border-color:#a5b4fc;transform:translateY(-3px)}
+    .tpl-card.active{border-color:#a5b4fc;background:rgba(255,255,255,.15);box-shadow:0 0 16px rgba(255,255,255,.1)}
+    .tpl-icon{font-size:32px;display:block;margin-bottom:6px}
+    .tpl-name{font-weight:800;font-size:14px;display:block}
+    .tpl-desc{font-size:11px;color:rgba(255,255,255,.5);margin-top:4px;display:block}
+    
+    .start-btn{background:linear-gradient(135deg,#a5b4fc,#4338ca);border:none;border-radius:20px;padding:15px 44px;font-size:1.15rem;font-weight:800;color:#fff;box-shadow:0 8px 24px rgba(0,0,0,.3);transition:transform .15s,box-shadow .15s}
+    .start-btn:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,.4)}
+    
+    /* Play screen */
+    #game{padding:20px 20px 40px;gap:14px;width:100%;max-width:760px;margin:0 auto}
+    .progress-bar-wrap{width:100%;background:rgba(255,255,255,.1);border-radius:99px;height:8px}
+    .progress-bar{height:8px;border-radius:99px;background:linear-gradient(90deg,#a5b4fc,#e0e7ff);transition:width .4s}
+    .q-label{font-size:13px;color:rgba(255,255,255,.5);letter-spacing:1px;text-align:center}
+    .question-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:24px;padding:28px 24px;width:100%;backdrop-filter:blur(14px)}
+    .round-badge{display:inline-block;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:4px 14px;font-size:12px;color:#e0e7ff;margin-bottom:12px;font-weight:600}
+    
+    /* MCQ */
+    .q-text{font-size:1.2rem;font-weight:700;line-height:1.5;margin-bottom:8px}
+    .q-hint{font-size:13px;color:rgba(255,255,255,.45);margin-bottom:20px;font-style:italic}
+    .options-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    @media(max-width:540px){.options-grid{grid-template-columns:1fr}}
+    .opt-btn{background:rgba(255,255,255,.07);border:2px solid rgba(255,255,255,.15);border-radius:16px;padding:14px 18px;font-size:15px;font-weight:600;color:#fff;text-align:left;transition:all .15s;line-height:1.4}
+    .opt-btn:hover:not(:disabled){background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.35);transform:translateY(-2px)}
+    .opt-btn.correct{background:rgba(16,185,129,.25)!important;border-color:#34d399!important;color:#a7f3d0}
+    .opt-btn.wrong{background:rgba(239,68,68,.2)!important;border-color:#f87171!important;color:#fca5a5}
+    .opt-btn:disabled{cursor:default}
+    
+    /* Fill In The Blank */
+    .blank-wrap{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:12px}
+    .blank-input{background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.25);border-radius:14px;padding:12px 18px;font-size:16px;font-weight:700;color:#fff;flex:1;min-width:200px;outline:none;transition:border-color .2s}
+    .blank-input:focus{border-color:#a5b4fc}
+    .blank-input.correct{border-color:#34d399;background:rgba(16,185,129,.2)}
+    .blank-input.wrong{border-color:#f87171;background:rgba(239,68,68,.15)}
+    .submit-btn{background:linear-gradient(135deg,#a5b4fc,#4338ca);border:none;border-radius:14px;padding:13px 28px;font-size:15px;font-weight:800;color:#fff;transition:transform .15s}
+    .submit-btn:hover{transform:translateY(-2px)}
+    
+    /* Matching */
+    .match-card{background:rgba(255,255,255,.07);border:2px solid rgba(255,255,255,.15);border-radius:14px;padding:13px 16px;font-size:13.5px;font-weight:600;cursor:pointer;transition:all .15s;margin-bottom:8px;line-height:1.4}
+    .match-card:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.3)}
+    
+    /* Flashcard template */
+    .fc-container{perspective:1000px;width:100%;max-width:500px;margin:20px auto;min-height:240px;cursor:pointer}
+    .fc-card{width:100%;min-height:240px;position:relative;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.4,0,.2,1);border-radius:20px;box-shadow:0 12px 32px rgba(0,0,0,.3)}
+    .fc-card.flipped{transform:rotateY(180deg)}
+    .fc-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:20px;padding:32px 24px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border:2px solid rgba(255,255,255,.15)}
+    .fc-front{background:linear-gradient(135deg,rgba(255,255,255,.1),rgba(255,255,255,.05));backdrop-filter:blur(16px)}
+    .fc-back{background:linear-gradient(135deg,#4338ca,#0f172a);transform:rotateY(180deg);border-color:#a5b4fc}
+    .fc-badge{font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#e0e7ff;margin-bottom:12px}
+    .fc-main-text{font-size:1.35rem;font-weight:800;line-height:1.4}
+    .fc-sub-text{font-size:13px;color:rgba(255,255,255,.5);margin-top:10px}
+    .fc-controls{display:flex;gap:12px;justify-content:center;margin-top:20px}
+    .fc-btn{border:none;border-radius:14px;padding:12px 24px;font-size:14px;font-weight:800;transition:all .15s}
+    .fc-btn.flip{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.2)}
+    .fc-btn.pass{background:rgba(16,185,129,.25);border:1px solid #34d399;color:#a7f3d0}
+    .fc-btn.fail{background:rgba(239,68,68,.2);border:1px solid #f87171;color:#fca5a5}
+    .fc-btn:hover{transform:translateY(-2px)}
+    
+    /* Result screen */
+    #result{justify-content:center;padding:40px 20px;text-align:center;gap:18px}
+    .result-trophy{font-size:76px;animation:bob 2s ease-in-out infinite}
+    #result h2{font-family:'Baloo 2',sans-serif;font-size:clamp(2rem,5vw,3rem);font-weight:800;background:linear-gradient(135deg,#fff,#e0e7ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .result-score{font-size:3.8rem;font-weight:900;font-family:'Baloo 2',sans-serif;background:linear-gradient(135deg,#a5b4fc,#4338ca);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .result-msg{color:rgba(255,255,255,.6);font-size:1rem;max-width:440px}
+    .result-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:8px}
+    .rbtn{border:none;border-radius:16px;padding:13px 28px;font-size:14.5px;font-weight:800;transition:all .15s}
+    .rbtn:hover{transform:translateY(-3px)}
+    .rbtn.primary{background:linear-gradient(135deg,#a5b4fc,#4338ca);color:#fff}
+    .rbtn.secondary{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2)}
+    .ws-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:8px}
+    .ws-dl{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:8px 18px;font-size:13px;color:#fff;text-decoration:none;font-weight:600;transition:background .2s}
+    .ws-dl:hover{background:rgba(255,255,255,.18)}
+  </style>
+</head>
+<body>
+<div id="bgstars"></div><canvas id="confetti"></canvas><div id="toast-layer"></div>
+<div id="app">
+  <header>
+    <a href="../index.html" class="back-btn">← Unit 3</a>
+    <img src="../../../assets/logo.jpg" alt="Logo" class="logo-img" onerror="this.style.display='none'">
+    <div class="hdr-title">📖 Marketing — Reading | Grade 11 English Games</div>
+    
+    <!-- Template Switcher in Header -->
+    <div class="mode-bar">
+      <button class="mode-tab active" data-mode="all" onclick="setTemplate('all')">🌟 All</button>
+      <button class="mode-tab" data-mode="quiz" onclick="setTemplate('quiz')">🎮 Quiz</button>
+      <button class="mode-tab" data-mode="match" onclick="setTemplate('match')">🧩 Match</button>
+      <button class="mode-tab" data-mode="flashcards" onclick="setTemplate('flashcards')">🃏 Cards</button>
+    </div>
+
+    <div class="score-chip">
+      <div class="chip" id="score-chip">⭐ <span id="score-val">0</span></div>
+      <div class="chip" id="streak-chip">🔥 <span id="streak-val">0</span></div>
+    </div>
+  </header>
+
+  <!-- WELCOME SCREEN -->
+  <section class="screen active" id="welcome">
+    <div class="welcome-emoji">📖</div>
+    <h1>Marketing — Reading | Grade 11 English Games</h1>
+    <p class="welcome-sub">Choose your preferred learning style or play the full adventure:</p>
+
+    <!-- Template Selection Grid -->
+    <div class="template-card-grid">
+      <div class="tpl-card active" id="tpl-card-all" onclick="selectTemplateCard('all')">
+        <span class="tpl-icon">🌟</span>
+        <span class="tpl-name">Full Adventure</span>
+        <span class="tpl-desc">MCQ, Matching & Fill</span>
+      </div>
+      <div class="tpl-card" id="tpl-card-quiz" onclick="selectTemplateCard('quiz')">
+        <span class="tpl-icon">🎮</span>
+        <span class="tpl-name">Quiz Mode</span>
+        <span class="tpl-desc">Multiple-choice challenge</span>
+      </div>
+      <div class="tpl-card" id="tpl-card-match" onclick="selectTemplateCard('match')">
+        <span class="tpl-icon">🧩</span>
+        <span class="tpl-name">Match-Up</span>
+        <span class="tpl-desc">Pair terms & meanings</span>
+      </div>
+      <div class="tpl-card" id="tpl-card-flashcards" onclick="selectTemplateCard('flashcards')">
+        <span class="tpl-icon">🃏</span>
+        <span class="tpl-name">Flashcards</span>
+        <span class="tpl-desc">Interactive 3D study deck</span>
+      </div>
+    </div>
+
+    <button class="start-btn" onclick="startGame()">🚀 Start Game</button>
+    <div class="ws-row">
+      <a href="worksheet_normal.pdf" class="ws-dl">📄 Worksheet — Normal</a>
+      <a href="worksheet_weak.pdf" class="ws-dl">📄 Worksheet — Weak</a>
+    </div>
+  </section>
+
+  <!-- PLAY SCREEN -->
+  <section class="screen" id="game">
+    <div style="width:100%;max-width:760px">
+      <div class="progress-bar-wrap"><div class="progress-bar" id="pbar"></div></div>
+    </div>
+    <div class="q-label" id="q-label">Round 1</div>
+    <div class="question-card" id="q-card"></div>
+  </section>
+
+  <!-- RESULT SCREEN -->
+  <section class="screen" id="result">
+    <div class="result-trophy" id="trophy">🏆</div>
+    <h2 id="result-title">Excellent!</h2>
+    <div class="result-score" id="result-score">0</div>
+    <p class="result-msg" id="result-msg">Well done on completing this lesson challenge!</p>
+    <div class="result-btns">
+      <button class="rbtn primary" onclick="restartGame()">🔄 Play Again</button>
+      <button class="rbtn secondary" onclick="show('welcome')">⚙️ Change Template</button>
+      <a href="../index.html" class="rbtn secondary">← Back to Unit</a>
+    </div>
+    <div class="ws-row">
+      <a href="worksheet_normal.pdf" class="ws-dl">📄 Worksheet — Normal</a>
+      <a href="worksheet_weak.pdf" class="ws-dl">📄 Worksheet — Weak</a>
+    </div>
+  </section>
+</div>
+
+<script>
+// Starry background
+(function(){
+  const c=document.getElementById('bgstars');
+  for(let i=0;i<75;i++){
+    const s=document.createElement('div');
+    s.className='st';
+    const sz=Math.random()*2.5+.5;
+    s.style.cssText=`width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--o:${Math.random()*.6+.1};--d:${Math.random()*4+2}s;animation-delay:${Math.random()*4}s`;
+    c.appendChild(s);
+  }
+})();
+
+// Data injected by generator
+const ALL_ROUNDS = [{"label": "Targeting Teenagers & Advertising Strategies — Quiz Challenge", "type": "mcq", "questions": [{"q": "Why do marketing firms specifically target adolescents?", "a": "They influence household spending and develop lifelong brand loyalty", "opts": ["They influence household spending and develop lifelong brand loyalty", "They have no interest in digital media", "They never purchase consumer products", "They only read print newspapers"], "hint": "Early brand habits stick for decades"}, {"q": "What is 'stealth marketing' or 'product placement'?", "a": "Integrating branded products subtly into movies and social media feeds", "opts": ["Integrating branded products subtly into movies and social media feeds", "Shouting loudly on street corners", "Banning online advertisements", "Selling products in unmarked brown boxes"], "hint": "Subtle, unannounced branding"}, {"q": "Which technique relies on making viewers feel they must belong to a group?", "a": "Bandwagon effect (peer conformity)", "opts": ["Bandwagon effect (peer conformity)", "Scientific mathematical proof", "Price comparison tables", "Historical chronology"], "hint": "Nobody wants to feel left out"}]}, {"label": "Targeting Teenagers & Advertising Strategies — True or False", "type": "mcq", "questions": [{"q": "TRUE or FALSE: Brand loyalty formed as a teenager can last throughout adulthood.", "a": "TRUE", "opts": ["TRUE", "FALSE"], "hint": "Psychology of brand attachment"}, {"q": "TRUE or FALSE: Social media influencers always clearly declare every paid partnership.", "a": "FALSE", "opts": ["TRUE", "FALSE"], "hint": "Stealth sponsorship is common"}]}, {"label": "Targeting Teenagers & Advertising Strategies — Key Term Match", "type": "match", "pairs": [["demographic", "a specific statistical group within a population"], ["endorsement", "public promotion of a product by a famous figure"], ["brand loyalty", "commitment to repurchase the same brand repeatedly"], ["subconscious", "mental processes operating below conscious awareness"]]}, {"label": "Targeting Teenagers & Advertising Strategies — Sentence Sprint", "type": "fill", "questions": [{"q": "Social media apps collect user data to deliver ________ advertising.", "a": "targeted", "hint": "Aimed specifically at you"}, {"q": "The sports brand signed a multi-million-dollar ________ deal.", "a": "endorsement", "hint": "Celebrity backing"}]}];
+
+let activeTemplate = 'all';
+let activeRounds = [];
+let roundIdx = 0, qIdx = 0, score = 0, streak = 0, totalQ = 0, answered = 0;
+let flashcardIndex = 0;
+let flashcardDeck = [];
+
+function selectTemplateCard(mode){
+  document.querySelectorAll('.tpl-card').forEach(c=>c.classList.remove('active'));
+  const card = document.getElementById('tpl-card-'+mode);
+  if(card) card.classList.add('active');
+  setTemplate(mode);
+}
+
+function setTemplate(mode){
+  activeTemplate = mode;
+  document.querySelectorAll('.mode-tab').forEach(t=>{
+    t.classList.toggle('active', t.dataset.mode === mode);
+  });
+  document.querySelectorAll('.tpl-card').forEach(c=>{
+    c.classList.toggle('active', c.id === 'tpl-card-'+mode);
+  });
+  if(document.getElementById('game').classList.contains('active')){
+    startGame();
+  }
+}
+
+function filterRoundsForTemplate(mode){
+  if(mode === 'all') return ALL_ROUNDS;
+  if(mode === 'quiz') return ALL_ROUNDS.filter(r => r.type === 'mcq');
+  if(mode === 'match') return ALL_ROUNDS.filter(r => r.type === 'match');
+  if(mode === 'fill') return ALL_ROUNDS.filter(r => r.type === 'fill');
+  return ALL_ROUNDS;
+}
+
+function countTotalQuestions(rounds){
+  let t = 0;
+  rounds.forEach(r => {
+    if(r.type === 'mcq' || r.type === 'fill') t += r.questions.length;
+    if(r.type === 'match') t += r.pairs.length;
+  });
+  return t;
+}
+
+function buildFlashcardDeck(){
+  const deck = [];
+  ALL_ROUNDS.forEach(r => {
+    if(r.type === 'mcq' || r.type === 'fill'){
+      r.questions.forEach(q => {
+        deck.push({
+          badge: r.label,
+          front: q.q,
+          back: q.a,
+          hint: q.hint || ''
+        });
+      });
+    }
+    if(r.type === 'match'){
+      r.pairs.forEach(p => {
+        deck.push({
+          badge: 'Match Pair',
+          front: p[0],
+          back: p[1],
+          hint: 'Connect term with definition'
+        });
+      });
+    }
+  });
+  return deck;
+}
+
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function startGame(){
+  score = 0;
+  streak = 0;
+  answered = 0;
+  roundIdx = 0;
+  qIdx = 0;
+  updateChips();
+
+  if(activeTemplate === 'flashcards'){
+    flashcardDeck = buildFlashcardDeck();
+    flashcardIndex = 0;
+    totalQ = flashcardDeck.length;
+    show('game');
+    renderFlashcard();
+    return;
+  }
+
+  activeRounds = filterRoundsForTemplate(activeTemplate);
+  if(activeRounds.length === 0){
+    toast('No questions for this template! Switching to All rounds.');
+    activeTemplate = 'all';
+    setTemplate('all');
+    activeRounds = ALL_ROUNDS;
+  }
+  totalQ = countTotalQuestions(activeRounds);
+  show('game');
+  renderQuestion();
+}
+
+function restartGame(){
+  startGame();
+}
+
+function renderQuestion(){
+  if(roundIdx >= activeRounds.length){
+    endGame();
+    return;
+  }
+  const round = activeRounds[roundIdx];
+  updateProgress();
+  document.getElementById('q-label').textContent = `Round ${roundIdx + 1} of ${activeRounds.length} — ${round.label}`;
+  
+  const card = document.getElementById('q-card');
+  card.innerHTML = '';
+  
+  const badge = document.createElement('div');
+  badge.className = 'round-badge';
+  badge.textContent = '🎯 ' + round.label;
+  card.appendChild(badge);
+
+  if(round.type === 'mcq') renderMCQ(round, card);
+  else if(round.type === 'fill') renderFill(round, card);
+  else if(round.type === 'match') renderMatch(round, card);
+}
+
+// ─── MCQ Template ──────────────────────────────────────────
+function renderMCQ(round, card){
+  if(qIdx >= round.questions.length){
+    roundIdx++;
+    qIdx = 0;
+    renderQuestion();
+    return;
+  }
+  const q = round.questions[qIdx];
+  const qt = document.createElement('div');
+  qt.className = 'q-text';
+  qt.textContent = q.q;
+  card.appendChild(qt);
+
+  const h = document.createElement('div');
+  h.className = 'q-hint';
+  h.textContent = q.hint ? '💡 Hint: ' + q.hint : 'Select the best answer:';
+  card.appendChild(h);
+
+  const grid = document.createElement('div');
+  grid.className = 'options-grid';
+  const shuffled = [...q.opts].sort(() => Math.random() - .5);
+  
+  shuffled.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.textContent = opt;
+    btn.onclick = () => {
+      grid.querySelectorAll('.opt-btn').forEach(b => b.disabled = true);
+      const ok = (opt.trim().toLowerCase() === q.a.trim().toLowerCase());
+      btn.classList.add(ok ? 'correct' : 'wrong');
+      if(!ok){
+        grid.querySelectorAll('.opt-btn').forEach(b => {
+          if(b.textContent.trim().toLowerCase() === q.a.trim().toLowerCase()) b.classList.add('correct');
+        });
+      }
+      if(ok){
+        gainPoint(btn);
+      } else {
+        loseStreak();
+        toast('❌ ' + q.a, '#ef4444');
+      }
+      answered++;
+      setTimeout(() => {
+        qIdx++;
+        renderQuestion();
+      }, ok ? 850 : 1500);
+    };
+    grid.appendChild(btn);
+  });
+  card.appendChild(grid);
+}
+
+// ─── Fill-in-the-Blank Template ────────────────────────────
+function renderFill(round, card){
+  if(qIdx >= round.questions.length){
+    roundIdx++;
+    qIdx = 0;
+    renderQuestion();
+    return;
+  }
+  const q = round.questions[qIdx];
+  const qt = document.createElement('div');
+  qt.className = 'q-text';
+  qt.textContent = q.q;
+  card.appendChild(qt);
+
+  if(q.hint){
+    const h = document.createElement('div');
+    h.className = 'q-hint';
+    h.textContent = '💡 Hint: ' + q.hint;
+    card.appendChild(h);
+  }
+
+  const wrap = document.createElement('div');
+  wrap.className = 'blank-wrap';
+  const inp = document.createElement('input');
+  inp.type = 'text';
+  inp.className = 'blank-input';
+  inp.placeholder = 'Type your answer...';
+
+  const btn = document.createElement('button');
+  btn.className = 'submit-btn';
+  btn.textContent = 'Check ✓';
+
+  inp.addEventListener('keydown', e => {
+    if(e.key === 'Enter') checkFillAnswer(inp, q.a, btn);
+  });
+  btn.onclick = () => checkFillAnswer(inp, q.a, btn);
+
+  wrap.appendChild(inp);
+  wrap.appendChild(btn);
+  card.appendChild(wrap);
+  setTimeout(() => inp.focus(), 100);
+}
+
+function checkFillAnswer(inp, correct, btn){
+  const val = inp.value.trim().toLowerCase();
+  const ok = correct.toLowerCase().split('/').map(s => s.trim()).includes(val);
+  inp.disabled = true;
+  btn.disabled = true;
+  inp.classList.add(ok ? 'correct' : 'wrong');
+  if(ok){
+    gainPoint(inp);
+  } else {
+    loseStreak();
+    toast('❌ ' + correct, '#ef4444');
+  }
+  answered++;
+  setTimeout(() => {
+    qIdx++;
+    renderQuestion();
+  }, ok ? 850 : 1500);
+}
+
+// ─── Match-Up Template ─────────────────────────────────────
+let matchSel = { left: null, right: null };
+let matchDone = 0;
+
+function renderMatch(round, card){
+  matchDone = 0;
+  matchSel = { left: null, right: null };
+  const pairs = [...round.pairs].sort(() => Math.random() - .5);
+  const rights = [...pairs.map(p => p[1])].sort(() => Math.random() - .5);
+
+  const layout = document.createElement('div');
+  layout.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:10px';
+
+  const lCol = document.createElement('div'), rCol = document.createElement('div');
+  const lh = document.createElement('div');
+  lh.style.cssText = 'font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:10px';
+  lh.textContent = 'TERMS / PHRASES';
+  lCol.appendChild(lh);
+  const rh = lh.cloneNode();
+  rh.textContent = 'DEFINITIONS / MATCHES';
+  rCol.appendChild(rh);
+
+  pairs.forEach(p => {
+    const li = document.createElement('div');
+    li.className = 'match-card';
+    li.textContent = p[0];
+    li.dataset.val = p[0];
+    li.dataset.ans = p[1];
+    li.dataset.side = 'left';
+    li.onclick = () => selectMatchItem(li, 'left');
+    lCol.appendChild(li);
+  });
+
+  rights.forEach(def => {
+    const ri = document.createElement('div');
+    ri.className = 'match-card';
+    ri.textContent = def;
+    ri.dataset.val = def;
+    ri.dataset.side = 'right';
+    ri.onclick = () => selectMatchItem(ri, 'right');
+    rCol.appendChild(ri);
+  });
+
+  layout.appendChild(lCol);
+  layout.appendChild(rCol);
+  card.appendChild(layout);
+
+  const hint = document.createElement('div');
+  hint.className = 'q-hint';
+  hint.style.marginTop = '16px';
+  hint.textContent = '👆 Click an item on the left, then click its corresponding match on the right.';
+  card.appendChild(hint);
+}
+
+function selectMatchItem(el, side){
+  if(el.dataset.matched) return;
+  if(matchSel[side]){
+    matchSel[side].style.borderColor = 'rgba(255,255,255,.15)';
+    matchSel[side].style.background = 'rgba(255,255,255,.07)';
+  }
+  matchSel[side] = el;
+  el.style.borderColor = '#34d399';
+  el.style.background = 'rgba(16,185,129,.2)';
+
+  if(matchSel.left && matchSel.right){
+    const ok = (matchSel.left.dataset.ans === matchSel.right.dataset.val);
+    if(ok){
+      matchSel.left.dataset.matched = '1';
+      matchSel.right.dataset.matched = '1';
+      matchSel.left.style.opacity = '.5';
+      matchSel.right.style.opacity = '.5';
+      gainPoint(matchSel.right);
+      matchDone++;
+      answered++;
+      if(matchDone >= activeRounds[roundIdx].pairs.length){
+        setTimeout(() => {
+          roundIdx++;
+          qIdx = 0;
+          renderQuestion();
+        }, 700);
+      }
+    } else {
+      const l = matchSel.left, r = matchSel.right;
+      setTimeout(() => {
+        l.style.borderColor = 'rgba(255,255,255,.15)';
+        l.style.background = 'rgba(255,255,255,.07)';
+        r.style.borderColor = 'rgba(255,255,255,.15)';
+        r.style.background = 'rgba(255,255,255,.07)';
+      }, 500);
+      loseStreak();
+    }
+    matchSel = { left: null, right: null };
+  }
+}
+
+// ─── Flashcard Study Deck Template ─────────────────────────
+function renderFlashcard(){
+  if(flashcardIndex >= flashcardDeck.length){
+    endGame();
+    return;
+  }
+  updateProgress();
+  const cardData = flashcardDeck[flashcardIndex];
+  document.getElementById('q-label').textContent = `Flashcard ${flashcardIndex + 1} of ${flashcardDeck.length}`;
+
+  const container = document.getElementById('q-card');
+  container.innerHTML = '';
+
+  const fcWrap = document.createElement('div');
+  fcWrap.className = 'fc-container';
+
+  const fc = document.createElement('div');
+  fc.className = 'fc-card';
+
+  // Front face
+  const front = document.createElement('div');
+  front.className = 'fc-face fc-front';
+  front.innerHTML = `
+    <div class="fc-badge">🃏 ${cardData.badge}</div>
+    <div class="fc-main-text">${cardData.front}</div>
+    <div class="fc-sub-text">👆 Tap to flip card</div>
+  `;
+
+  // Back face
+  const back = document.createElement('div');
+  back.className = 'fc-face fc-back';
+  back.innerHTML = `
+    <div class="fc-badge">💡 ANSWER</div>
+    <div class="fc-main-text">${cardData.back}</div>
+    <div class="fc-sub-text">${cardData.hint}</div>
+  `;
+
+  fc.appendChild(front);
+  fc.appendChild(back);
+  fcWrap.appendChild(fc);
+
+  fcWrap.onclick = () => {
+    fc.classList.toggle('flipped');
+  };
+  container.appendChild(fcWrap);
+
+  // Flashcard Controls
+  const ctrl = document.createElement('div');
+  ctrl.className = 'fc-controls';
+
+  const flipBtn = document.createElement('button');
+  flipBtn.className = 'fc-btn flip';
+  flipBtn.textContent = '🔄 Flip Card';
+  flipBtn.onclick = () => fc.classList.toggle('flipped');
+
+  const gotBtn = document.createElement('button');
+  gotBtn.className = 'fc-btn pass';
+  gotBtn.textContent = '✅ Got It! (+10)';
+  gotBtn.onclick = () => {
+    gainPoint(gotBtn);
+    answered++;
+    flashcardIndex++;
+    setTimeout(renderFlashcard, 300);
+  };
+
+  const againBtn = document.createElement('button');
+  againBtn.className = 'fc-btn fail';
+  againBtn.textContent = '🔁 Study Again';
+  againBtn.onclick = () => {
+    loseStreak();
+    answered++;
+    // push back to end of deck
+    flashcardDeck.push(cardData);
+    totalQ = flashcardDeck.length;
+    flashcardIndex++;
+    setTimeout(renderFlashcard, 300);
+  };
+
+  ctrl.appendChild(againBtn);
+  ctrl.appendChild(flipBtn);
+  ctrl.appendChild(gotBtn);
+  container.appendChild(ctrl);
+}
+
+// ─── Gamification & Feedback ───────────────────────────────
+function gainPoint(el){
+  score += 10;
+  streak++;
+  updateChips();
+  const rect = el.getBoundingClientRect();
+  const fp = document.createElement('div');
+  fp.className = 'fpt';
+  fp.textContent = '+10';
+  fp.style.cssText = `left:${rect.left + rect.width/2}px;top:${rect.top - 18}px;color:#34d399`;
+  document.body.appendChild(fp);
+  setTimeout(() => fp.remove(), 1100);
+
+  if(streak === 3) toast('🔥 3 in a row! Streak bonus!', '#f59e0b');
+  if(streak === 5) toast('⚡ UNSTOPPABLE! 5 streak!', '#8b5cf6');
+}
+
+function loseStreak(){
+  streak = 0;
+  updateChips();
+}
+
+function updateChips(){
+  document.getElementById('score-val').textContent = score;
+  document.getElementById('streak-val').textContent = streak;
+  const chip = document.getElementById('score-chip');
+  chip.classList.add('pulse');
+  setTimeout(() => chip.classList.remove('pulse'), 450);
+}
+
+function updateProgress(){
+  const cur = (activeTemplate === 'flashcards') ? flashcardIndex : answered;
+  const pct = totalQ > 0 ? (cur / totalQ) * 100 : 0;
+  document.getElementById('pbar').style.width = pct + '%';
+}
+
+function toast(msg, color='#1f2937'){
+  const layer = document.getElementById('toast-layer');
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.textContent = msg;
+  t.style.background = color + 'dd';
+  layer.appendChild(t);
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => t.classList.add('show'));
+  });
+  setTimeout(() => {
+    t.classList.remove('show');
+    setTimeout(() => t.remove(), 350);
+  }, 2200);
+}
+
+function endGame(){
+  const pct = totalQ > 0 ? Math.round((score / (totalQ * 10)) * 100) : 100;
+  document.getElementById('result-score').textContent = `${score} pts`;
+  if(pct >= 85){
+    document.getElementById('trophy').textContent = '🏆';
+    document.getElementById('result-title').textContent = 'Mastery Achieved!';
+    document.getElementById('result-msg').textContent = 'Outstanding work! You demonstrated complete mastery of this lesson! 🌟';
+    launchConfetti();
+  } else if(pct >= 60){
+    document.getElementById('trophy').textContent = '🥈';
+    document.getElementById('result-title').textContent = 'Well Done!';
+    document.getElementById('result-msg').textContent = 'Great job! A quick review of tricky concepts will make you unstoppable! 💪';
+  } else {
+    document.getElementById('trophy').textContent = '📚';
+    document.getElementById('result-title').textContent = 'Practice Makes Progress!';
+    document.getElementById('result-msg').textContent = 'Try using the Flashcard Deck template first to study, then test yourself in Quiz mode! 🌱';
+  }
+  show('result');
+}
+
+function launchConfetti(){
+  const canvas = document.getElementById('confetti');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  const pieces = Array.from({length: 100}, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height - canvas.height,
+    r: Math.random() * 7 + 3,
+    c: ['#34d399', '#fbbf24', '#818cf8', '#f87171', '#60a5fa', '#fff'][Math.floor(Math.random() * 6)],
+    d: Math.random() * 2 + 1,
+    s: Math.random() * 2 - 1
+  }));
+  let fr = 0;
+  function draw(){
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    pieces.forEach(p => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.c;
+      ctx.fill();
+      p.y += p.d;
+      p.x += p.s;
+      if(p.y > canvas.height){
+        p.y = -10;
+        p.x = Math.random() * canvas.width;
+      }
+    });
+    fr++;
+    if(fr < 200) requestAnimationFrame(draw);
+    else ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+  draw();
+}
+</script>
+</body>
+</html>
