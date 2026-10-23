@@ -1,198 +1,200 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Grade 8 — Aim High English Games</title>
-  <meta name="description" content="Grade 8 English learning games. Choose a unit to start playing interactive games for vocabulary, grammar, reading, writing and skills.">
-  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Grade 8 — English Interactive Games Arena</title>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root { --green: #10b981; --green-d: #059669; }
-    body {
-      font-family: 'Outfit', system-ui, sans-serif;
-      min-height: 100vh;
-      background: linear-gradient(135deg, #0a2e1f 0%, #064e3b 40%, #0f172a 100%);
-      background-attachment: fixed; color: #fff; overflow-x: hidden;
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:'Outfit',system-ui,sans-serif;min-height:100vh;
+      background:radial-gradient(circle at 50% 0%, #064e3b 0%, #065f46 45%, #041f17 100%);
+      background-attachment:fixed;color:#fff;overflow-x:hidden
     }
-    #stars { position:fixed; inset:0; pointer-events:none; z-index:0; }
-    .star { position:absolute; border-radius:50%; background:#fff; animation:twinkle var(--d,3s) ease-in-out infinite; opacity:var(--o,.5); }
-    @keyframes twinkle { 0%,100%{opacity:var(--o,.5)} 50%{opacity:0.05} }
+    #stars{position:fixed;inset:0;pointer-events:none;z-index:0}
+    .star{position:absolute;border-radius:50%;background:#fff;animation:tw 3s ease-in-out infinite;opacity:var(--o,.4)}
+    @keyframes tw{0%,100%{opacity:var(--o,.4)}50%{opacity:.04}}
+    #app{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column}
 
-    #app { position:relative; z-index:1; }
-
-    header {
-      display:flex; align-items:center; gap:16px; padding:18px 36px;
-      border-bottom:1px solid rgba(255,255,255,.1);
-      background:rgba(255,255,255,.04); backdrop-filter:blur(20px);
+    header{
+      display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 32px;
+      border-bottom:1px solid rgba(255,255,255,.12);background:rgba(6,78,59,.6);backdrop-filter:blur(24px);
+      position:sticky;top:0;z-index:100
     }
-    .back-btn {
-      display:inline-flex; align-items:center; gap:8px;
-      background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.2);
-      border-radius:999px; padding:8px 18px; font-size:13px; color:#fff;
-      text-decoration:none; transition:background .2s;
+    .hdr-left{display:flex;align-items:center;gap:14px}
+    .back-btn{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:8px 18px;font-size:13px;color:#fff;text-decoration:none;transition:all .2s;font-weight:700}
+    .back-btn:hover{background:rgba(255,255,255,.2);transform:translateX(-3px)}
+    .logo-img{width:38px;height:38px;border-radius:10px;object-fit:cover;border:1px solid rgba(255,255,255,0.2)}
+    .page-title{font-family:'Baloo 2',sans-serif;font-size:18px;font-weight:800;background:linear-gradient(90deg,#34d399,#a7f3d0);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+
+    .hud-mini{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.08);padding:5px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.15);font-size:13px;font-weight:800}
+
+    main{flex:1;max-width:980px;margin:0 auto;padding:40px 20px 80px;width:100%}
+    .grade-hero{text-align:center;margin-bottom:36px}
+    .grade-num{font-family:'Baloo 2',sans-serif;font-size: clamp(3.8rem, 8vw, 5.5rem);font-weight:800;background:linear-gradient(135deg,#34d399,#a7f3d0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
+    .grade-sub{color:rgba(255,255,255,.7);font-size:1.2rem;margin-top:6px;font-weight:600}
+    .grade-book{display:inline-block;background:rgba(52,211,153,.15);border:1px solid rgba(52,211,153,.35);border-radius:999px;padding:5px 18px;font-size:13px;color:#34d399;margin-top:10px;font-weight:800}
+
+    .section-label{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.45);text-align:center;margin-bottom:24px;font-weight:800}
+
+    .units-list{display:flex;flex-direction:column;gap:22px}
+    .unit-card{
+      display:flex;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);
+      border-radius:24px;overflow:hidden;text-decoration:none;color:#fff;
+      transition:all .3s cubic-bezier(0.16,1,0.3,1);backdrop-filter:blur(16px);
+      box-shadow:0 12px 36px rgba(0,0,0,.35)
     }
-    .back-btn:hover { background:rgba(255,255,255,.18); }
-    .logo-img { width:44px; height:44px; border-radius:10px; object-fit:cover; }
-    .page-title { font-family:'Baloo 2',sans-serif; font-size:20px; font-weight:800;
-      background:linear-gradient(90deg,#34d399,#a7f3d0); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
-
-    .hero { text-align:center; padding:60px 20px 40px; }
-    .grade-pill {
-      display:inline-flex; align-items:center; gap:10px;
-      background:rgba(16,185,129,.2); border:1px solid rgba(16,185,129,.4);
-      border-radius:999px; padding:8px 24px; margin-bottom:24px;
+    @media(max-width:700px){.unit-card{flex-direction:column}}
+    .unit-card:hover{
+      background:rgba(255,255,255,.1);border-color:#34d399;transform:translateY(-6px);
+      box-shadow:0 24px 50px rgba(0,0,0,.5),0 0 30px rgba(52,211,153,.25)
     }
-    .grade-pill .num { font-family:'Baloo 2',sans-serif; font-size:28px; font-weight:800;
-      background:linear-gradient(135deg,#34d399,#059669); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
-    .grade-pill .lbl { font-size:14px; color:rgba(255,255,255,.6); }
-    .hero h1 { font-family:'Baloo 2',sans-serif; font-size:clamp(2rem,5vw,3.5rem); font-weight:800; margin-bottom:12px;
-      background:linear-gradient(135deg,#fff,#a7f3d0); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
-    .hero p { color:rgba(255,255,255,.55); font-size:1rem; max-width:480px; margin:0 auto; }
-
-    .section-lbl { text-align:center; font-size:12px; letter-spacing:3px; text-transform:uppercase;
-      color:rgba(255,255,255,.35); margin:40px 0 24px; }
-
-    /* Unit cards */
-    .units-grid { display:flex; gap:24px; justify-content:center; flex-wrap:wrap; padding:0 20px 60px; }
-
-    .unit-card {
-      background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12);
-      border-radius:24px; padding:32px 28px; text-align:center;
-      text-decoration:none; color:#fff; min-width:280px; max-width:340px; flex:1;
-      transition:transform .25s, border-color .25s, box-shadow .25s;
-      backdrop-filter:blur(16px); position:relative; overflow:hidden; cursor:pointer;
+    .unit-thumb{
+      width:240px;position:relative;flex-shrink:0;overflow:hidden;background:#042f24;
     }
-    .unit-card::before {
-      content:''; position:absolute; inset:0; border-radius:inherit;
-      background:var(--ug); opacity:0; transition:opacity .3s;
+    @media(max-width:700px){.unit-thumb{width:100%;height:160px}}
+    .unit-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+    .unit-card:hover .unit-thumb img{transform:scale(1.08)}
+    .unit-badge-pill{
+      position:absolute;top:12px;left:12px;background:rgba(4,47,36,.85);
+      backdrop-filter:blur(8px);border-radius:999px;padding:4px 12px;font-size:11px;
+      font-weight:800;color:#34d399;border:1px solid rgba(52,211,153,.3)
     }
-    .unit-card:hover { transform:translateY(-8px); box-shadow:0 20px 50px rgba(0,0,0,.5); border-color:var(--ua); }
-    .unit-card:hover::before { opacity:1; }
 
-    .unit-card.u3 { --ug:linear-gradient(135deg,rgba(16,185,129,.18),transparent); --ua:#34d399; }
-    .unit-card.u4 { --ug:linear-gradient(135deg,rgba(245,158,11,.18),transparent); --ua:#fbbf24; }
-    .unit-card.u6 { --ug:linear-gradient(135deg,rgba(99,102,241,.2),transparent); --ua:#818cf8; }
+    .unit-info{flex:1;padding:24px 28px;display:flex;flex-direction:column;justify-content:center}
+    .unit-label{font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#34d399;margin-bottom:4px}
+    .unit-title{font-family:'Baloo 2',sans-serif;font-size:1.6rem;font-weight:800;margin-bottom:6px;line-height:1.2}
+    .unit-topics{font-size:14px;color:rgba(255,255,255,.65);margin-bottom:14px;line-height:1.5}
+    .unit-pills{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    .pill{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:4px 12px;font-size:12px;color:rgba(255,255,255,.8);font-weight:700}
+    .pill-accent{background:rgba(52,211,153,.15);border-color:rgba(52,211,153,.4);color:#6ee7b7}
 
-    .unit-emoji { font-size:52px; display:block; margin-bottom:16px; position:relative; z-index:1; }
-    .unit-num { font-family:'Baloo 2',sans-serif; font-size:13px; font-weight:700;
-      letter-spacing:2px; text-transform:uppercase; color:var(--ua); margin-bottom:6px; position:relative;z-index:1; }
-    .unit-title { font-size:1.35rem; font-weight:700; margin-bottom:6px; position:relative;z-index:1; }
-    .unit-theme { font-size:13px; color:rgba(255,255,255,.45); margin-bottom:20px; position:relative;z-index:1; }
-
-    .lessons-pills { display:flex; gap:8px; flex-wrap:wrap; justify-content:center; position:relative;z-index:1; margin-bottom:20px; }
-    .lp {
-      padding:5px 12px; border-radius:999px; font-size:12px; font-weight:600;
-      background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.15);
+    .unit-arrow-wrap{display:flex;align-items:center;padding:0 28px 0 0}
+    @media(max-width:700px){.unit-arrow-wrap{padding:0 24px 20px;justify-content:flex-end}}
+    .unit-arrow-btn{
+      width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.08);
+      display:flex;align-items:center;justify-content:center;font-size:20px;color:rgba(255,255,255,.5);
+      border:1px solid rgba(255,255,255,.15);transition:all .2s
     }
-    .lp.reading  { background:rgba(59,130,246,.2); border-color:rgba(59,130,246,.4); color:#93c5fd; }
-    .lp.vocab    { background:rgba(16,185,129,.2); border-color:rgba(16,185,129,.4); color:#6ee7b7; }
-    .lp.grammar  { background:rgba(245,158,11,.2); border-color:rgba(245,158,11,.4); color:#fcd34d; }
-    .lp.skills   { background:rgba(168,85,247,.2); border-color:rgba(168,85,247,.4); color:#d8b4fe; }
-    .lp.writing  { background:rgba(239,68,68,.2);  border-color:rgba(239,68,68,.4);  color:#fca5a5; }
+    .unit-card:hover .unit-arrow-btn{background:#34d399;color:#042f24;transform:translateX(5px);border-color:#34d399}
 
-    .unit-cta {
-      display:inline-flex; align-items:center; gap:8px;
-      background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2);
-      border-radius:999px; padding:10px 22px; font-size:13px; font-weight:600;
-      color:#fff; transition:background .2s; position:relative;z-index:1;
-    }
-    .unit-card:hover .unit-cta { background:rgba(255,255,255,.22); }
-
-    footer { text-align:center; padding:28px 20px; border-top:1px solid rgba(255,255,255,.08);
-      color:rgba(255,255,255,.25); font-size:12px; }
-    footer a { color:rgba(255,255,255,.45); text-decoration:none; }
-    footer a:hover { color:#fff; }
+    footer{padding:28px;text-align:center;font-size:13px;color:rgba(255,255,255,.45);border-top:1px solid rgba(255,255,255,.1)}
+    footer a{color:#34d399;text-decoration:none;font-weight:700}
   </style>
 </head>
 <body>
 <div id="stars"></div>
 <div id="app">
-
   <header>
-    <a href="../index.html" class="back-btn">← Back</a>
-    <img src="../assets/logo.jpg" alt="Logo" class="logo-img" onerror="this.style.display='none'">
-    <div class="page-title">Grade 8 — Aim High 2</div>
+    <div class="hdr-left">
+      <a href="../index.html" class="back-btn" id="back-home" onclick="AimSounds.playPop()">← All Grades</a>
+      <img src="../assets/logo.jpg" alt="Logo" class="logo-img" onerror="this.style.display='none'">
+      <div class="page-title">Grade 8 English Arena</div>
+    </div>
+    <div class="hud-mini">
+      <span>🔥 Streak: <strong id="streak-val">3</strong></span>
+      <span>⭐ <strong id="xp-val">120</strong> XP</span>
+    </div>
   </header>
 
   <main>
-    <div class="hero">
-      <div class="grade-pill">
-        <span class="num">8</span>
-        <span class="lbl">Aim High 2 &nbsp;·&nbsp; Oxford University Press</span>
-      </div>
-      <h1>Choose a Unit</h1>
-      <p>Select a unit to explore all available games and worksheets for that topic.</p>
+    <div class="grade-hero">
+      <div class="grade-num">Grade 8</div>
+      <div class="grade-sub">Aim High 2 — Interactive Mastery Arena</div>
+      <div class="grade-book">📚 Oxford Aim High Series</div>
     </div>
 
-    <p class="section-lbl">▸ Available Units</p>
+    <p class="section-label">▸ Select A Unit Quest</p>
 
-    <div class="units-grid">
-
+    <div class="units-list">
       <!-- Unit 3 -->
-      <a href="unit-3/index.html" class="unit-card u3">
-        <span class="unit-emoji">🏘️</span>
-        <div class="unit-num">Unit 3</div>
-        <div class="unit-title">Town and Country</div>
-        <div class="unit-theme">Rural vs. urban life · Monowi · Landscapes</div>
-        <div class="lessons-pills">
-          <span class="lp reading">📖 Reading</span>
-          <span class="lp vocab">🔤 Vocabulary</span>
-          <span class="lp grammar">📐 Grammar</span>
-          <span class="lp skills">🎯 Skills</span>
-          <span class="lp writing">✏️ Writing</span>
+      <a href="unit-3/index.html" class="unit-card" id="card-unit-3" onclick="AimSounds.playPop()">
+        <div class="unit-thumb">
+          <img src="../assets/images/town_and_country.jpg" alt="Town and Country">
+          <div class="unit-badge-pill">🏙️ Unit 3</div>
         </div>
-        <div class="unit-cta">Play Games →</div>
+        <div class="unit-info">
+          <div class="unit-label">Urban & Rural Landscapes</div>
+          <div class="unit-title">Town and Country</div>
+          <div class="unit-topics">Monowi Nebraska (population 1), rural migration, quantifiers, urban directions & tourist leaflets.</div>
+          <div class="unit-pills">
+            <span class="pill pill-accent">🎮 5 Interactive Games</span>
+            <span class="pill">📝 Differentiated Worksheets</span>
+            <span class="pill">⚡ 5 Game Modes</span>
+          </div>
+        </div>
+        <div class="unit-arrow-wrap">
+          <div class="unit-arrow-btn">→</div>
+        </div>
       </a>
 
       <!-- Unit 4 -->
-      <a href="unit-4/index.html" class="unit-card u4">
-        <span class="unit-emoji">🦸</span>
-        <div class="unit-num">Unit 4</div>
-        <div class="unit-title">Heroes</div>
-        <div class="unit-theme">Bravery · Qualities · Comparisons</div>
-        <div class="lessons-pills">
-          <span class="lp reading">📖 Reading</span>
-          <span class="lp vocab">🔤 Vocabulary</span>
-          <span class="lp grammar">📐 Grammar</span>
-          <span class="lp skills">🎯 Skills</span>
-          <span class="lp writing">✏️ Writing</span>
+      <a href="unit-4/index.html" class="unit-card" id="card-unit-4" onclick="AimSounds.playPop()">
+        <div class="unit-thumb">
+          <img src="../assets/images/motivation_achievement.jpg" alt="Heroes & Courage">
+          <div class="unit-badge-pill">🦸 Unit 4</div>
         </div>
-        <div class="unit-cta">Play Games →</div>
+        <div class="unit-info">
+          <div class="unit-label">Courage & Achievements</div>
+          <div class="unit-title">Heroes: Awards for Bravery</div>
+          <div class="unit-topics">George Cross fire rescue, extreme adjectives, comparatives & superlatives, book reviews & personal heroes.</div>
+          <div class="unit-pills">
+            <span class="pill pill-accent">🎮 5 Interactive Games</span>
+            <span class="pill">📝 Differentiated Worksheets</span>
+            <span class="pill">⚡ 5 Game Modes</span>
+          </div>
+        </div>
+        <div class="unit-arrow-wrap">
+          <div class="unit-arrow-btn">→</div>
+        </div>
       </a>
 
       <!-- Unit 6 -->
-      <a href="unit-6/index.html" class="unit-card u6">
-        <span class="unit-emoji">🔬</span>
-        <div class="unit-num">Unit 6</div>
-        <div class="unit-title">Technology</div>
-        <div class="unit-theme">Nanotechnology · will/going to · Devices</div>
-        <div class="lessons-pills">
-          <span class="lp reading">📖 Reading</span>
-          <span class="lp vocab">🔤 Vocabulary</span>
-          <span class="lp grammar">📐 Grammar</span>
-          <span class="lp skills">🎯 Skills</span>
-          <span class="lp writing">✏️ Writing</span>
+      <a href="unit-6/index.html" class="unit-card" id="card-unit-6" onclick="AimSounds.playPop()">
+        <div class="unit-thumb">
+          <img src="../assets/images/hero_learning.jpg" alt="Technology & Science">
+          <div class="unit-badge-pill">🔬 Unit 6</div>
         </div>
-        <div class="unit-cta">Play Games →</div>
+        <div class="unit-info">
+          <div class="unit-label">Future Innovations & Science</div>
+          <div class="unit-title">Nanotechnology & Tech Futures</div>
+          <div class="unit-topics">Nanobots in medicine, scientific predictions, will vs going to, zero conditional & formal letters.</div>
+          <div class="unit-pills">
+            <span class="pill pill-accent">🎮 5 Interactive Games</span>
+            <span class="pill">📝 Differentiated Worksheets</span>
+            <span class="pill">⚡ 5 Game Modes</span>
+          </div>
+        </div>
+        <div class="unit-arrow-wrap">
+          <div class="unit-arrow-btn">→</div>
+        </div>
       </a>
-
     </div>
   </main>
 
   <footer>
-    <a href="../index.html">← Home</a> &nbsp;·&nbsp; Grade 8 — Aim High 2
+    <a href="../index.html">← Back to Hub</a> · Grade 8 English Learning — Aim High 2
   </footer>
 </div>
 
+<script src="../assets/gamification.js"></script>
 <script>
+  // Twinkling stars
   const s = document.getElementById('stars');
-  for (let i=0;i<80;i++){
-    const el=document.createElement('div'); el.className='star';
-    const sz=Math.random()*2+0.5;
-    el.style.cssText=`width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--o:${Math.random()*.6+.1};--d:${Math.random()*4+2}s;animation-delay:${Math.random()*4}s`;
+  for (let i = 0; i < 70; i++) {
+    const el = document.createElement('div');
+    el.className = 'star';
+    const sz = Math.random() * 2 + .5;
+    el.style.cssText = `width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--o:${Math.random()*.5+.1};--d:${Math.random()*4+2}s;animation-delay:${Math.random()*4}s`;
     s.appendChild(el);
   }
+
+  // Sync HUD
+  document.addEventListener('DOMContentLoaded', () => {
+    const p = AimGamification.getProfile();
+    document.getElementById('streak-val').textContent = p.streak || 1;
+    document.getElementById('xp-val').textContent = p.xp || 0;
+  });
 </script>
 </body>
 </html>
