@@ -575,7 +575,11 @@ const CURATED_IMAGE_DATABASE = {
   study:        "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&auto=format&fit=crop&q=80"
 };
 
-function resolveQuestionImage(qText, roundLabel){
+function resolveQuestionImage(qInput, roundLabel){
+  if (qInput && typeof qInput === 'object' && qInput.img) {
+    return { url: qInput.img, tag: qInput.img_tag || 'Illustration' };
+  }
+  const qText = (typeof qInput === 'string' ? qInput : (qInput && qInput.q) ? qInput.q : '') + ' ' + (roundLabel || '');
   const s = ((qText || '') + ' ' + (roundLabel || '')).toLowerCase();
 
   // Plants & Botany
@@ -685,7 +689,7 @@ function resolveQuestionImage(qText, roundLabel){
 })();
 
 // Data injected by generator
-const ALL_ROUNDS = [{"label": "Formal Letter Conventions — MCQ", "type": "mcq", "questions": [{"q": "When writing to a company and you do NOT know the recipient's name, start with:", "a": "Dear Sir or Madam,", "opts": ["Dear Sir or Madam,", "Hi Customer Care,", "Dear Friend,", "To whom it goes,"], "hint": "Standard British formal salutation"}, {"q": "If you begin a formal letter with 'Dear Sir or Madam,', close it with:", "a": "Yours faithfully,", "opts": ["Yours faithfully,", "Yours sincerely,", "Best wishes,", "Kindest hugs,"], "hint": "Faithfully matches Sir/Madam"}, {"q": "If you DO know the recipient's surname (e.g. 'Dear Mr. Davies,'), close with:", "a": "Yours sincerely,", "opts": ["Yours sincerely,", "Yours faithfully,", "Warm regards,", "Cheerio,"], "hint": "Sincerely matches named person"}]}, {"label": "Formal Phrasing & Set Expressions — Match", "type": "match", "pairs": [["I am writing to inquire about...", "formal purpose of writing"], ["I would be grateful if you could...", "polite request for action"], ["I look forward to hearing from you.", "formal closing sentence"], ["Please find enclosed my receipt.", "referencing an attached document"]]}];
+const ALL_ROUNDS = [{"label": "Formal Letter Conventions — MCQ", "type": "mcq", "questions": [{"q": "When writing to a company and you do NOT know the recipient's name, start with:", "a": "Dear Sir or Madam,", "opts": ["Dear Sir or Madam,", "Hi Customer Care,", "Dear Friend,", "To whom it goes,"], "hint": "Standard British formal salutation", "img": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&auto=format&fit=crop&q=80", "img_tag": "Verdant Wilderness"}, {"q": "If you begin a formal letter with 'Dear Sir or Madam,', close it with:", "a": "Yours faithfully,", "opts": ["Yours faithfully,", "Yours sincerely,", "Best wishes,", "Kindest hugs,"], "hint": "Faithfully matches Sir/Madam", "img": "https://images.unsplash.com/photo-1508873696983-2df5293cb32f?w=800&auto=format&fit=crop&q=80", "img_tag": "Outdoor Campfire"}, {"q": "If you DO know the recipient's surname (e.g. 'Dear Mr. Davies,'), close with:", "a": "Yours sincerely,", "opts": ["Yours sincerely,", "Yours faithfully,", "Warm regards,", "Cheerio,"], "hint": "Sincerely matches named person", "img": "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=800&auto=format&fit=crop&q=80", "img_tag": "Analytical Deduction"}]}, {"label": "Formal Phrasing & Set Expressions — Match", "type": "match", "pairs": [["I am writing to inquire about...", "formal purpose of writing"], ["I would be grateful if you could...", "polite request for action"], ["I look forward to hearing from you.", "formal closing sentence"], ["Please find enclosed my receipt.", "referencing an attached document"]]}];
 
 let activeTemplate = 'all';
 let activeRounds = [];
@@ -739,7 +743,7 @@ function buildFlashcardDeck(){
   ALL_ROUNDS.forEach(r => {
     if (r.type === 'mcq' || r.type === 'fill'){
       r.questions.forEach(q => {
-        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '' });
+        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '', img: q.img, img_tag: q.img_tag });
       });
     }
     if (r.type === 'match'){
@@ -878,7 +882,7 @@ function renderMCQ(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // 1. Real-life Image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -964,7 +968,7 @@ function renderFill(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // Real-life image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -1174,7 +1178,7 @@ function renderFlashcard(){
   const container = document.getElementById('q-card');
   container.innerHTML = '';
 
-  const imgInfo = resolveQuestionImage(cardData.front, cardData.badge);
+  const imgInfo = resolveQuestionImage(cardData, cardData.badge);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.style.height = '180px';

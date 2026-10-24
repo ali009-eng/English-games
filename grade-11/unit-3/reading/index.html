@@ -575,7 +575,11 @@ const CURATED_IMAGE_DATABASE = {
   study:        "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&auto=format&fit=crop&q=80"
 };
 
-function resolveQuestionImage(qText, roundLabel){
+function resolveQuestionImage(qInput, roundLabel){
+  if (qInput && typeof qInput === 'object' && qInput.img) {
+    return { url: qInput.img, tag: qInput.img_tag || 'Illustration' };
+  }
+  const qText = (typeof qInput === 'string' ? qInput : (qInput && qInput.q) ? qInput.q : '') + ' ' + (roundLabel || '');
   const s = ((qText || '') + ' ' + (roundLabel || '')).toLowerCase();
 
   // Plants & Botany
@@ -685,7 +689,7 @@ function resolveQuestionImage(qText, roundLabel){
 })();
 
 // Data injected by generator
-const ALL_ROUNDS = [{"label": "Targeting Teenagers & Advertising Strategies — Quiz Sprint", "type": "mcq", "questions": [{"q": "Why do marketing firms specifically target adolescents?", "a": "They influence household spending and develop lifelong brand loyalty", "opts": ["They influence household spending and develop lifelong brand loyalty", "They have no interest in digital media", "They never purchase consumer products", "They only read print newspapers"], "hint": "Early brand habits stick for decades"}, {"q": "What is 'stealth marketing' or 'product placement'?", "a": "Integrating branded products subtly into movies and social media feeds", "opts": ["Integrating branded products subtly into movies and social media feeds", "Shouting loudly on street corners", "Banning online advertisements", "Selling products in unmarked brown boxes"], "hint": "Subtle, unannounced branding"}, {"q": "Which technique relies on making viewers feel they must belong to a group?", "a": "Bandwagon effect (peer conformity)", "opts": ["Bandwagon effect (peer conformity)", "Scientific mathematical proof", "Price comparison tables", "Historical chronology"], "hint": "Nobody wants to feel left out"}]}, {"label": "Targeting Teenagers & Advertising Strategies — Key Term Match", "type": "match", "pairs": [["demographic", "a specific statistical group within a population"], ["endorsement", "public promotion of a product by a famous figure"], ["brand loyalty", "commitment to repurchase the same brand repeatedly"], ["subconscious", "mental processes operating below conscious awareness"]]}, {"label": "Targeting Teenagers & Advertising Strategies — Sentence Sprint", "type": "fill", "questions": [{"q": "Social media apps collect user data to deliver ________ advertising.", "a": "targeted", "hint": "Aimed specifically at you"}, {"q": "The sports brand signed a multi-million-dollar ________ deal.", "a": "endorsement", "hint": "Celebrity backing"}]}];
+const ALL_ROUNDS = [{"label": "Targeting Teenagers & Advertising Strategies — Quiz Sprint", "type": "mcq", "questions": [{"q": "Why do marketing firms specifically target adolescents?", "a": "They influence household spending and develop lifelong brand loyalty", "opts": ["They influence household spending and develop lifelong brand loyalty", "They have no interest in digital media", "They never purchase consumer products", "They only read print newspapers"], "hint": "Early brand habits stick for decades", "img": "https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80", "img_tag": "Brand Identity & Loyalty"}, {"q": "What is 'stealth marketing' or 'product placement'?", "a": "Integrating branded products subtly into movies and social media feeds", "opts": ["Integrating branded products subtly into movies and social media feeds", "Shouting loudly on street corners", "Banning online advertisements", "Selling products in unmarked brown boxes"], "hint": "Subtle, unannounced branding", "img": "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&auto=format&fit=crop&q=80", "img_tag": "Digital Influencer Studio"}, {"q": "Which technique relies on making viewers feel they must belong to a group?", "a": "Bandwagon effect (peer conformity)", "opts": ["Bandwagon effect (peer conformity)", "Scientific mathematical proof", "Price comparison tables", "Historical chronology"], "hint": "Nobody wants to feel left out", "img": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&auto=format&fit=crop&q=80", "img_tag": "Digital Technology"}]}, {"label": "Targeting Teenagers & Advertising Strategies — Key Term Match", "type": "match", "pairs": [["demographic", "a specific statistical group within a population"], ["endorsement", "public promotion of a product by a famous figure"], ["brand loyalty", "commitment to repurchase the same brand repeatedly"], ["subconscious", "mental processes operating below conscious awareness"]]}, {"label": "Targeting Teenagers & Advertising Strategies — Sentence Sprint", "type": "fill", "questions": [{"q": "Social media apps collect user data to deliver ________ advertising.", "a": "targeted", "hint": "Aimed specifically at you", "img": "https://images.unsplash.com/photo-1516912481808-3406841bd33c?w=800&auto=format&fit=crop&q=80", "img_tag": "Dynamic Exploration"}, {"q": "The sports brand signed a multi-million-dollar ________ deal.", "a": "endorsement", "hint": "Celebrity backing", "img": "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=800&auto=format&fit=crop&q=80", "img_tag": "Written Composition"}]}];
 
 let activeTemplate = 'all';
 let activeRounds = [];
@@ -739,7 +743,7 @@ function buildFlashcardDeck(){
   ALL_ROUNDS.forEach(r => {
     if (r.type === 'mcq' || r.type === 'fill'){
       r.questions.forEach(q => {
-        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '' });
+        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '', img: q.img, img_tag: q.img_tag });
       });
     }
     if (r.type === 'match'){
@@ -878,7 +882,7 @@ function renderMCQ(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // 1. Real-life Image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -964,7 +968,7 @@ function renderFill(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // Real-life image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -1174,7 +1178,7 @@ function renderFlashcard(){
   const container = document.getElementById('q-card');
   container.innerHTML = '';
 
-  const imgInfo = resolveQuestionImage(cardData.front, cardData.badge);
+  const imgInfo = resolveQuestionImage(cardData, cardData.badge);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.style.height = '180px';

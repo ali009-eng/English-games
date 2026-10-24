@@ -175,8 +175,8 @@
     }
 
     .grades-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px;
-      max-width: 1200px; margin: 0 auto 70px; padding: 0 24px;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px;
+      max-width: 1300px; margin: 0 auto 70px; padding: 0 24px;
     }
     @media (max-width: 900px) { .grades-grid { grid-template-columns: 1fr; } }
 
@@ -194,6 +194,7 @@
     .g8-card { --accent-color: #34d399; --accent-glow: rgba(52, 211, 153, 0.25); }
     .g10-card { --accent-color: #818cf8; --accent-glow: rgba(129, 140, 248, 0.25); }
     .g11-card { --accent-color: #fbbf24; --accent-glow: rgba(251, 191, 36, 0.25); }
+    .g12-card { --accent-color: #c084fc; --accent-glow: rgba(192, 132, 252, 0.25); }
 
     .grade-img-wrap {
       width: 100%; height: 200px; position: relative; overflow: hidden;
@@ -378,7 +379,7 @@
         <div class="hero-badge">✨ Oxford Aim High Series</div>
         <h1 class="hero-title">Learn English<br>Through Play</h1>
         <p class="hero-desc">
-          Interactive vocabulary, grammar, reading and writing games for Grades 8, 10 and 11 — based on your Aim High coursebooks.
+          Interactive vocabulary, grammar, reading and writing games for Grades 8, 10, 11 and 12 — based on your Aim High coursebooks.
         </p>
         <div class="hero-actions">
           <a href="#grades-section" class="btn-action btn-start" onclick="sounds.playPop()">
@@ -471,6 +472,30 @@
             <div class="grade-stats-pills">
               <span class="g-pill">Units 3 · 4 · 5</span>
               <span class="g-pill">12 Lessons</span>
+              <span class="g-pill">🎮 Games & Worksheets</span>
+            </div>
+            <div class="grade-play-btn">Start Playing →</div>
+          </div>
+        </a>
+
+        <!-- Grade 12 -->
+        <a href="grade-12/index.html" class="grade-card g12-card" onclick="sounds.playPop()">
+          <div class="grade-img-wrap">
+            <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&auto=format&fit=crop&q=80" alt="Grade 12 Stories" class="grade-img">
+            <div class="grade-badge-float">📕 Grade 12</div>
+            <div class="grade-book-tag">Aim High 6</div>
+          </div>
+          <div class="grade-body">
+            <div class="grade-title-row">
+              <div class="grade-name">Stories & Cinema</div>
+              <div class="grade-num-huge">12</div>
+            </div>
+            <p class="grade-theme-desc">
+              Lord of the Flies island survival, narrative tenses, compound modifiers & Skyfall critical film review.
+            </p>
+            <div class="grade-stats-pills">
+              <span class="g-pill">Unit 2: Stories</span>
+              <span class="g-pill">5 Lessons</span>
               <span class="g-pill">🎮 Games & Worksheets</span>
             </div>
             <div class="grade-play-btn">Start Playing →</div>

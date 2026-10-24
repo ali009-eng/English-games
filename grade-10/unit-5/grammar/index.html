@@ -575,7 +575,11 @@ const CURATED_IMAGE_DATABASE = {
   study:        "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&auto=format&fit=crop&q=80"
 };
 
-function resolveQuestionImage(qText, roundLabel){
+function resolveQuestionImage(qInput, roundLabel){
+  if (qInput && typeof qInput === 'object' && qInput.img) {
+    return { url: qInput.img, tag: qInput.img_tag || 'Illustration' };
+  }
+  const qText = (typeof qInput === 'string' ? qInput : (qInput && qInput.q) ? qInput.q : '') + ' ' + (roundLabel || '');
   const s = ((qText || '') + ' ' + (roundLabel || '')).toLowerCase();
 
   // Plants & Botany
@@ -685,7 +689,7 @@ function resolveQuestionImage(qText, roundLabel){
 })();
 
 // Data injected by generator
-const ALL_ROUNDS = [{"label": "The Passive & Impersonal Passive — Quiz Sprint", "type": "mcq", "questions": [{"q": "The ancient tomb ________ by archaeologists in 1922.", "a": "was discovered", "opts": ["was discovered", "discovered", "is discovering", "had discovered"], "hint": "Past passive: was + V3"}, {"q": "It is ________ that the Great Pyramid took twenty years to build.", "a": "believed", "opts": ["believed", "believing", "believe", "to believe"], "hint": "It is + V3 + that"}, {"q": "The site ________ to be over four thousand years old.", "a": "is thought", "opts": ["is thought", "thinks", "thought", "is thinking"], "hint": "Subject + is + thought + to be"}, {"q": "Thousands of artifacts ________ in the museum right now.", "a": "are being displayed", "opts": ["are being displayed", "displayed", "have display", "are displaying"], "hint": "Present continuous passive"}]}, {"label": "The Passive & Impersonal Passive — Key Term Match", "type": "match", "pairs": [["The temple was built", "Simple past passive: was + past participle"], ["It is believed that", "Impersonal passive opening clause"], ["He is thought to be", "Personal reporting structure with infinitive"], ["by the architect", "Agent phrase identifying who built it"]]}, {"label": "The Passive & Impersonal Passive — Sentence Sprint", "type": "fill", "questions": [{"q": "The monument was ________ (restore) by international experts.", "a": "restored", "hint": "Past participle of restore"}, {"q": "It is ________ (say) that the underground labyrinth has many traps.", "a": "said", "hint": "V3 of say"}]}];
+const ALL_ROUNDS = [{"label": "The Passive & Impersonal Passive — Quiz Sprint", "type": "mcq", "questions": [{"q": "The ancient tomb ________ by archaeologists in 1922.", "a": "was discovered", "opts": ["was discovered", "discovered", "is discovering", "had discovered"], "hint": "Past passive: was + V3", "img": "https://images.unsplash.com/photo-1511895426328-dc8714191300?w=800&auto=format&fit=crop&q=80", "img_tag": "Family Dynamics"}, {"q": "It is ________ that the Great Pyramid took twenty years to build.", "a": "believed", "opts": ["believed", "believing", "believe", "to believe"], "hint": "It is + V3 + that", "img": "https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=800&auto=format&fit=crop&q=80", "img_tag": "Theater Showcase"}, {"q": "The site ________ to be over four thousand years old.", "a": "is thought", "opts": ["is thought", "thinks", "thought", "is thinking"], "hint": "Subject + is + thought + to be", "img": "https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?w=800&auto=format&fit=crop&q=80", "img_tag": "Critical Reflection"}, {"q": "Thousands of artifacts ________ in the museum right now.", "a": "are being displayed", "opts": ["are being displayed", "displayed", "have display", "are displaying"], "hint": "Present continuous passive", "img": "https://images.unsplash.com/photo-1508873696983-2df5293cb32f?w=800&auto=format&fit=crop&q=80", "img_tag": "Outdoor Campfire"}]}, {"label": "The Passive & Impersonal Passive — Key Term Match", "type": "match", "pairs": [["The temple was built", "Simple past passive: was + past participle"], ["It is believed that", "Impersonal passive opening clause"], ["He is thought to be", "Personal reporting structure with infinitive"], ["by the architect", "Agent phrase identifying who built it"]]}, {"label": "The Passive & Impersonal Passive — Sentence Sprint", "type": "fill", "questions": [{"q": "The monument was ________ (restore) by international experts.", "a": "restored", "hint": "Past participle of restore", "img": "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=800&auto=format&fit=crop&q=80", "img_tag": "Analytical Deduction"}, {"q": "It is ________ (say) that the underground labyrinth has many traps.", "a": "said", "hint": "V3 of say", "img": "https://images.unsplash.com/photo-1509248961158-e54f6934749c?w=800&auto=format&fit=crop&q=80", "img_tag": "Suspenseful Drama"}]}];
 
 let activeTemplate = 'all';
 let activeRounds = [];
@@ -739,7 +743,7 @@ function buildFlashcardDeck(){
   ALL_ROUNDS.forEach(r => {
     if (r.type === 'mcq' || r.type === 'fill'){
       r.questions.forEach(q => {
-        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '' });
+        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '', img: q.img, img_tag: q.img_tag });
       });
     }
     if (r.type === 'match'){
@@ -878,7 +882,7 @@ function renderMCQ(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // 1. Real-life Image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -964,7 +968,7 @@ function renderFill(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // Real-life image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -1174,7 +1178,7 @@ function renderFlashcard(){
   const container = document.getElementById('q-card');
   container.innerHTML = '';
 
-  const imgInfo = resolveQuestionImage(cardData.front, cardData.badge);
+  const imgInfo = resolveQuestionImage(cardData, cardData.badge);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.style.height = '180px';

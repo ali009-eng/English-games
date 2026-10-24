@@ -575,7 +575,11 @@ const CURATED_IMAGE_DATABASE = {
   study:        "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&auto=format&fit=crop&q=80"
 };
 
-function resolveQuestionImage(qText, roundLabel){
+function resolveQuestionImage(qInput, roundLabel){
+  if (qInput && typeof qInput === 'object' && qInput.img) {
+    return { url: qInput.img, tag: qInput.img_tag || 'Illustration' };
+  }
+  const qText = (typeof qInput === 'string' ? qInput : (qInput && qInput.q) ? qInput.q : '') + ' ' + (roundLabel || '');
   const s = ((qText || '') + ' ' + (roundLabel || '')).toLowerCase();
 
   // Plants & Botany
@@ -685,7 +689,7 @@ function resolveQuestionImage(qText, roundLabel){
 })();
 
 // Data injected by generator
-const ALL_ROUNDS = [{"label": "An Ecologist's Dream (Masdar City) — Quiz Sprint", "type": "mcq", "questions": [{"q": "What makes Masdar City an 'ecologist's dream'?", "a": "It was designed to produce zero waste and zero carbon emissions", "opts": ["It was designed to produce zero waste and zero carbon emissions", "It relies entirely on cheap coal power", "It allows only diesel automobiles", "It has no public parks or solar panels"], "hint": "Zero waste and clean energy"}, {"q": "How does Masdar City keep its streets naturally cooler?", "a": "Narrow shaded streets and traditional wind towers", "opts": ["Narrow shaded streets and traditional wind towers", "Giant outdoor air conditioners", "Covering the streets in black asphalt", "Removing all buildings and trees"], "hint": "Traditional Arabic architectural cooling"}, {"q": "What renewable resource is most abundant in the Abu Dhabi desert?", "a": "Solar radiation", "opts": ["Solar radiation", "Hydroelectric dams", "Tidal power", "Biomass timber"], "hint": "Abundant sunlight"}]}, {"label": "An Ecologist's Dream (Masdar City) — Key Term Match", "type": "match", "pairs": [["desalination", "removing salt from ocean water for drinking"], ["sustainable", "able to be maintained without exhausting resources"], ["carbon-neutral", "balancing carbon emissions with carbon removal"], ["infrastructure", "fundamental transportation and utility networks"], ["renewable", "energy naturally replenished over time"]]}, {"label": "An Ecologist's Dream (Masdar City) — Sentence Sprint", "type": "fill", "questions": [{"q": "Clean drinking water was produced through solar ________.", "a": "desalination", "hint": "D-e-s-a-l-i-n-a-t-i-o-n"}, {"q": "We must switch to ________ energy such as solar and wind.", "a": "renewable", "hint": "Opposite of fossil fuels"}]}];
+const ALL_ROUNDS = [{"label": "An Ecologist's Dream (Masdar City) — Quiz Sprint", "type": "mcq", "questions": [{"q": "What makes Masdar City an 'ecologist's dream'?", "a": "It was designed to produce zero waste and zero carbon emissions", "opts": ["It was designed to produce zero waste and zero carbon emissions", "It relies entirely on cheap coal power", "It allows only diesel automobiles", "It has no public parks or solar panels"], "hint": "Zero waste and clean energy", "img": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&auto=format&fit=crop&q=80", "img_tag": "Island Natural Wonder"}, {"q": "How does Masdar City keep its streets naturally cooler?", "a": "Narrow shaded streets and traditional wind towers", "opts": ["Narrow shaded streets and traditional wind towers", "Giant outdoor air conditioners", "Covering the streets in black asphalt", "Removing all buildings and trees"], "hint": "Traditional Arabic architectural cooling", "img": "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=800&auto=format&fit=crop&q=80", "img_tag": "Literary Analysis"}, {"q": "What renewable resource is most abundant in the Abu Dhabi desert?", "a": "Solar radiation", "opts": ["Solar radiation", "Hydroelectric dams", "Tidal power", "Biomass timber"], "hint": "Abundant sunlight", "img": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&auto=format&fit=crop&q=80", "img_tag": "Verdant Wilderness"}]}, {"label": "An Ecologist's Dream (Masdar City) — Key Term Match", "type": "match", "pairs": [["desalination", "removing salt from ocean water for drinking"], ["sustainable", "able to be maintained without exhausting resources"], ["carbon-neutral", "balancing carbon emissions with carbon removal"], ["infrastructure", "fundamental transportation and utility networks"], ["renewable", "energy naturally replenished over time"]]}, {"label": "An Ecologist's Dream (Masdar City) — Sentence Sprint", "type": "fill", "questions": [{"q": "Clean drinking water was produced through solar ________.", "a": "desalination", "hint": "D-e-s-a-l-i-n-a-t-i-o-n", "img": "https://images.unsplash.com/photo-1507413245164-6160d8298b31?w=800&auto=format&fit=crop&q=80", "img_tag": "Advanced Nanotech"}, {"q": "We must switch to ________ energy such as solar and wind.", "a": "renewable", "hint": "Opposite of fossil fuels", "img": "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=800&auto=format&fit=crop&q=80", "img_tag": "Syntax & Expression"}]}];
 
 let activeTemplate = 'all';
 let activeRounds = [];
@@ -739,7 +743,7 @@ function buildFlashcardDeck(){
   ALL_ROUNDS.forEach(r => {
     if (r.type === 'mcq' || r.type === 'fill'){
       r.questions.forEach(q => {
-        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '' });
+        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '', img: q.img, img_tag: q.img_tag });
       });
     }
     if (r.type === 'match'){
@@ -878,7 +882,7 @@ function renderMCQ(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // 1. Real-life Image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -964,7 +968,7 @@ function renderFill(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // Real-life image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -1174,7 +1178,7 @@ function renderFlashcard(){
   const container = document.getElementById('q-card');
   container.innerHTML = '';
 
-  const imgInfo = resolveQuestionImage(cardData.front, cardData.badge);
+  const imgInfo = resolveQuestionImage(cardData, cardData.badge);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.style.height = '180px';

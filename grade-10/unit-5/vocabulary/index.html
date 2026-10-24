@@ -575,7 +575,11 @@ const CURATED_IMAGE_DATABASE = {
   study:        "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&auto=format&fit=crop&q=80"
 };
 
-function resolveQuestionImage(qText, roundLabel){
+function resolveQuestionImage(qInput, roundLabel){
+  if (qInput && typeof qInput === 'object' && qInput.img) {
+    return { url: qInput.img, tag: qInput.img_tag || 'Illustration' };
+  }
+  const qText = (typeof qInput === 'string' ? qInput : (qInput && qInput.q) ? qInput.q : '') + ' ' + (roundLabel || '');
   const s = ((qText || '') + ' ' + (roundLabel || '')).toLowerCase();
 
   // Plants & Botany
@@ -685,7 +689,7 @@ function resolveQuestionImage(qText, roundLabel){
 })();
 
 // Data injected by generator
-const ALL_ROUNDS = [{"label": "History, Archaeology & Ancient Sites — Quiz Sprint", "type": "mcq", "questions": [{"q": "Words carved into stone or a coin are called:", "a": "inscriptions", "opts": ["inscriptions", "blueprints", "receipts", "signatures"], "hint": "Carved historical text"}, {"q": "A series of rulers from the same family is a:", "a": "dynasty", "opts": ["dynasty", "democracy", "committee", "republic"], "hint": "Royal lineage"}]}, {"label": "History, Archaeology & Ancient Sites — Key Term Match", "type": "match", "pairs": [["civilization", "complex human society with organized culture"], ["inscription", "carved lettering on stone or monuments"], ["dynasty", "succession of rulers from a single family"], ["relic", "surviving object preserved from antiquity"]]}, {"label": "History, Archaeology & Ancient Sites — Sentence Sprint", "type": "fill", "questions": [{"q": "Scholars spent months deciphering the hieroglyphic ________.", "a": "inscription", "hint": "Starts with i-"}, {"q": "The crumbling stone ________ showed where the palace once stood.", "a": "ruins", "hint": "Plural noun"}]}];
+const ALL_ROUNDS = [{"label": "History, Archaeology & Ancient Sites — Quiz Sprint", "type": "mcq", "questions": [{"q": "Words carved into stone or a coin are called:", "a": "inscriptions", "opts": ["inscriptions", "blueprints", "receipts", "signatures"], "hint": "Carved historical text", "img": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&auto=format&fit=crop&q=80", "img_tag": "Folkloric Fable"}, {"q": "A series of rulers from the same family is a:", "a": "dynasty", "opts": ["dynasty", "democracy", "committee", "republic"], "hint": "Royal lineage", "img": "https://images.unsplash.com/photo-1511895426328-dc8714191300?w=800&auto=format&fit=crop&q=80", "img_tag": "Family Dynamics"}]}, {"label": "History, Archaeology & Ancient Sites — Key Term Match", "type": "match", "pairs": [["civilization", "complex human society with organized culture"], ["inscription", "carved lettering on stone or monuments"], ["dynasty", "succession of rulers from a single family"], ["relic", "surviving object preserved from antiquity"]]}, {"label": "History, Archaeology & Ancient Sites — Sentence Sprint", "type": "fill", "questions": [{"q": "Scholars spent months deciphering the hieroglyphic ________.", "a": "inscription", "hint": "Starts with i-", "img": "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&auto=format&fit=crop&q=80", "img_tag": "Academic Inquiry"}, {"q": "The crumbling stone ________ showed where the palace once stood.", "a": "ruins", "hint": "Plural noun", "img": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=800&auto=format&fit=crop&q=80", "img_tag": "Classic Cinema"}]}];
 
 let activeTemplate = 'all';
 let activeRounds = [];
@@ -739,7 +743,7 @@ function buildFlashcardDeck(){
   ALL_ROUNDS.forEach(r => {
     if (r.type === 'mcq' || r.type === 'fill'){
       r.questions.forEach(q => {
-        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '' });
+        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '', img: q.img, img_tag: q.img_tag });
       });
     }
     if (r.type === 'match'){
@@ -878,7 +882,7 @@ function renderMCQ(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // 1. Real-life Image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -964,7 +968,7 @@ function renderFill(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // Real-life image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -1174,7 +1178,7 @@ function renderFlashcard(){
   const container = document.getElementById('q-card');
   container.innerHTML = '';
 
-  const imgInfo = resolveQuestionImage(cardData.front, cardData.badge);
+  const imgInfo = resolveQuestionImage(cardData, cardData.badge);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.style.height = '180px';

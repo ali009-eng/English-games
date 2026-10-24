@@ -575,7 +575,11 @@ const CURATED_IMAGE_DATABASE = {
   study:        "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&auto=format&fit=crop&q=80"
 };
 
-function resolveQuestionImage(qText, roundLabel){
+function resolveQuestionImage(qInput, roundLabel){
+  if (qInput && typeof qInput === 'object' && qInput.img) {
+    return { url: qInput.img, tag: qInput.img_tag || 'Illustration' };
+  }
+  const qText = (typeof qInput === 'string' ? qInput : (qInput && qInput.q) ? qInput.q : '') + ' ' + (roundLabel || '');
   const s = ((qText || '') + ' ' + (roundLabel || '')).toLowerCase();
 
   // Plants & Botany
@@ -685,7 +689,7 @@ function resolveQuestionImage(qText, roundLabel){
 })();
 
 // Data injected by generator
-const ALL_ROUNDS = [{"label": "A Blog Post — Quiz Sprint", "type": "mcq", "questions": [{"q": "What is the best way to open an engaging blog post?", "a": "With a provocative question or relatable personal scenario", "opts": ["With a provocative question or relatable personal scenario", "With a dry dictionary definition", "With five pages of uninterrupted legal text", "Without any title or heading"], "hint": "Hook the reader instantly"}, {"q": "What is the purpose of sub-headings in a blog?", "a": "To break up text and make it easy to scan", "opts": ["To break up text and make it easy to scan", "To confuse mobile users", "To hide important information", "To avoid writing complete sentences"], "hint": "Visual readability"}]}, {"label": "A Blog Post — Key Term Match", "type": "match", "pairs": [["catchy headline", "hooks interest and sparks curiosity"], ["introduction", "welcomes readers and poses the core dilemma"], ["body paragraphs", "delivers actionable tips with subheadings"], ["call to action", "invites readers to comment or share"]]}, {"label": "A Blog Post — Sentence Sprint", "type": "fill", "questions": [{"q": "A good blog post always ends with an interactive ________ to action.", "a": "call", "hint": "C-a-l-l to action"}, {"q": "Subheadings help online readers ________ the article quickly.", "a": "scan", "hint": "Read through rapidly"}]}];
+const ALL_ROUNDS = [{"label": "A Blog Post — Quiz Sprint", "type": "mcq", "questions": [{"q": "What is the best way to open an engaging blog post?", "a": "With a provocative question or relatable personal scenario", "opts": ["With a provocative question or relatable personal scenario", "With a dry dictionary definition", "With five pages of uninterrupted legal text", "Without any title or heading"], "hint": "Hook the reader instantly", "img": "https://images.unsplash.com/photo-1491438590914-bc09fcaaf77a?w=800&auto=format&fit=crop&q=80", "img_tag": "Human Psychology"}, {"q": "What is the purpose of sub-headings in a blog?", "a": "To break up text and make it easy to scan", "opts": ["To break up text and make it easy to scan", "To confuse mobile users", "To hide important information", "To avoid writing complete sentences"], "hint": "Visual readability", "img": "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=800&auto=format&fit=crop&q=80", "img_tag": "Athletic Perseverance"}]}, {"label": "A Blog Post — Key Term Match", "type": "match", "pairs": [["catchy headline", "hooks interest and sparks curiosity"], ["introduction", "welcomes readers and poses the core dilemma"], ["body paragraphs", "delivers actionable tips with subheadings"], ["call to action", "invites readers to comment or share"]]}, {"label": "A Blog Post — Sentence Sprint", "type": "fill", "questions": [{"q": "A good blog post always ends with an interactive ________ to action.", "a": "call", "hint": "C-a-l-l to action", "img": "https://images.unsplash.com/photo-1516912481808-3406841bd33c?w=800&auto=format&fit=crop&q=80", "img_tag": "Dynamic Exploration"}, {"q": "Subheadings help online readers ________ the article quickly.", "a": "scan", "hint": "Read through rapidly", "img": "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=800&auto=format&fit=crop&q=80", "img_tag": "Written Composition"}]}];
 
 let activeTemplate = 'all';
 let activeRounds = [];
@@ -739,7 +743,7 @@ function buildFlashcardDeck(){
   ALL_ROUNDS.forEach(r => {
     if (r.type === 'mcq' || r.type === 'fill'){
       r.questions.forEach(q => {
-        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '' });
+        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '', img: q.img, img_tag: q.img_tag });
       });
     }
     if (r.type === 'match'){
@@ -878,7 +882,7 @@ function renderMCQ(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // 1. Real-life Image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -964,7 +968,7 @@ function renderFill(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // Real-life image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -1174,7 +1178,7 @@ function renderFlashcard(){
   const container = document.getElementById('q-card');
   container.innerHTML = '';
 
-  const imgInfo = resolveQuestionImage(cardData.front, cardData.badge);
+  const imgInfo = resolveQuestionImage(cardData, cardData.badge);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.style.height = '180px';

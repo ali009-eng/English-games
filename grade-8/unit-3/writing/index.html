@@ -575,7 +575,11 @@ const CURATED_IMAGE_DATABASE = {
   study:        "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&auto=format&fit=crop&q=80"
 };
 
-function resolveQuestionImage(qText, roundLabel){
+function resolveQuestionImage(qInput, roundLabel){
+  if (qInput && typeof qInput === 'object' && qInput.img) {
+    return { url: qInput.img, tag: qInput.img_tag || 'Illustration' };
+  }
+  const qText = (typeof qInput === 'string' ? qInput : (qInput && qInput.q) ? qInput.q : '') + ' ' + (roundLabel || '');
   const s = ((qText || '') + ' ' + (roundLabel || '')).toLowerCase();
 
   // Plants & Botany
@@ -685,7 +689,7 @@ function resolveQuestionImage(qText, roundLabel){
 })();
 
 // Data injected by generator
-const ALL_ROUNDS = [{"label": "Leaflet Rules & Format — MCQ", "type": "mcq", "questions": [{"q": "Which text feature makes tourist leaflets quickest and easiest to scan?", "a": "Bullet points with bold highlights", "opts": ["Bullet points with bold highlights", "Dense academic paragraphs", "Full dialogue transcripts", "Numbered footers"], "hint": "Key information in short bites"}, {"q": "Which tone of voice is standard for a promotional travel leaflet?", "a": "Enthusiastic and welcoming", "opts": ["Enthusiastic and welcoming", "Critical and sarcastic", "Formal legalistic", "Cold and distant"], "hint": "It invites visitors"}, {"q": "Which grammatical structure is frequently used in leaflet highlights? (e.g. 'Explore the historic castle!')", "a": "Imperative verbs", "opts": ["Imperative verbs", "Past continuous", "Passive voice", "Past perfect"], "hint": "Direct command/invitation"}]}, {"label": "Descriptive Travel Adjectives — Match", "type": "match", "pairs": [["breathtaking", "extremely exciting, beautiful, or impressive"], ["picturesque", "attractive in appearance, like in a painting or postcard"], ["historic", "famous or important in history"], ["unspoilt", "natural, beautiful, and not ruined by human development"]]}];
+const ALL_ROUNDS = [{"label": "Leaflet Rules & Format — MCQ", "type": "mcq", "questions": [{"q": "Which text feature makes tourist leaflets quickest and easiest to scan?", "a": "Bullet points with bold highlights", "opts": ["Bullet points with bold highlights", "Dense academic paragraphs", "Full dialogue transcripts", "Numbered footers"], "hint": "Key information in short bites", "img": "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&auto=format&fit=crop&q=80", "img_tag": "Travel Leaflet Studio"}, {"q": "Which tone of voice is standard for a promotional travel leaflet?", "a": "Enthusiastic and welcoming", "opts": ["Enthusiastic and welcoming", "Critical and sarcastic", "Formal legalistic", "Cold and distant"], "hint": "It invites visitors", "img": "https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=800&auto=format&fit=crop&q=80", "img_tag": "Theater Showcase"}, {"q": "Which grammatical structure is frequently used in leaflet highlights? (e.g. 'Explore the historic castle!')", "a": "Imperative verbs", "opts": ["Imperative verbs", "Past continuous", "Passive voice", "Past perfect"], "hint": "Direct command/invitation", "img": "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=800&auto=format&fit=crop&q=80", "img_tag": "Scientific Discoveries"}]}, {"label": "Descriptive Travel Adjectives — Match", "type": "match", "pairs": [["breathtaking", "extremely exciting, beautiful, or impressive"], ["picturesque", "attractive in appearance, like in a painting or postcard"], ["historic", "famous or important in history"], ["unspoilt", "natural, beautiful, and not ruined by human development"]]}];
 
 let activeTemplate = 'all';
 let activeRounds = [];
@@ -739,7 +743,7 @@ function buildFlashcardDeck(){
   ALL_ROUNDS.forEach(r => {
     if (r.type === 'mcq' || r.type === 'fill'){
       r.questions.forEach(q => {
-        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '' });
+        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '', img: q.img, img_tag: q.img_tag });
       });
     }
     if (r.type === 'match'){
@@ -878,7 +882,7 @@ function renderMCQ(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // 1. Real-life Image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -964,7 +968,7 @@ function renderFill(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // Real-life image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -1174,7 +1178,7 @@ function renderFlashcard(){
   const container = document.getElementById('q-card');
   container.innerHTML = '';
 
-  const imgInfo = resolveQuestionImage(cardData.front, cardData.badge);
+  const imgInfo = resolveQuestionImage(cardData, cardData.badge);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.style.height = '180px';

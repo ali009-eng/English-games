@@ -575,7 +575,11 @@ const CURATED_IMAGE_DATABASE = {
   study:        "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&auto=format&fit=crop&q=80"
 };
 
-function resolveQuestionImage(qText, roundLabel){
+function resolveQuestionImage(qInput, roundLabel){
+  if (qInput && typeof qInput === 'object' && qInput.img) {
+    return { url: qInput.img, tag: qInput.img_tag || 'Illustration' };
+  }
+  const qText = (typeof qInput === 'string' ? qInput : (qInput && qInput.q) ? qInput.q : '') + ' ' + (roundLabel || '');
   const s = ((qText || '') + ' ' + (roundLabel || '')).toLowerCase();
 
   // Plants & Botany
@@ -685,7 +689,7 @@ function resolveQuestionImage(qText, roundLabel){
 })();
 
 // Data injected by generator
-const ALL_ROUNDS = [{"label": "Future Continuous & Future Perfect — Quiz Sprint", "type": "mcq", "questions": [{"q": "By 2050, scientists ________ clean fusion reactors.", "a": "will have built", "opts": ["will have built", "will be building", "built", "are building"], "hint": "Completed BEFORE 2050 (by + date)"}, {"q": "This time tomorrow, we ________ over the Atlantic.", "a": "will be flying", "opts": ["will be flying", "will have flown", "have flown", "flew"], "hint": "In progress at that specific time"}, {"q": "By the time the bell rings, she ________ her essay.", "a": "will have finished", "opts": ["will have finished", "will be finishing", "finishes", "finished"], "hint": "By the time + present, will have + V3"}, {"q": "Don't call him at 8 PM; he ________ dinner with his family.", "a": "will be having", "opts": ["will be having", "will have had", "had", "have had"], "hint": "Action in progress"}]}, {"label": "Future Continuous & Future Perfect — Key Term Match", "type": "match", "pairs": [["will be living", "Future Continuous: ongoing future action"], ["will have completed", "Future Perfect: completed before future point"], ["by 2030", "time marker indicating deadline (Future Perfect)"], ["at 9 AM tomorrow", "time marker indicating exact moment (Future Continuous)"]]}, {"label": "Future Continuous & Future Perfect — Sentence Sprint", "type": "fill", "questions": [{"q": "By next Friday, I ________ (finish) all my unit tests.", "a": "will have finished", "hint": "will have + V3"}, {"q": "At noon tomorrow, the engineers ________ (test) the solar car.", "a": "will be testing", "hint": "will be + -ing"}]}];
+const ALL_ROUNDS = [{"label": "Future Continuous & Future Perfect — Quiz Sprint", "type": "mcq", "questions": [{"q": "By 2050, scientists ________ clean fusion reactors.", "a": "will have built", "opts": ["will have built", "will be building", "built", "are building"], "hint": "Completed BEFORE 2050 (by + date)", "img": "https://images.unsplash.com/photo-1491438590914-bc09fcaaf77a?w=800&auto=format&fit=crop&q=80", "img_tag": "Human Psychology"}, {"q": "This time tomorrow, we ________ over the Atlantic.", "a": "will be flying", "opts": ["will be flying", "will have flown", "have flown", "flew"], "hint": "In progress at that specific time", "img": "https://images.unsplash.com/photo-1507413245164-6160d8298b31?w=800&auto=format&fit=crop&q=80", "img_tag": "Advanced Nanotech"}, {"q": "By the time the bell rings, she ________ her essay.", "a": "will have finished", "opts": ["will have finished", "will be finishing", "finishes", "finished"], "hint": "By the time + present, will have + V3", "img": "https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80", "img_tag": "Global Perspectives"}, {"q": "Don't call him at 8 PM; he ________ dinner with his family.", "a": "will be having", "opts": ["will be having", "will have had", "had", "have had"], "hint": "Action in progress", "img": "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&auto=format&fit=crop&q=80", "img_tag": "Companionship & Dialogue"}]}, {"label": "Future Continuous & Future Perfect — Key Term Match", "type": "match", "pairs": [["will be living", "Future Continuous: ongoing future action"], ["will have completed", "Future Perfect: completed before future point"], ["by 2030", "time marker indicating deadline (Future Perfect)"], ["at 9 AM tomorrow", "time marker indicating exact moment (Future Continuous)"]]}, {"label": "Future Continuous & Future Perfect — Sentence Sprint", "type": "fill", "questions": [{"q": "By next Friday, I ________ (finish) all my unit tests.", "a": "will have finished", "hint": "will have + V3", "img": "https://images.unsplash.com/photo-1452626038306-9aae5e071dd3?w=800&auto=format&fit=crop&q=80", "img_tag": "Milestone Achievement"}, {"q": "At noon tomorrow, the engineers ________ (test) the solar car.", "a": "will be testing", "hint": "will be + -ing", "img": "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=800&auto=format&fit=crop&q=80", "img_tag": "Written Composition"}]}];
 
 let activeTemplate = 'all';
 let activeRounds = [];
@@ -739,7 +743,7 @@ function buildFlashcardDeck(){
   ALL_ROUNDS.forEach(r => {
     if (r.type === 'mcq' || r.type === 'fill'){
       r.questions.forEach(q => {
-        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '' });
+        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '', img: q.img, img_tag: q.img_tag });
       });
     }
     if (r.type === 'match'){
@@ -878,7 +882,7 @@ function renderMCQ(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // 1. Real-life Image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -964,7 +968,7 @@ function renderFill(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // Real-life image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -1174,7 +1178,7 @@ function renderFlashcard(){
   const container = document.getElementById('q-card');
   container.innerHTML = '';
 
-  const imgInfo = resolveQuestionImage(cardData.front, cardData.badge);
+  const imgInfo = resolveQuestionImage(cardData, cardData.badge);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.style.height = '180px';

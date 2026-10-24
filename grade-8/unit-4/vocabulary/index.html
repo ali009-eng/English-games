@@ -575,7 +575,11 @@ const CURATED_IMAGE_DATABASE = {
   study:        "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&auto=format&fit=crop&q=80"
 };
 
-function resolveQuestionImage(qText, roundLabel){
+function resolveQuestionImage(qInput, roundLabel){
+  if (qInput && typeof qInput === 'object' && qInput.img) {
+    return { url: qInput.img, tag: qInput.img_tag || 'Illustration' };
+  }
+  const qText = (typeof qInput === 'string' ? qInput : (qInput && qInput.q) ? qInput.q : '') + ' ' + (roundLabel || '');
   const s = ((qText || '') + ' ' + (roundLabel || '')).toLowerCase();
 
   // Plants & Botany
@@ -685,7 +689,7 @@ function resolveQuestionImage(qText, roundLabel){
 })();
 
 // Data injected by generator
-const ALL_ROUNDS = [{"label": "-ed vs -ing Adjectives — MCQ", "type": "mcq", "questions": [{"q": "The rescue story was so ______ that everyone was on the edge of their seats.", "a": "gripping", "opts": ["gripping", "gripped", "grip", "grips"], "hint": "The story CAUSES the feeling (-ing)"}, {"q": "The firefighters looked completely ______ after fighting the blaze all night.", "a": "exhausted", "opts": ["exhausted", "exhausting", "exhaust", "tiring"], "hint": "They FEEL the tiredness (-ed)"}, {"q": "I was ______ to hear how young John Bamford was when he showed such bravery.", "a": "astonished", "opts": ["astonished", "astonishing", "astonish", "astonishingly"], "hint": "The person's emotional state"}]}, {"label": "Human Qualities & Character — Match", "type": "match", "pairs": [["courageous", "brave and willing to face danger or difficulty"], ["loyal", "standing firmly by friends, family, or principles"], ["persevering", "continuing to work hard despite setbacks and obstacles"], ["modest", "not boasting or seeking attention for your achievements"]]}];
+const ALL_ROUNDS = [{"label": "-ed vs -ing Adjectives — MCQ", "type": "mcq", "questions": [{"q": "The rescue story was so ______ that everyone was on the edge of their seats.", "a": "gripping", "opts": ["gripping", "gripped", "grip", "grips"], "hint": "The story CAUSES the feeling (-ing)", "img": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&auto=format&fit=crop&q=80", "img_tag": "Island Natural Wonder"}, {"q": "The firefighters looked completely ______ after fighting the blaze all night.", "a": "exhausted", "opts": ["exhausted", "exhausting", "exhaust", "tiring"], "hint": "They FEEL the tiredness (-ed)", "img": "https://images.unsplash.com/photo-1452626038306-9aae5e071dd3?w=800&auto=format&fit=crop&q=80", "img_tag": "Milestone Achievement"}, {"q": "I was ______ to hear how young John Bamford was when he showed such bravery.", "a": "astonished", "opts": ["astonished", "astonishing", "astonish", "astonishingly"], "hint": "The person's emotional state", "img": "https://images.unsplash.com/photo-1511886929837-354d827aae26?w=800&auto=format&fit=crop&q=80", "img_tag": "Gold Medal Honor"}]}, {"label": "Human Qualities & Character — Match", "type": "match", "pairs": [["courageous", "brave and willing to face danger or difficulty"], ["loyal", "standing firmly by friends, family, or principles"], ["persevering", "continuing to work hard despite setbacks and obstacles"], ["modest", "not boasting or seeking attention for your achievements"]]}];
 
 let activeTemplate = 'all';
 let activeRounds = [];
@@ -739,7 +743,7 @@ function buildFlashcardDeck(){
   ALL_ROUNDS.forEach(r => {
     if (r.type === 'mcq' || r.type === 'fill'){
       r.questions.forEach(q => {
-        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '' });
+        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '', img: q.img, img_tag: q.img_tag });
       });
     }
     if (r.type === 'match'){
@@ -878,7 +882,7 @@ function renderMCQ(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // 1. Real-life Image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -964,7 +968,7 @@ function renderFill(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // Real-life image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -1174,7 +1178,7 @@ function renderFlashcard(){
   const container = document.getElementById('q-card');
   container.innerHTML = '';
 
-  const imgInfo = resolveQuestionImage(cardData.front, cardData.badge);
+  const imgInfo = resolveQuestionImage(cardData, cardData.badge);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.style.height = '180px';

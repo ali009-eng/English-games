@@ -575,7 +575,11 @@ const CURATED_IMAGE_DATABASE = {
   study:        "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&auto=format&fit=crop&q=80"
 };
 
-function resolveQuestionImage(qText, roundLabel){
+function resolveQuestionImage(qInput, roundLabel){
+  if (qInput && typeof qInput === 'object' && qInput.img) {
+    return { url: qInput.img, tag: qInput.img_tag || 'Illustration' };
+  }
+  const qText = (typeof qInput === 'string' ? qInput : (qInput && qInput.q) ? qInput.q : '') + ' ' + (roundLabel || '');
   const s = ((qText || '') + ' ' + (roundLabel || '')).toLowerCase();
 
   // Plants & Botany
@@ -685,7 +689,7 @@ function resolveQuestionImage(qText, roundLabel){
 })();
 
 // Data injected by generator
-const ALL_ROUNDS = [{"label": "will vs going to — MCQ", "type": "mcq", "questions": [{"q": "Look at those dark grey storm clouds! It ______ rain.", "a": "is going to", "opts": ["is going to", "will", "won't", "is raining"], "hint": "Visible present evidence = going to"}, {"q": "Don't worry, I ______ help you carry that heavy laptop bag. (spontaneous offer)", "a": "will", "opts": ["will", "am going to", "am helping", "shall"], "hint": "Decided at moment of speaking = will"}, {"q": "We ______ launch the new school app next Monday; everything is scheduled.", "a": "are going to", "opts": ["are going to", "will", "would", "shall"], "hint": "Pre-arranged intention / plan"}]}, {"label": "Zero Conditional Facts — Fill in Blank", "type": "fill", "questions": [{"q": "If you heat water to 100 degrees Celsius, it ________. (boil)", "a": "boils", "hint": "Zero conditional: present simple in both clauses"}, {"q": "If you ________ a magnet in half, you get two smaller magnets. (cut)", "a": "cut", "hint": "General scientific truth"}, {"q": "If plants do not get sunlight, they ________. (die)", "a": "die", "hint": "Natural consequence"}]}];
+const ALL_ROUNDS = [{"label": "will vs going to — MCQ", "type": "mcq", "questions": [{"q": "Look at those dark grey storm clouds! It ______ rain.", "a": "is going to", "opts": ["is going to", "will", "won't", "is raining"], "hint": "Visible present evidence = going to", "img": "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=800&auto=format&fit=crop&q=80", "img_tag": "Athletic Perseverance"}, {"q": "Don't worry, I ______ help you carry that heavy laptop bag. (spontaneous offer)", "a": "will", "opts": ["will", "am going to", "am helping", "shall"], "hint": "Decided at moment of speaking = will", "img": "https://images.unsplash.com/photo-1569880153113-76e33fc52d5f?w=800&auto=format&fit=crop&q=80", "img_tag": "Honor & Recognition"}, {"q": "We ______ launch the new school app next Monday; everything is scheduled.", "a": "are going to", "opts": ["are going to", "will", "would", "shall"], "hint": "Pre-arranged intention / plan", "img": "https://images.unsplash.com/photo-1507413245164-6160d8298b31?w=800&auto=format&fit=crop&q=80", "img_tag": "Advanced Nanotech"}]}, {"label": "Zero Conditional Facts — Fill in Blank", "type": "fill", "questions": [{"q": "If you heat water to 100 degrees Celsius, it ________. (boil)", "a": "boils", "hint": "Zero conditional: present simple in both clauses", "img": "https://images.unsplash.com/photo-1516912481808-3406841bd33c?w=800&auto=format&fit=crop&q=80", "img_tag": "Scientific Cause & Effect"}, {"q": "If you ________ a magnet in half, you get two smaller magnets. (cut)", "a": "cut", "hint": "General scientific truth", "img": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&auto=format&fit=crop&q=80", "img_tag": "Folkloric Fable"}, {"q": "If plants do not get sunlight, they ________. (die)", "a": "die", "hint": "Natural consequence", "img": "https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80", "img_tag": "Global Perspectives"}]}];
 
 let activeTemplate = 'all';
 let activeRounds = [];
@@ -739,7 +743,7 @@ function buildFlashcardDeck(){
   ALL_ROUNDS.forEach(r => {
     if (r.type === 'mcq' || r.type === 'fill'){
       r.questions.forEach(q => {
-        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '' });
+        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '', img: q.img, img_tag: q.img_tag });
       });
     }
     if (r.type === 'match'){
@@ -878,7 +882,7 @@ function renderMCQ(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // 1. Real-life Image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -964,7 +968,7 @@ function renderFill(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // Real-life image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -1174,7 +1178,7 @@ function renderFlashcard(){
   const container = document.getElementById('q-card');
   container.innerHTML = '';
 
-  const imgInfo = resolveQuestionImage(cardData.front, cardData.badge);
+  const imgInfo = resolveQuestionImage(cardData, cardData.badge);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.style.height = '180px';

@@ -575,7 +575,11 @@ const CURATED_IMAGE_DATABASE = {
   study:        "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&auto=format&fit=crop&q=80"
 };
 
-function resolveQuestionImage(qText, roundLabel){
+function resolveQuestionImage(qInput, roundLabel){
+  if (qInput && typeof qInput === 'object' && qInput.img) {
+    return { url: qInput.img, tag: qInput.img_tag || 'Illustration' };
+  }
+  const qText = (typeof qInput === 'string' ? qInput : (qInput && qInput.q) ? qInput.q : '') + ' ' + (roundLabel || '');
   const s = ((qText || '') + ' ' + (roundLabel || '')).toLowerCase();
 
   // Plants & Botany
@@ -685,7 +689,7 @@ function resolveQuestionImage(qText, roundLabel){
 })();
 
 // Data injected by generator
-const ALL_ROUNDS = [{"label": "The Passive with Preparatory 'There' — Quiz Sprint", "type": "mcq", "questions": [{"q": "There ________ to be millions of dollars spent on teenage ads yearly.", "a": "is estimated", "opts": ["is estimated", "are estimating", "estimating", "has estimate"], "hint": "Singular passive estimation"}, {"q": "There are thought ________ hundreds of fake adverts circulating online.", "a": "to be", "opts": ["to be", "being", "been", "be"], "hint": "are thought + to be"}, {"q": "There ________ to be a strong link between screen time and shopping habits.", "a": "is believed", "opts": ["is believed", "are believed", "believe", "believing"], "hint": "Singular link = is believed"}, {"q": "There were reported to ________ several protests outside the corporate store.", "a": "have been", "opts": ["have been", "being", "was", "are"], "hint": "Past event = to have been"}]}, {"label": "The Passive with Preparatory 'There' — Key Term Match", "type": "match", "pairs": [["There is believed to be", "reporting singular phenomenon"], ["There are thought to be", "reporting plural phenomena"], ["There was reported to be", "reporting past single occurrence"], ["There are said to have been", "reporting past completed plural events"]]}, {"label": "The Passive with Preparatory 'There' — Sentence Sprint", "type": "fill", "questions": [{"q": "There is said ________ (be) a dramatic rise in influencer marketing.", "a": "to be", "hint": "to + base form"}, {"q": "There are ________ (think) to be secret algorithms tracking online clicks.", "a": "thought", "hint": "Past participle of think"}]}];
+const ALL_ROUNDS = [{"label": "The Passive with Preparatory 'There' — Quiz Sprint", "type": "mcq", "questions": [{"q": "There ________ to be millions of dollars spent on teenage ads yearly.", "a": "is estimated", "opts": ["is estimated", "are estimating", "estimating", "has estimate"], "hint": "Singular passive estimation", "img": "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=800&auto=format&fit=crop&q=80", "img_tag": "Written Composition"}, {"q": "There are thought ________ hundreds of fake adverts circulating online.", "a": "to be", "opts": ["to be", "being", "been", "be"], "hint": "are thought + to be", "img": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&auto=format&fit=crop&q=80", "img_tag": "Coastal Horizon"}, {"q": "There ________ to be a strong link between screen time and shopping habits.", "a": "is believed", "opts": ["is believed", "are believed", "believe", "believing"], "hint": "Singular link = is believed", "img": "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&auto=format&fit=crop&q=80", "img_tag": "Natural Ecosystem"}, {"q": "There were reported to ________ several protests outside the corporate store.", "a": "have been", "opts": ["have been", "being", "was", "are"], "hint": "Past event = to have been", "img": "https://images.unsplash.com/photo-1516912481808-3406841bd33c?w=800&auto=format&fit=crop&q=80", "img_tag": "Dynamic Exploration"}]}, {"label": "The Passive with Preparatory 'There' — Key Term Match", "type": "match", "pairs": [["There is believed to be", "reporting singular phenomenon"], ["There are thought to be", "reporting plural phenomena"], ["There was reported to be", "reporting past single occurrence"], ["There are said to have been", "reporting past completed plural events"]]}, {"label": "The Passive with Preparatory 'There' — Sentence Sprint", "type": "fill", "questions": [{"q": "There is said ________ (be) a dramatic rise in influencer marketing.", "a": "to be", "hint": "to + base form", "img": "https://images.unsplash.com/photo-1516912481808-3406841bd33c?w=800&auto=format&fit=crop&q=80", "img_tag": "Dynamic Exploration"}, {"q": "There are ________ (think) to be secret algorithms tracking online clicks.", "a": "thought", "hint": "Past participle of think", "img": "https://images.unsplash.com/photo-1491438590914-bc09fcaaf77a?w=800&auto=format&fit=crop&q=80", "img_tag": "Human Psychology"}]}];
 
 let activeTemplate = 'all';
 let activeRounds = [];
@@ -739,7 +743,7 @@ function buildFlashcardDeck(){
   ALL_ROUNDS.forEach(r => {
     if (r.type === 'mcq' || r.type === 'fill'){
       r.questions.forEach(q => {
-        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '' });
+        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '', img: q.img, img_tag: q.img_tag });
       });
     }
     if (r.type === 'match'){
@@ -878,7 +882,7 @@ function renderMCQ(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // 1. Real-life Image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -964,7 +968,7 @@ function renderFill(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // Real-life image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -1174,7 +1178,7 @@ function renderFlashcard(){
   const container = document.getElementById('q-card');
   container.innerHTML = '';
 
-  const imgInfo = resolveQuestionImage(cardData.front, cardData.badge);
+  const imgInfo = resolveQuestionImage(cardData, cardData.badge);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.style.height = '180px';

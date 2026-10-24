@@ -575,7 +575,11 @@ const CURATED_IMAGE_DATABASE = {
   study:        "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&auto=format&fit=crop&q=80"
 };
 
-function resolveQuestionImage(qText, roundLabel){
+function resolveQuestionImage(qInput, roundLabel){
+  if (qInput && typeof qInput === 'object' && qInput.img) {
+    return { url: qInput.img, tag: qInput.img_tag || 'Illustration' };
+  }
+  const qText = (typeof qInput === 'string' ? qInput : (qInput && qInput.q) ? qInput.q : '') + ' ' + (roundLabel || '');
   const s = ((qText || '') + ' ' + (roundLabel || '')).toLowerCase();
 
   // Plants & Botany
@@ -685,7 +689,7 @@ function resolveQuestionImage(qText, roundLabel){
 })();
 
 // Data injected by generator
-const ALL_ROUNDS = [{"label": "Plant Medicines & Botanical Remedies — Quiz Sprint", "type": "mcq", "questions": [{"q": "Where does the active compound in modern aspirin originally come from?", "a": "The bark of the willow tree (salicylic acid)", "opts": ["The bark of the willow tree (salicylic acid)", "Petroleum refining byproducts", "Deep sea volcanic minerals", "Cultivated fungal spores"], "hint": "Salix alba (willow bark)"}, {"q": "Why are rainforests often termed 'the world's pharmacy'?", "a": "Over a quarter of modern medicines derive from rainforest plant compounds", "opts": ["Over a quarter of modern medicines derive from rainforest plant compounds", "They have modern hospitals built in the canopy", "Doctors train primarily in the jungle", "Prescription drugs grow packaged on trees"], "hint": "Botanical biodiversity as medicine source"}, {"q": "What risk does deforestation pose to medical research?", "a": "Uncatalogued plant species with potential cures may become extinct forever", "opts": ["Uncatalogued plant species with potential cures may become extinct forever", "Medicines will become too cheap", "Doctors will have nothing to study", "Synthetic drugs will disappear"], "hint": "Loss of undiscovered species"}]}, {"label": "Plant Medicines & Botanical Remedies — Key Term Match", "type": "match", "pairs": [["alleviate", "lessen pain or physical discomfort"], ["therapeutic", "having healing or curative properties"], ["extract", "concentrated essence obtained from botanical tissue"], ["pharmaceutical", "connected to medicines and pharmacy production"]]}, {"label": "Plant Medicines & Botanical Remedies — Sentence Sprint", "type": "fill", "questions": [{"q": "The herbal compound helped ________ his chronic joint pain.", "a": "alleviate", "hint": "Verb starting with a-"}, {"q": "Tea tree oil has powerful ________ and antiseptic properties.", "a": "therapeutic", "hint": "Healing adjective"}]}];
+const ALL_ROUNDS = [{"label": "Plant Medicines & Botanical Remedies — Quiz Sprint", "type": "mcq", "questions": [{"q": "Where does the active compound in modern aspirin originally come from?", "a": "The bark of the willow tree (salicylic acid)", "opts": ["The bark of the willow tree (salicylic acid)", "Petroleum refining byproducts", "Deep sea volcanic minerals", "Cultivated fungal spores"], "hint": "Salix alba (willow bark)", "img": "https://images.unsplash.com/photo-1512069772995-ec65ed45afd6?w=800&auto=format&fit=crop&q=80", "img_tag": "Ancient Willow Tree Bark"}, {"q": "Why are rainforests often termed 'the world's pharmacy'?", "a": "Over a quarter of modern medicines derive from rainforest plant compounds", "opts": ["Over a quarter of modern medicines derive from rainforest plant compounds", "They have modern hospitals built in the canopy", "Doctors train primarily in the jungle", "Prescription drugs grow packaged on trees"], "hint": "Botanical biodiversity as medicine source", "img": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&auto=format&fit=crop&q=80", "img_tag": "Conceptual Ideas"}, {"q": "What risk does deforestation pose to medical research?", "a": "Uncatalogued plant species with potential cures may become extinct forever", "opts": ["Uncatalogued plant species with potential cures may become extinct forever", "Medicines will become too cheap", "Doctors will have nothing to study", "Synthetic drugs will disappear"], "hint": "Loss of undiscovered species", "img": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=800&auto=format&fit=crop&q=80", "img_tag": "Medical Research Lab"}]}, {"label": "Plant Medicines & Botanical Remedies — Key Term Match", "type": "match", "pairs": [["alleviate", "lessen pain or physical discomfort"], ["therapeutic", "having healing or curative properties"], ["extract", "concentrated essence obtained from botanical tissue"], ["pharmaceutical", "connected to medicines and pharmacy production"]]}, {"label": "Plant Medicines & Botanical Remedies — Sentence Sprint", "type": "fill", "questions": [{"q": "The herbal compound helped ________ his chronic joint pain.", "a": "alleviate", "hint": "Verb starting with a-", "img": "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&auto=format&fit=crop&q=80", "img_tag": "Natural Ecosystem"}, {"q": "Tea tree oil has powerful ________ and antiseptic properties.", "a": "therapeutic", "hint": "Healing adjective", "img": "https://images.unsplash.com/photo-1516912481808-3406841bd33c?w=800&auto=format&fit=crop&q=80", "img_tag": "Dynamic Exploration"}]}];
 
 let activeTemplate = 'all';
 let activeRounds = [];
@@ -739,7 +743,7 @@ function buildFlashcardDeck(){
   ALL_ROUNDS.forEach(r => {
     if (r.type === 'mcq' || r.type === 'fill'){
       r.questions.forEach(q => {
-        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '' });
+        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '', img: q.img, img_tag: q.img_tag });
       });
     }
     if (r.type === 'match'){
@@ -878,7 +882,7 @@ function renderMCQ(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // 1. Real-life Image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -964,7 +968,7 @@ function renderFill(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // Real-life image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -1174,7 +1178,7 @@ function renderFlashcard(){
   const container = document.getElementById('q-card');
   container.innerHTML = '';
 
-  const imgInfo = resolveQuestionImage(cardData.front, cardData.badge);
+  const imgInfo = resolveQuestionImage(cardData, cardData.badge);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.style.height = '180px';

@@ -575,7 +575,11 @@ const CURATED_IMAGE_DATABASE = {
   study:        "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&auto=format&fit=crop&q=80"
 };
 
-function resolveQuestionImage(qText, roundLabel){
+function resolveQuestionImage(qInput, roundLabel){
+  if (qInput && typeof qInput === 'object' && qInput.img) {
+    return { url: qInput.img, tag: qInput.img_tag || 'Illustration' };
+  }
+  const qText = (typeof qInput === 'string' ? qInput : (qInput && qInput.q) ? qInput.q : '') + ' ' + (roundLabel || '');
   const s = ((qText || '') + ' ' + (roundLabel || '')).toLowerCase();
 
   // Plants & Botany
@@ -685,7 +689,7 @@ function resolveQuestionImage(qText, roundLabel){
 })();
 
 // Data injected by generator
-const ALL_ROUNDS = [{"label": "Ellipsis with 'Either' / 'Too' & Auxiliary Agreement — Quiz Sprint", "type": "mcq", "questions": [{"q": "'I have visited London.' — '________ have I.'", "a": "So", "opts": ["So", "Neither", "Either", "Too"], "hint": "Positive agreement: So + have + I"}, {"q": "'I cannot solve this calculus problem.' — '________ can I.'", "a": "Neither", "opts": ["Neither", "So", "Too", "Also"], "hint": "Negative agreement: Neither + can + I"}, {"q": "'She doesn't enjoy sibling arguments.' — 'I don't ________.'", "a": "either", "opts": ["either", "neither", "too", "so"], "hint": "not + either"}, {"q": "'My brother is very ambitious.' — 'Mine is ________.'", "a": "too", "opts": ["too", "either", "neither", "so"], "hint": "is + too"}]}, {"label": "Ellipsis with 'Either' / 'Too' & Auxiliary Agreement — Key Term Match", "type": "match", "pairs": [["So did we", "agreeing with past positive: 'We studied hard.'"], ["Neither will I", "agreeing with future negative: 'I won't give up.'"], ["I have too", "alternative positive agreement with present perfect"], ["They didn't either", "alternative negative agreement with past simple"]]}, {"label": "Ellipsis with 'Either' / 'Too' & Auxiliary Agreement — Sentence Sprint", "type": "fill", "questions": [{"q": "'I am not convinced by the birth order study.' — 'Neither ________ I.'", "a": "am", "hint": "Matching auxiliary of 'am'"}, {"q": "'We enjoyed the psychology lecture.' — 'So ________ we.'", "a": "did", "hint": "Past simple auxiliary"}]}];
+const ALL_ROUNDS = [{"label": "Ellipsis with 'Either' / 'Too' & Auxiliary Agreement — Quiz Sprint", "type": "mcq", "questions": [{"q": "'I have visited London.' — '________ have I.'", "a": "So", "opts": ["So", "Neither", "Either", "Too"], "hint": "Positive agreement: So + have + I", "img": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&auto=format&fit=crop&q=80", "img_tag": "Folkloric Fable"}, {"q": "'I cannot solve this calculus problem.' — '________ can I.'", "a": "Neither", "opts": ["Neither", "So", "Too", "Also"], "hint": "Negative agreement: Neither + can + I", "img": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&auto=format&fit=crop&q=80", "img_tag": "Modern Structure"}, {"q": "'She doesn't enjoy sibling arguments.' — 'I don't ________.'", "a": "either", "opts": ["either", "neither", "too", "so"], "hint": "not + either", "img": "https://images.unsplash.com/photo-1509248961158-e54f6934749c?w=800&auto=format&fit=crop&q=80", "img_tag": "Suspenseful Drama"}, {"q": "'My brother is very ambitious.' — 'Mine is ________.'", "a": "too", "opts": ["too", "either", "neither", "so"], "hint": "is + too", "img": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&auto=format&fit=crop&q=80", "img_tag": "Island Natural Wonder"}]}, {"label": "Ellipsis with 'Either' / 'Too' & Auxiliary Agreement — Key Term Match", "type": "match", "pairs": [["So did we", "agreeing with past positive: 'We studied hard.'"], ["Neither will I", "agreeing with future negative: 'I won't give up.'"], ["I have too", "alternative positive agreement with present perfect"], ["They didn't either", "alternative negative agreement with past simple"]]}, {"label": "Ellipsis with 'Either' / 'Too' & Auxiliary Agreement — Sentence Sprint", "type": "fill", "questions": [{"q": "'I am not convinced by the birth order study.' — 'Neither ________ I.'", "a": "am", "hint": "Matching auxiliary of 'am'", "img": "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=800&auto=format&fit=crop&q=80", "img_tag": "Cinematic Scene"}, {"q": "'We enjoyed the psychology lecture.' — 'So ________ we.'", "a": "did", "hint": "Past simple auxiliary", "img": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&auto=format&fit=crop&q=80", "img_tag": "Conceptual Ideas"}]}];
 
 let activeTemplate = 'all';
 let activeRounds = [];
@@ -739,7 +743,7 @@ function buildFlashcardDeck(){
   ALL_ROUNDS.forEach(r => {
     if (r.type === 'mcq' || r.type === 'fill'){
       r.questions.forEach(q => {
-        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '' });
+        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '', img: q.img, img_tag: q.img_tag });
       });
     }
     if (r.type === 'match'){
@@ -878,7 +882,7 @@ function renderMCQ(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // 1. Real-life Image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -964,7 +968,7 @@ function renderFill(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // Real-life image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -1174,7 +1178,7 @@ function renderFlashcard(){
   const container = document.getElementById('q-card');
   container.innerHTML = '';
 
-  const imgInfo = resolveQuestionImage(cardData.front, cardData.badge);
+  const imgInfo = resolveQuestionImage(cardData, cardData.badge);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.style.height = '180px';

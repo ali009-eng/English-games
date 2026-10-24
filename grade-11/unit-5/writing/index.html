@@ -575,7 +575,11 @@ const CURATED_IMAGE_DATABASE = {
   study:        "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&auto=format&fit=crop&q=80"
 };
 
-function resolveQuestionImage(qText, roundLabel){
+function resolveQuestionImage(qInput, roundLabel){
+  if (qInput && typeof qInput === 'object' && qInput.img) {
+    return { url: qInput.img, tag: qInput.img_tag || 'Illustration' };
+  }
+  const qText = (typeof qInput === 'string' ? qInput : (qInput && qInput.q) ? qInput.q : '') + ' ' + (roundLabel || '');
   const s = ((qText || '') + ' ' + (roundLabel || '')).toLowerCase();
 
   // Plants & Botany
@@ -685,7 +689,7 @@ function resolveQuestionImage(qText, roundLabel){
 })();
 
 // Data injected by generator
-const ALL_ROUNDS = [{"label": "An Opinion Essay — Quiz Sprint", "type": "mcq", "questions": [{"q": "Where does the thesis statement belong in an opinion essay?", "a": "At the conclusion of the introductory paragraph", "opts": ["At the conclusion of the introductory paragraph", "In the very last sentence of the entire essay only", "Hidden in the margin", "It should never be written"], "hint": "Anchors the introduction"}, {"q": "How should a writer handle the counter-argument?", "a": "Acknowledge it fairly, then refute it with stronger logic and evidence", "opts": ["Acknowledge it fairly, then refute it with stronger logic and evidence", "Pretend it does not exist", "Agree with it completely and abandon your own thesis", "Insult the opposing scholars"], "hint": "Concession and refutation"}]}, {"label": "An Opinion Essay — Key Term Match", "type": "match", "pairs": [["Thesis statement", "declares the writer's central argument"], ["Topic sentence", "introduces the focus of an individual body paragraph"], ["Counter-argument", "addresses the viewpoint of intellectual opponents"], ["Final synthesis", "reiterates the core thesis with heightened clarity"]]}, {"label": "An Opinion Essay — Sentence Sprint", "type": "fill", "questions": [{"q": "A strong essay opens with a clear ________ statement in paragraph 1.", "a": "thesis", "hint": "T-h-e-s-i-s"}, {"q": "The researcher attempted to ________ the claims of the rival laboratory.", "a": "refute", "hint": "To disprove"}]}];
+const ALL_ROUNDS = [{"label": "An Opinion Essay — Quiz Sprint", "type": "mcq", "questions": [{"q": "Where does the thesis statement belong in an opinion essay?", "a": "At the conclusion of the introductory paragraph", "opts": ["At the conclusion of the introductory paragraph", "In the very last sentence of the entire essay only", "Hidden in the margin", "It should never be written"], "hint": "Anchors the introduction", "img": "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&auto=format&fit=crop&q=80", "img_tag": "Natural Ecosystem"}, {"q": "How should a writer handle the counter-argument?", "a": "Acknowledge it fairly, then refute it with stronger logic and evidence", "opts": ["Acknowledge it fairly, then refute it with stronger logic and evidence", "Pretend it does not exist", "Agree with it completely and abandon your own thesis", "Insult the opposing scholars"], "hint": "Concession and refutation", "img": "https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=800&auto=format&fit=crop&q=80", "img_tag": "Brave Rescuers"}]}, {"label": "An Opinion Essay — Key Term Match", "type": "match", "pairs": [["Thesis statement", "declares the writer's central argument"], ["Topic sentence", "introduces the focus of an individual body paragraph"], ["Counter-argument", "addresses the viewpoint of intellectual opponents"], ["Final synthesis", "reiterates the core thesis with heightened clarity"]]}, {"label": "An Opinion Essay — Sentence Sprint", "type": "fill", "questions": [{"q": "A strong essay opens with a clear ________ statement in paragraph 1.", "a": "thesis", "hint": "T-h-e-s-i-s", "img": "https://images.unsplash.com/photo-1516912481808-3406841bd33c?w=800&auto=format&fit=crop&q=80", "img_tag": "Dynamic Exploration"}, {"q": "The researcher attempted to ________ the claims of the rival laboratory.", "a": "refute", "hint": "To disprove", "img": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&auto=format&fit=crop&q=80", "img_tag": "Verdant Wilderness"}]}];
 
 let activeTemplate = 'all';
 let activeRounds = [];
@@ -739,7 +743,7 @@ function buildFlashcardDeck(){
   ALL_ROUNDS.forEach(r => {
     if (r.type === 'mcq' || r.type === 'fill'){
       r.questions.forEach(q => {
-        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '' });
+        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '', img: q.img, img_tag: q.img_tag });
       });
     }
     if (r.type === 'match'){
@@ -878,7 +882,7 @@ function renderMCQ(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // 1. Real-life Image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -964,7 +968,7 @@ function renderFill(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // Real-life image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -1174,7 +1178,7 @@ function renderFlashcard(){
   const container = document.getElementById('q-card');
   container.innerHTML = '';
 
-  const imgInfo = resolveQuestionImage(cardData.front, cardData.badge);
+  const imgInfo = resolveQuestionImage(cardData, cardData.badge);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.style.height = '180px';

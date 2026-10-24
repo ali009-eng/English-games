@@ -575,7 +575,11 @@ const CURATED_IMAGE_DATABASE = {
   study:        "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&auto=format&fit=crop&q=80"
 };
 
-function resolveQuestionImage(qText, roundLabel){
+function resolveQuestionImage(qInput, roundLabel){
+  if (qInput && typeof qInput === 'object' && qInput.img) {
+    return { url: qInput.img, tag: qInput.img_tag || 'Illustration' };
+  }
+  const qText = (typeof qInput === 'string' ? qInput : (qInput && qInput.q) ? qInput.q : '') + ' ' + (roundLabel || '');
   const s = ((qText || '') + ' ' + (roundLabel || '')).toLowerCase();
 
   // Plants & Botany
@@ -685,7 +689,7 @@ function resolveQuestionImage(qText, roundLabel){
 })();
 
 // Data injected by generator
-const ALL_ROUNDS = [{"label": "Comparative & Superlative Structures — MCQ", "type": "mcq", "questions": [{"q": "John's story is ______ any Hollywood superhero movie. (exciting)", "a": "more exciting than", "opts": ["more exciting than", "excitinger than", "most exciting than", "more exciting as"], "hint": "Long adjective takes 'more ... than'"}, {"q": "That was ______ rescue mission in the town's history. (daring)", "a": "the most daring", "opts": ["the most daring", "more daring", "daringest", "the more daring"], "hint": "Superlative of long adjective"}, {"q": "His younger brother wasn't ______ to reach the high window. (tall)", "a": "tall enough", "opts": ["tall enough", "enough tall", "too tall", "so tall"], "hint": "adjective + enough"}]}, {"label": "Irregular Forms & Modifiers — Fill in Blank", "type": "fill", "questions": [{"q": "Write the superlative of the irregular adjective 'good':", "a": "the best", "hint": "good → better → ________"}, {"q": "Write the superlative of the irregular adjective 'bad':", "a": "the worst", "hint": "bad → worse → ________"}, {"q": "Complete: John was much b________ than anyone expected. (brave)", "a": "braver", "hint": "Comparative of short adjective: brave → ________"}]}];
+const ALL_ROUNDS = [{"label": "Comparative & Superlative Structures — MCQ", "type": "mcq", "questions": [{"q": "John's story is ______ any Hollywood superhero movie. (exciting)", "a": "more exciting than", "opts": ["more exciting than", "excitinger than", "most exciting than", "more exciting as"], "hint": "Long adjective takes 'more ... than'", "img": "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=800&auto=format&fit=crop&q=80", "img_tag": "Comparative Scale"}, {"q": "That was ______ rescue mission in the town's history. (daring)", "a": "the most daring", "opts": ["the most daring", "more daring", "daringest", "the more daring"], "hint": "Superlative of long adjective", "img": "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=800&auto=format&fit=crop&q=80", "img_tag": "Written Composition"}, {"q": "His younger brother wasn't ______ to reach the high window. (tall)", "a": "tall enough", "opts": ["tall enough", "enough tall", "too tall", "so tall"], "hint": "adjective + enough", "img": "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&auto=format&fit=crop&q=80", "img_tag": "Companionship & Dialogue"}]}, {"label": "Irregular Forms & Modifiers — Fill in Blank", "type": "fill", "questions": [{"q": "Write the superlative of the irregular adjective 'good':", "a": "the best", "hint": "good → better → ________", "img": "https://images.unsplash.com/photo-1569880153113-76e33fc52d5f?w=800&auto=format&fit=crop&q=80", "img_tag": "Honor & Recognition"}, {"q": "Write the superlative of the irregular adjective 'bad':", "a": "the worst", "hint": "bad → worse → ________", "img": "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=800&auto=format&fit=crop&q=80", "img_tag": "Literary Analysis"}, {"q": "Complete: John was much b________ than anyone expected. (brave)", "a": "braver", "hint": "Comparative of short adjective: brave → ________", "img": "https://images.unsplash.com/photo-1508873696983-2df5293cb32f?w=800&auto=format&fit=crop&q=80", "img_tag": "Outdoor Campfire"}]}];
 
 let activeTemplate = 'all';
 let activeRounds = [];
@@ -739,7 +743,7 @@ function buildFlashcardDeck(){
   ALL_ROUNDS.forEach(r => {
     if (r.type === 'mcq' || r.type === 'fill'){
       r.questions.forEach(q => {
-        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '' });
+        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '', img: q.img, img_tag: q.img_tag });
       });
     }
     if (r.type === 'match'){
@@ -878,7 +882,7 @@ function renderMCQ(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // 1. Real-life Image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -964,7 +968,7 @@ function renderFill(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // Real-life image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -1174,7 +1178,7 @@ function renderFlashcard(){
   const container = document.getElementById('q-card');
   container.innerHTML = '';
 
-  const imgInfo = resolveQuestionImage(cardData.front, cardData.badge);
+  const imgInfo = resolveQuestionImage(cardData, cardData.badge);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.style.height = '180px';

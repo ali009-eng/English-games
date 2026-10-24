@@ -575,7 +575,11 @@ const CURATED_IMAGE_DATABASE = {
   study:        "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&auto=format&fit=crop&q=80"
 };
 
-function resolveQuestionImage(qText, roundLabel){
+function resolveQuestionImage(qInput, roundLabel){
+  if (qInput && typeof qInput === 'object' && qInput.img) {
+    return { url: qInput.img, tag: qInput.img_tag || 'Illustration' };
+  }
+  const qText = (typeof qInput === 'string' ? qInput : (qInput && qInput.q) ? qInput.q : '') + ' ' + (roundLabel || '');
   const s = ((qText || '') + ' ' + (roundLabel || '')).toLowerCase();
 
   // Plants & Botany
@@ -685,7 +689,7 @@ function resolveQuestionImage(qText, roundLabel){
 })();
 
 // Data injected by generator
-const ALL_ROUNDS = [{"label": "Effort, Dedication & Achievement — Quiz Sprint", "type": "mcq", "questions": [{"q": "Which collocation means 'to make great efforts'?", "a": "strive for excellence", "opts": ["strive for excellence", "drop the ball", "give up early", "take it easy"], "hint": "strive + for"}, {"q": "A person who never gives up on their duties is:", "a": "dedicated", "opts": ["dedicated", "apathetic", "hesitant", "careless"], "hint": "Loyal and committed"}, {"q": "To 'reach your full capacity' is to:", "a": "fulfill your potential", "opts": ["fulfill your potential", "waste your chances", "overlook your goals", "ignore your talent"], "hint": "fulfill + potential"}]}, {"label": "Effort, Dedication & Achievement — Key Term Match", "type": "match", "pairs": [["dedicated", "devoted completely to a purpose"], ["strive", "to make great efforts toward a goal"], ["commitment", "loyalty and steadfast promise to a cause"], ["overcome", "to defeat or conquer a difficulty"], ["potential", "inherent ability waiting to be developed"]]}, {"label": "Effort, Dedication & Achievement — Sentence Sprint", "type": "fill", "questions": [{"q": "You must ________ for your dreams even when others doubt you.", "a": "strive", "hint": "Verb starting with s-"}, {"q": "He showed great ________ to his studies by working every evening.", "a": "commitment", "hint": "Noun starting with c-"}]}];
+const ALL_ROUNDS = [{"label": "Effort, Dedication & Achievement — Quiz Sprint", "type": "mcq", "questions": [{"q": "Which collocation means 'to make great efforts'?", "a": "strive for excellence", "opts": ["strive for excellence", "drop the ball", "give up early", "take it easy"], "hint": "strive + for", "img": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&auto=format&fit=crop&q=80", "img_tag": "Coastal Horizon"}, {"q": "A person who never gives up on their duties is:", "a": "dedicated", "opts": ["dedicated", "apathetic", "hesitant", "careless"], "hint": "Loyal and committed", "img": "https://images.unsplash.com/photo-1452626038306-9aae5e071dd3?w=800&auto=format&fit=crop&q=80", "img_tag": "Milestone Achievement"}, {"q": "To 'reach your full capacity' is to:", "a": "fulfill your potential", "opts": ["fulfill your potential", "waste your chances", "overlook your goals", "ignore your talent"], "hint": "fulfill + potential", "img": "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&auto=format&fit=crop&q=80", "img_tag": "Companionship & Dialogue"}]}, {"label": "Effort, Dedication & Achievement — Key Term Match", "type": "match", "pairs": [["dedicated", "devoted completely to a purpose"], ["strive", "to make great efforts toward a goal"], ["commitment", "loyalty and steadfast promise to a cause"], ["overcome", "to defeat or conquer a difficulty"], ["potential", "inherent ability waiting to be developed"]]}, {"label": "Effort, Dedication & Achievement — Sentence Sprint", "type": "fill", "questions": [{"q": "You must ________ for your dreams even when others doubt you.", "a": "strive", "hint": "Verb starting with s-", "img": "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=800&auto=format&fit=crop&q=80", "img_tag": "Analytical Deduction"}, {"q": "He showed great ________ to his studies by working every evening.", "a": "commitment", "hint": "Noun starting with c-", "img": "https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=800&auto=format&fit=crop&q=80", "img_tag": "Theater Showcase"}]}];
 
 let activeTemplate = 'all';
 let activeRounds = [];
@@ -739,7 +743,7 @@ function buildFlashcardDeck(){
   ALL_ROUNDS.forEach(r => {
     if (r.type === 'mcq' || r.type === 'fill'){
       r.questions.forEach(q => {
-        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '' });
+        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '', img: q.img, img_tag: q.img_tag });
       });
     }
     if (r.type === 'match'){
@@ -878,7 +882,7 @@ function renderMCQ(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // 1. Real-life Image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -964,7 +968,7 @@ function renderFill(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // Real-life image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -1174,7 +1178,7 @@ function renderFlashcard(){
   const container = document.getElementById('q-card');
   container.innerHTML = '';
 
-  const imgInfo = resolveQuestionImage(cardData.front, cardData.badge);
+  const imgInfo = resolveQuestionImage(cardData, cardData.badge);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.style.height = '180px';

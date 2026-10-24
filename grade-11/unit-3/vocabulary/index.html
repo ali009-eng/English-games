@@ -575,7 +575,11 @@ const CURATED_IMAGE_DATABASE = {
   study:        "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&auto=format&fit=crop&q=80"
 };
 
-function resolveQuestionImage(qText, roundLabel){
+function resolveQuestionImage(qInput, roundLabel){
+  if (qInput && typeof qInput === 'object' && qInput.img) {
+    return { url: qInput.img, tag: qInput.img_tag || 'Illustration' };
+  }
+  const qText = (typeof qInput === 'string' ? qInput : (qInput && qInput.q) ? qInput.q : '') + ' ' + (roundLabel || '');
   const s = ((qText || '') + ' ' + (roundLabel || '')).toLowerCase();
 
   // Plants & Botany
@@ -685,7 +689,7 @@ function resolveQuestionImage(qText, roundLabel){
 })();
 
 // Data injected by generator
-const ALL_ROUNDS = [{"label": "Advertising Collocations & Business Idioms — Quiz Sprint", "type": "mcq", "questions": [{"q": "Which collocation means 'to cause widespread social talk about a product'?", "a": "generate buzz", "opts": ["generate buzz", "kill enthusiasm", "hide the brand", "lower customer interest"], "hint": "Word-of-mouth excitement"}, {"q": "When a firm advertises to reach a higher revenue, they aim to:", "a": "boost sales", "opts": ["boost sales", "halt production", "fire managers", "waste resources"], "hint": "Increase sales numbers"}]}, {"label": "Advertising Collocations & Business Idioms — Key Term Match", "type": "match", "pairs": [["launch a campaign", "commence a coordinated marketing effort"], ["boost sales", "increase product purchases and revenue"], ["capture market share", "gain a higher percentage of the commercial market"], ["generate buzz", "create lively consumer anticipation and conversation"]]}, {"label": "Advertising Collocations & Business Idioms — Sentence Sprint", "type": "fill", "questions": [{"q": "The company hired a top PR firm to ________ buzz before the release.", "a": "generate", "hint": "Verb starting with g-"}, {"q": "Television adverts during big games can dramatically ________ sales.", "a": "boost", "hint": "Verb meaning to lift or elevate"}]}];
+const ALL_ROUNDS = [{"label": "Advertising Collocations & Business Idioms — Quiz Sprint", "type": "mcq", "questions": [{"q": "Which collocation means 'to cause widespread social talk about a product'?", "a": "generate buzz", "opts": ["generate buzz", "kill enthusiasm", "hide the brand", "lower customer interest"], "hint": "Word-of-mouth excitement", "img": "https://images.unsplash.com/photo-1509248961158-e54f6934749c?w=800&auto=format&fit=crop&q=80", "img_tag": "Suspenseful Drama"}, {"q": "When a firm advertises to reach a higher revenue, they aim to:", "a": "boost sales", "opts": ["boost sales", "halt production", "fire managers", "waste resources"], "hint": "Increase sales numbers", "img": "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=800&auto=format&fit=crop&q=80", "img_tag": "Written Composition"}]}, {"label": "Advertising Collocations & Business Idioms — Key Term Match", "type": "match", "pairs": [["launch a campaign", "commence a coordinated marketing effort"], ["boost sales", "increase product purchases and revenue"], ["capture market share", "gain a higher percentage of the commercial market"], ["generate buzz", "create lively consumer anticipation and conversation"]]}, {"label": "Advertising Collocations & Business Idioms — Sentence Sprint", "type": "fill", "questions": [{"q": "The company hired a top PR firm to ________ buzz before the release.", "a": "generate", "hint": "Verb starting with g-", "img": "https://images.unsplash.com/photo-1516912481808-3406841bd33c?w=800&auto=format&fit=crop&q=80", "img_tag": "Dynamic Exploration"}, {"q": "Television adverts during big games can dramatically ________ sales.", "a": "boost", "hint": "Verb meaning to lift or elevate", "img": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&auto=format&fit=crop&q=80", "img_tag": "Folkloric Fable"}]}];
 
 let activeTemplate = 'all';
 let activeRounds = [];
@@ -739,7 +743,7 @@ function buildFlashcardDeck(){
   ALL_ROUNDS.forEach(r => {
     if (r.type === 'mcq' || r.type === 'fill'){
       r.questions.forEach(q => {
-        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '' });
+        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '', img: q.img, img_tag: q.img_tag });
       });
     }
     if (r.type === 'match'){
@@ -878,7 +882,7 @@ function renderMCQ(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // 1. Real-life Image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -964,7 +968,7 @@ function renderFill(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // Real-life image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -1174,7 +1178,7 @@ function renderFlashcard(){
   const container = document.getElementById('q-card');
   container.innerHTML = '';
 
-  const imgInfo = resolveQuestionImage(cardData.front, cardData.badge);
+  const imgInfo = resolveQuestionImage(cardData, cardData.badge);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.style.height = '180px';

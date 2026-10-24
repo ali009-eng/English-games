@@ -575,7 +575,11 @@ const CURATED_IMAGE_DATABASE = {
   study:        "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&auto=format&fit=crop&q=80"
 };
 
-function resolveQuestionImage(qText, roundLabel){
+function resolveQuestionImage(qInput, roundLabel){
+  if (qInput && typeof qInput === 'object' && qInput.img) {
+    return { url: qInput.img, tag: qInput.img_tag || 'Illustration' };
+  }
+  const qText = (typeof qInput === 'string' ? qInput : (qInput && qInput.q) ? qInput.q : '') + ' ' + (roundLabel || '');
   const s = ((qText || '') + ' ' + (roundLabel || '')).toLowerCase();
 
   // Plants & Botany
@@ -685,7 +689,7 @@ function resolveQuestionImage(qText, roundLabel){
 })();
 
 // Data injected by generator
-const ALL_ROUNDS = [{"label": "Preparatory 'It' as Subject — Quiz Sprint", "type": "mcq", "questions": [{"q": "________ is vital to test new medications thoroughly before clinical use.", "a": "It", "opts": ["It", "There", "What", "That"], "hint": "Preparatory subject: It is vital to..."}, {"q": "Scientists find ________ difficult to isolate the pure compound without damaging it.", "a": "it", "opts": ["it", "them", "there", "this"], "hint": "find + it + adj + to-V"}, {"q": "It ________ that the patient responded remarkably well to the botanical tea.", "a": "emerged", "opts": ["emerged", "was emerging", "emerges", "is emerging"], "hint": "It emerged that..."}, {"q": "It is essential ________ consult a qualified doctor before taking herbal extracts.", "a": "to", "opts": ["to", "for", "that", "at"], "hint": "essential + to + infinitive"}]}, {"label": "Preparatory 'It' as Subject — Key Term Match", "type": "match", "pairs": [["It is necessary to", "introduces an essential action"], ["It emerged that", "reports a newly discovered fact"], ["We consider it wise to", "preparatory object expressing judgment"], ["It is proven that", "states verified scientific reality"]]}, {"label": "Preparatory 'It' as Subject — Sentence Sprint", "type": "fill", "questions": [{"q": "________ is common knowledge that willow bark relieves fevers.", "a": "It", "hint": "Pronoun starting with I-"}, {"q": "Botanists found it hard ________ (classify) the newly discovered orchid.", "a": "to classify", "hint": "to + base form"}]}];
+const ALL_ROUNDS = [{"label": "Preparatory 'It' as Subject — Quiz Sprint", "type": "mcq", "questions": [{"q": "________ is vital to test new medications thoroughly before clinical use.", "a": "It", "opts": ["It", "There", "What", "That"], "hint": "Preparatory subject: It is vital to...", "img": "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800&auto=format&fit=crop&q=80", "img_tag": "Film Premiere Lights"}, {"q": "Scientists find ________ difficult to isolate the pure compound without damaging it.", "a": "it", "opts": ["it", "them", "there", "this"], "hint": "find + it + adj + to-V", "img": "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=800&auto=format&fit=crop&q=80", "img_tag": "Analytical Deduction"}, {"q": "It ________ that the patient responded remarkably well to the botanical tea.", "a": "emerged", "opts": ["emerged", "was emerging", "emerges", "is emerging"], "hint": "It emerged that...", "img": "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&auto=format&fit=crop&q=80", "img_tag": "Academic Inquiry"}, {"q": "It is essential ________ consult a qualified doctor before taking herbal extracts.", "a": "to", "opts": ["to", "for", "that", "at"], "hint": "essential + to + infinitive", "img": "https://images.unsplash.com/photo-1509248961158-e54f6934749c?w=800&auto=format&fit=crop&q=80", "img_tag": "Suspenseful Drama"}]}, {"label": "Preparatory 'It' as Subject — Key Term Match", "type": "match", "pairs": [["It is necessary to", "introduces an essential action"], ["It emerged that", "reports a newly discovered fact"], ["We consider it wise to", "preparatory object expressing judgment"], ["It is proven that", "states verified scientific reality"]]}, {"label": "Preparatory 'It' as Subject — Sentence Sprint", "type": "fill", "questions": [{"q": "________ is common knowledge that willow bark relieves fevers.", "a": "It", "hint": "Pronoun starting with I-", "img": "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=800&auto=format&fit=crop&q=80", "img_tag": "Literary Analysis"}, {"q": "Botanists found it hard ________ (classify) the newly discovered orchid.", "a": "to classify", "hint": "to + base form", "img": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&auto=format&fit=crop&q=80", "img_tag": "Verdant Wilderness"}]}];
 
 let activeTemplate = 'all';
 let activeRounds = [];
@@ -739,7 +743,7 @@ function buildFlashcardDeck(){
   ALL_ROUNDS.forEach(r => {
     if (r.type === 'mcq' || r.type === 'fill'){
       r.questions.forEach(q => {
-        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '' });
+        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '', img: q.img, img_tag: q.img_tag });
       });
     }
     if (r.type === 'match'){
@@ -878,7 +882,7 @@ function renderMCQ(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // 1. Real-life Image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -964,7 +968,7 @@ function renderFill(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // Real-life image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -1174,7 +1178,7 @@ function renderFlashcard(){
   const container = document.getElementById('q-card');
   container.innerHTML = '';
 
-  const imgInfo = resolveQuestionImage(cardData.front, cardData.badge);
+  const imgInfo = resolveQuestionImage(cardData, cardData.badge);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.style.height = '180px';

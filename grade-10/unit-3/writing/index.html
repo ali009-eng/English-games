@@ -575,7 +575,11 @@ const CURATED_IMAGE_DATABASE = {
   study:        "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&auto=format&fit=crop&q=80"
 };
 
-function resolveQuestionImage(qText, roundLabel){
+function resolveQuestionImage(qInput, roundLabel){
+  if (qInput && typeof qInput === 'object' && qInput.img) {
+    return { url: qInput.img, tag: qInput.img_tag || 'Illustration' };
+  }
+  const qText = (typeof qInput === 'string' ? qInput : (qInput && qInput.q) ? qInput.q : '') + ' ' + (roundLabel || '');
   const s = ((qText || '') + ' ' + (roundLabel || '')).toLowerCase();
 
   // Plants & Botany
@@ -685,7 +689,7 @@ function resolveQuestionImage(qText, roundLabel){
 })();
 
 // Data injected by generator
-const ALL_ROUNDS = [{"label": "An Anecdote (Personal Narrative) — Quiz Sprint", "type": "mcq", "questions": [{"q": "What is the primary purpose of an anecdote?", "a": "To share an engaging real-life experience with a lesson", "opts": ["To share an engaging real-life experience with a lesson", "To list scientific statistics", "To write a legal contract", "To summarize a newspaper editorial"], "hint": "Personal story with a point"}, {"q": "Where should the climax of an anecdote occur?", "a": "Near the middle or late part before the reflection", "opts": ["Near the middle or late part before the reflection", "In the very first sentence", "After the story has completely finished", "In the footnotes"], "hint": "The turning point"}, {"q": "Which time connectors are most effective in narrative anecdotes?", "a": "Suddenly, all of a sudden, at that moment, eventually", "opts": ["Suddenly, all of a sudden, at that moment, eventually", "Furthermore, in addition, moreover", "To conclude, in summary", "Firstly, secondly, thirdly"], "hint": "Narrative sequence words"}]}, {"label": "An Anecdote (Personal Narrative) — Key Term Match", "type": "match", "pairs": [["setting the scene", "describing when, where, and who was there"], ["inciting incident", "the event that starts the action"], ["climax", "the turning point of highest tension"], ["resolution", "how the situation was settled"], ["reflection", "the lesson or insight gained from the experience"]]}, {"label": "An Anecdote (Personal Narrative) — Sentence Sprint", "type": "fill", "questions": [{"q": "A brief personal story used to illustrate a point is called an ________.", "a": "anecdote", "hint": "Starts with a-"}, {"q": "The peak of tension in a narrative is known as the ________.", "a": "climax", "hint": "C-l-i-m-a-x"}]}];
+const ALL_ROUNDS = [{"label": "An Anecdote (Personal Narrative) — Quiz Sprint", "type": "mcq", "questions": [{"q": "What is the primary purpose of an anecdote?", "a": "To share an engaging real-life experience with a lesson", "opts": ["To share an engaging real-life experience with a lesson", "To list scientific statistics", "To write a legal contract", "To summarize a newspaper editorial"], "hint": "Personal story with a point", "img": "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800&auto=format&fit=crop&q=80", "img_tag": "Film Premiere Lights"}, {"q": "Where should the climax of an anecdote occur?", "a": "Near the middle or late part before the reflection", "opts": ["Near the middle or late part before the reflection", "In the very first sentence", "After the story has completely finished", "In the footnotes"], "hint": "The turning point", "img": "https://images.unsplash.com/photo-1511895426328-dc8714191300?w=800&auto=format&fit=crop&q=80", "img_tag": "Family Dynamics"}, {"q": "Which time connectors are most effective in narrative anecdotes?", "a": "Suddenly, all of a sudden, at that moment, eventually", "opts": ["Suddenly, all of a sudden, at that moment, eventually", "Furthermore, in addition, moreover", "To conclude, in summary", "Firstly, secondly, thirdly"], "hint": "Narrative sequence words", "img": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&auto=format&fit=crop&q=80", "img_tag": "Coastal Horizon"}]}, {"label": "An Anecdote (Personal Narrative) — Key Term Match", "type": "match", "pairs": [["setting the scene", "describing when, where, and who was there"], ["inciting incident", "the event that starts the action"], ["climax", "the turning point of highest tension"], ["resolution", "how the situation was settled"], ["reflection", "the lesson or insight gained from the experience"]]}, {"label": "An Anecdote (Personal Narrative) — Sentence Sprint", "type": "fill", "questions": [{"q": "A brief personal story used to illustrate a point is called an ________.", "a": "anecdote", "hint": "Starts with a-", "img": "https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=800&auto=format&fit=crop&q=80", "img_tag": "Theater Showcase"}, {"q": "The peak of tension in a narrative is known as the ________.", "a": "climax", "hint": "C-l-i-m-a-x", "img": "https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?w=800&auto=format&fit=crop&q=80", "img_tag": "Critical Reflection"}]}];
 
 let activeTemplate = 'all';
 let activeRounds = [];
@@ -739,7 +743,7 @@ function buildFlashcardDeck(){
   ALL_ROUNDS.forEach(r => {
     if (r.type === 'mcq' || r.type === 'fill'){
       r.questions.forEach(q => {
-        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '' });
+        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '', img: q.img, img_tag: q.img_tag });
       });
     }
     if (r.type === 'match'){
@@ -878,7 +882,7 @@ function renderMCQ(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // 1. Real-life Image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -964,7 +968,7 @@ function renderFill(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // Real-life image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -1174,7 +1178,7 @@ function renderFlashcard(){
   const container = document.getElementById('q-card');
   container.innerHTML = '';
 
-  const imgInfo = resolveQuestionImage(cardData.front, cardData.badge);
+  const imgInfo = resolveQuestionImage(cardData, cardData.badge);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.style.height = '180px';

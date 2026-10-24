@@ -575,7 +575,11 @@ const CURATED_IMAGE_DATABASE = {
   study:        "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&auto=format&fit=crop&q=80"
 };
 
-function resolveQuestionImage(qText, roundLabel){
+function resolveQuestionImage(qInput, roundLabel){
+  if (qInput && typeof qInput === 'object' && qInput.img) {
+    return { url: qInput.img, tag: qInput.img_tag || 'Illustration' };
+  }
+  const qText = (typeof qInput === 'string' ? qInput : (qInput && qInput.q) ? qInput.q : '') + ' ' + (roundLabel || '');
   const s = ((qText || '') + ' ' + (roundLabel || '')).toLowerCase();
 
   // Plants & Botany
@@ -685,7 +689,7 @@ function resolveQuestionImage(qText, roundLabel){
 })();
 
 // Data injected by generator
-const ALL_ROUNDS = [{"label": "Rural & Urban Landscape Features — MCQ", "type": "mcq", "questions": [{"q": "A narrow path through countryside fields for walkers is a:", "a": "footpath", "opts": ["footpath", "motorway", "lane", "kerb"], "hint": "For walking on foot"}, {"q": "A narrow country road with hedges on both sides is a:", "a": "lane", "opts": ["lane", "highway", "avenue", "boulevard"], "hint": "Typical country lane"}, {"q": "A line of bushes or small trees planted close together along field edges is a:", "a": "hedge", "opts": ["hedge", "cliff", "valley", "ditch"], "hint": "Green boundary wall"}]}, {"label": "Prepositions of Movement — Match", "type": "match", "pairs": [["across", "moving from one side of a bridge, road, or river to the other"], ["along", "moving following the line of a path, street, or river bank"], ["through", "entering at one end and coming out at the other"], ["past", "going by a place or landmark without stopping"]]}];
+const ALL_ROUNDS = [{"label": "Rural & Urban Landscape Features — MCQ", "type": "mcq", "questions": [{"q": "A narrow path through countryside fields for walkers is a:", "a": "footpath", "opts": ["footpath", "motorway", "lane", "kerb"], "hint": "For walking on foot", "img": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&auto=format&fit=crop&q=80", "img_tag": "Digital Technology"}, {"q": "A narrow country road with hedges on both sides is a:", "a": "lane", "opts": ["lane", "highway", "avenue", "boulevard"], "hint": "Typical country lane", "img": "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&auto=format&fit=crop&q=80", "img_tag": "Academic Inquiry"}, {"q": "A line of bushes or small trees planted close together along field edges is a:", "a": "hedge", "opts": ["hedge", "cliff", "valley", "ditch"], "hint": "Green boundary wall", "img": "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=800&auto=format&fit=crop&q=80", "img_tag": "Literary Analysis"}]}, {"label": "Prepositions of Movement — Match", "type": "match", "pairs": [["across", "moving from one side of a bridge, road, or river to the other"], ["along", "moving following the line of a path, street, or river bank"], ["through", "entering at one end and coming out at the other"], ["past", "going by a place or landmark without stopping"]]}];
 
 let activeTemplate = 'all';
 let activeRounds = [];
@@ -739,7 +743,7 @@ function buildFlashcardDeck(){
   ALL_ROUNDS.forEach(r => {
     if (r.type === 'mcq' || r.type === 'fill'){
       r.questions.forEach(q => {
-        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '' });
+        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '', img: q.img, img_tag: q.img_tag });
       });
     }
     if (r.type === 'match'){
@@ -878,7 +882,7 @@ function renderMCQ(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // 1. Real-life Image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -964,7 +968,7 @@ function renderFill(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // Real-life image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -1174,7 +1178,7 @@ function renderFlashcard(){
   const container = document.getElementById('q-card');
   container.innerHTML = '';
 
-  const imgInfo = resolveQuestionImage(cardData.front, cardData.badge);
+  const imgInfo = resolveQuestionImage(cardData, cardData.badge);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.style.height = '180px';

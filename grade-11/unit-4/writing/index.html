@@ -575,7 +575,11 @@ const CURATED_IMAGE_DATABASE = {
   study:        "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&auto=format&fit=crop&q=80"
 };
 
-function resolveQuestionImage(qText, roundLabel){
+function resolveQuestionImage(qInput, roundLabel){
+  if (qInput && typeof qInput === 'object' && qInput.img) {
+    return { url: qInput.img, tag: qInput.img_tag || 'Illustration' };
+  }
+  const qText = (typeof qInput === 'string' ? qInput : (qInput && qInput.q) ? qInput.q : '') + ' ' + (roundLabel || '');
   const s = ((qText || '') + ' ' + (roundLabel || '')).toLowerCase();
 
   // Plants & Botany
@@ -685,7 +689,7 @@ function resolveQuestionImage(qText, roundLabel){
 })();
 
 // Data injected by generator
-const ALL_ROUNDS = [{"label": "An Informative Report — Quiz Sprint", "type": "mcq", "questions": [{"q": "How should an informative report be divided for professional clarity?", "a": "Numbered headings, bullet points, and distinct topical sections", "opts": ["Numbered headings, bullet points, and distinct topical sections", "One massive uninterrupted 10-page paragraph", "A fictional narrative poem", "Randomly colored text with emojis only"], "hint": "Formal document layout"}, {"q": "Where do actionable proposals belong in an informative report?", "a": "In the concluding 'Recommendations' section", "opts": ["In the concluding 'Recommendations' section", "In the title header", "Hidden in the footnotes", "Scattered randomly throughout the text"], "hint": "End section for advice"}]}, {"label": "An Informative Report — Key Term Match", "type": "match", "pairs": [["Title & Purpose", "states the subject and scope of the investigation"], ["Methodology", "explains how research data was assembled"], ["Key Findings", "details the empirical results and evidence"], ["Recommendations", "provides clear next steps based on evidence"]]}, {"label": "An Informative Report — Sentence Sprint", "type": "fill", "questions": [{"q": "The initial section summarizing the whole document is the executive ________.", "a": "summary", "hint": "S-u-m-m-a-r-y"}, {"q": "Based on the evidence, the team submitted several policy ________.", "a": "recommendations", "hint": "Plural noun"}]}];
+const ALL_ROUNDS = [{"label": "An Informative Report — Quiz Sprint", "type": "mcq", "questions": [{"q": "How should an informative report be divided for professional clarity?", "a": "Numbered headings, bullet points, and distinct topical sections", "opts": ["Numbered headings, bullet points, and distinct topical sections", "One massive uninterrupted 10-page paragraph", "A fictional narrative poem", "Randomly colored text with emojis only"], "hint": "Formal document layout", "img": "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=800&auto=format&fit=crop&q=80", "img_tag": "Written Composition"}, {"q": "Where do actionable proposals belong in an informative report?", "a": "In the concluding 'Recommendations' section", "opts": ["In the concluding 'Recommendations' section", "In the title header", "Hidden in the footnotes", "Scattered randomly throughout the text"], "hint": "End section for advice", "img": "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=800&auto=format&fit=crop&q=80", "img_tag": "Cinematic Scene"}]}, {"label": "An Informative Report — Key Term Match", "type": "match", "pairs": [["Title & Purpose", "states the subject and scope of the investigation"], ["Methodology", "explains how research data was assembled"], ["Key Findings", "details the empirical results and evidence"], ["Recommendations", "provides clear next steps based on evidence"]]}, {"label": "An Informative Report — Sentence Sprint", "type": "fill", "questions": [{"q": "The initial section summarizing the whole document is the executive ________.", "a": "summary", "hint": "S-u-m-m-a-r-y", "img": "https://images.unsplash.com/photo-1508873696983-2df5293cb32f?w=800&auto=format&fit=crop&q=80", "img_tag": "Outdoor Campfire"}, {"q": "Based on the evidence, the team submitted several policy ________.", "a": "recommendations", "hint": "Plural noun", "img": "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800&auto=format&fit=crop&q=80", "img_tag": "Film Premiere Lights"}]}];
 
 let activeTemplate = 'all';
 let activeRounds = [];
@@ -739,7 +743,7 @@ function buildFlashcardDeck(){
   ALL_ROUNDS.forEach(r => {
     if (r.type === 'mcq' || r.type === 'fill'){
       r.questions.forEach(q => {
-        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '' });
+        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '', img: q.img, img_tag: q.img_tag });
       });
     }
     if (r.type === 'match'){
@@ -878,7 +882,7 @@ function renderMCQ(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // 1. Real-life Image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -964,7 +968,7 @@ function renderFill(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // Real-life image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -1174,7 +1178,7 @@ function renderFlashcard(){
   const container = document.getElementById('q-card');
   container.innerHTML = '';
 
-  const imgInfo = resolveQuestionImage(cardData.front, cardData.badge);
+  const imgInfo = resolveQuestionImage(cardData, cardData.badge);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.style.height = '180px';

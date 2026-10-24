@@ -575,7 +575,11 @@ const CURATED_IMAGE_DATABASE = {
   study:        "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&auto=format&fit=crop&q=80"
 };
 
-function resolveQuestionImage(qText, roundLabel){
+function resolveQuestionImage(qInput, roundLabel){
+  if (qInput && typeof qInput === 'object' && qInput.img) {
+    return { url: qInput.img, tag: qInput.img_tag || 'Illustration' };
+  }
+  const qText = (typeof qInput === 'string' ? qInput : (qInput && qInput.q) ? qInput.q : '') + ' ' + (roundLabel || '');
   const s = ((qText || '') + ' ' + (roundLabel || '')).toLowerCase();
 
   // Plants & Botany
@@ -685,7 +689,7 @@ function resolveQuestionImage(qText, roundLabel){
 })();
 
 // Data injected by generator
-const ALL_ROUNDS = [{"label": "Nanotechnology: What's the Big Idea? — MCQ", "type": "mcq", "questions": [{"q": "Nanotechnology operates at the nanoscale, which is approximately:", "a": "one billionth of a metre", "opts": ["one billionth of a metre", "one thousandth of a metre", "one millionth of a millimetre", "one centimetre"], "hint": "Nano means 10 to the power -9"}, {"q": "Eric Drexler wrote about microscopic robots capable of:", "a": "self-replication using nearby atoms", "opts": ["self-replication using nearby atoms", "flying through deep space", "replacing all human teachers", "predicting future weather"], "hint": "Making copies of themselves"}, {"q": "In medical applications, scientists hope nanobots can:", "a": "deliver medicines directly into diseased cells", "opts": ["deliver medicines directly into diseased cells", "replace human blood entirely", "turn water into fuel", "speed up sleep time"], "hint": "Targeted drug delivery"}]}, {"label": "Technology Terms — Match", "type": "match", "pairs": [["nanobot", "a microscopic robot designed to operate at atomic scale"], ["reproduce", "to produce a copy or offspring of itself"], ["consume", "to use up energy, fuel, or raw material"], ["invisible", "unable to be seen by the naked human eye"]]}];
+const ALL_ROUNDS = [{"label": "Nanotechnology: What's the Big Idea? — MCQ", "type": "mcq", "questions": [{"q": "Nanotechnology operates at the nanoscale, which is approximately:", "a": "one billionth of a metre", "opts": ["one billionth of a metre", "one thousandth of a metre", "one millionth of a millimetre", "one centimetre"], "hint": "Nano means 10 to the power -9", "img": "https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80", "img_tag": "Global Perspectives"}, {"q": "Eric Drexler wrote about microscopic robots capable of:", "a": "self-replication using nearby atoms", "opts": ["self-replication using nearby atoms", "flying through deep space", "replacing all human teachers", "predicting future weather"], "hint": "Making copies of themselves", "img": "https://images.unsplash.com/photo-1507413245164-6160d8298b31?w=800&auto=format&fit=crop&q=80", "img_tag": "Microscopic Nanorobots"}, {"q": "In medical applications, scientists hope nanobots can:", "a": "deliver medicines directly into diseased cells", "opts": ["deliver medicines directly into diseased cells", "replace human blood entirely", "turn water into fuel", "speed up sleep time"], "hint": "Targeted drug delivery", "img": "https://images.unsplash.com/photo-1516912481808-3406841bd33c?w=800&auto=format&fit=crop&q=80", "img_tag": "Dynamic Exploration"}]}, {"label": "Technology Terms — Match", "type": "match", "pairs": [["nanobot", "a microscopic robot designed to operate at atomic scale"], ["reproduce", "to produce a copy or offspring of itself"], ["consume", "to use up energy, fuel, or raw material"], ["invisible", "unable to be seen by the naked human eye"]]}];
 
 let activeTemplate = 'all';
 let activeRounds = [];
@@ -739,7 +743,7 @@ function buildFlashcardDeck(){
   ALL_ROUNDS.forEach(r => {
     if (r.type === 'mcq' || r.type === 'fill'){
       r.questions.forEach(q => {
-        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '' });
+        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '', img: q.img, img_tag: q.img_tag });
       });
     }
     if (r.type === 'match'){
@@ -878,7 +882,7 @@ function renderMCQ(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // 1. Real-life Image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -964,7 +968,7 @@ function renderFill(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // Real-life image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -1174,7 +1178,7 @@ function renderFlashcard(){
   const container = document.getElementById('q-card');
   container.innerHTML = '';
 
-  const imgInfo = resolveQuestionImage(cardData.front, cardData.badge);
+  const imgInfo = resolveQuestionImage(cardData, cardData.badge);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.style.height = '180px';

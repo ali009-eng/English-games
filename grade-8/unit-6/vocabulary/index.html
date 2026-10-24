@@ -575,7 +575,11 @@ const CURATED_IMAGE_DATABASE = {
   study:        "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&auto=format&fit=crop&q=80"
 };
 
-function resolveQuestionImage(qText, roundLabel){
+function resolveQuestionImage(qInput, roundLabel){
+  if (qInput && typeof qInput === 'object' && qInput.img) {
+    return { url: qInput.img, tag: qInput.img_tag || 'Illustration' };
+  }
+  const qText = (typeof qInput === 'string' ? qInput : (qInput && qInput.q) ? qInput.q : '') + ' ' + (roundLabel || '');
   const s = ((qText || '') + ' ' + (roundLabel || '')).toLowerCase();
 
   // Plants & Botany
@@ -685,7 +689,7 @@ function resolveQuestionImage(qText, roundLabel){
 })();
 
 // Data injected by generator
-const ALL_ROUNDS = [{"label": "Science & Medicine Suffixes — Match", "type": "match", "pairs": [["science", "scientific"], ["technology", "technological"], ["infection", "infectious"], ["medicine", "medical"]]}, {"label": "Tech & Health Contexts — MCQ", "type": "mcq", "questions": [{"q": "Medical researchers are racing to ______ a cure for the illness.", "a": "discover", "opts": ["discover", "invent", "consume", "infect"], "hint": "Find something already in nature"}, {"q": "The nurse prepared to ______ the vaccine safely into the patient's arm.", "a": "inject", "opts": ["inject", "consume", "shrink", "reproduce"], "hint": "Using a syringe"}, {"q": "Pollution can cause severe damage to the natural ______.", "a": "environment", "opts": ["environment", "submarine", "marble", "nanobot"], "hint": "Surrounding ecosystem"}]}];
+const ALL_ROUNDS = [{"label": "Science & Medicine Suffixes — Match", "type": "match", "pairs": [["science", "scientific"], ["technology", "technological"], ["infection", "infectious"], ["medicine", "medical"]]}, {"label": "Tech & Health Contexts — MCQ", "type": "mcq", "questions": [{"q": "Medical researchers are racing to ______ a cure for the illness.", "a": "discover", "opts": ["discover", "invent", "consume", "infect"], "hint": "Find something already in nature", "img": "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=800&auto=format&fit=crop&q=80", "img_tag": "Syntax & Expression"}, {"q": "The nurse prepared to ______ the vaccine safely into the patient's arm.", "a": "inject", "opts": ["inject", "consume", "shrink", "reproduce"], "hint": "Using a syringe", "img": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&auto=format&fit=crop&q=80", "img_tag": "Coastal Horizon"}, {"q": "Pollution can cause severe damage to the natural ______.", "a": "environment", "opts": ["environment", "submarine", "marble", "nanobot"], "hint": "Surrounding ecosystem", "img": "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=800&auto=format&fit=crop&q=80", "img_tag": "Cinematic Scene"}]}];
 
 let activeTemplate = 'all';
 let activeRounds = [];
@@ -739,7 +743,7 @@ function buildFlashcardDeck(){
   ALL_ROUNDS.forEach(r => {
     if (r.type === 'mcq' || r.type === 'fill'){
       r.questions.forEach(q => {
-        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '' });
+        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '', img: q.img, img_tag: q.img_tag });
       });
     }
     if (r.type === 'match'){
@@ -878,7 +882,7 @@ function renderMCQ(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // 1. Real-life Image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -964,7 +968,7 @@ function renderFill(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // Real-life image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -1174,7 +1178,7 @@ function renderFlashcard(){
   const container = document.getElementById('q-card');
   container.innerHTML = '';
 
-  const imgInfo = resolveQuestionImage(cardData.front, cardData.badge);
+  const imgInfo = resolveQuestionImage(cardData, cardData.badge);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.style.height = '180px';

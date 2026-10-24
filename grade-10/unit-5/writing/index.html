@@ -575,7 +575,11 @@ const CURATED_IMAGE_DATABASE = {
   study:        "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&auto=format&fit=crop&q=80"
 };
 
-function resolveQuestionImage(qText, roundLabel){
+function resolveQuestionImage(qInput, roundLabel){
+  if (qInput && typeof qInput === 'object' && qInput.img) {
+    return { url: qInput.img, tag: qInput.img_tag || 'Illustration' };
+  }
+  const qText = (typeof qInput === 'string' ? qInput : (qInput && qInput.q) ? qInput.q : '') + ' ' + (roundLabel || '');
   const s = ((qText || '') + ' ' + (roundLabel || '')).toLowerCase();
 
   // Plants & Botany
@@ -685,7 +689,7 @@ function resolveQuestionImage(qText, roundLabel){
 })();
 
 // Data injected by generator
-const ALL_ROUNDS = [{"label": "Description of a Place — Quiz Sprint", "type": "mcq", "questions": [{"q": "Which sensory details elevate a descriptive place essay?", "a": "Visuals, acoustic echoes, scents of stone and incense, tactile textures", "opts": ["Visuals, acoustic echoes, scents of stone and incense, tactile textures", "Listing phone numbers and prices only", "Writing equations and algebraic proofs", "Writing in all capital letters without punctuation"], "hint": "Engage all five senses"}, {"q": "How should a description of a historic place be structured?", "a": "Introduction & location, physical architecture, historical ambiance, personal impression", "opts": ["Introduction & location, physical architecture, historical ambiance, personal impression", "A single bullet point with the city name", "Arguments arguing against visiting", "A list of spelling errors"], "hint": "Logical descriptive flow"}]}, {"label": "Description of a Place — Key Term Match", "type": "match", "pairs": [["breathtaking", "taking one's breath away by sheer majesty"], ["atmospheric", "evoking a vivid, evocative emotional atmosphere"], ["panoramic", "offering an unbroken, wide-angle vista"], ["imposing", "grand, formidable, and commanding attention"]]}, {"label": "Description of a Place — Sentence Sprint", "type": "fill", "questions": [{"q": "The castle sits atop a cliff with a ________ view of the coast.", "a": "panoramic", "hint": "Wide-angle view"}, {"q": "Ancient temples create an extraordinarily ________ experience at dawn.", "a": "atmospheric", "hint": "Evocative mood"}]}];
+const ALL_ROUNDS = [{"label": "Description of a Place — Quiz Sprint", "type": "mcq", "questions": [{"q": "Which sensory details elevate a descriptive place essay?", "a": "Visuals, acoustic echoes, scents of stone and incense, tactile textures", "opts": ["Visuals, acoustic echoes, scents of stone and incense, tactile textures", "Listing phone numbers and prices only", "Writing equations and algebraic proofs", "Writing in all capital letters without punctuation"], "hint": "Engage all five senses", "img": "https://images.unsplash.com/photo-1569880153113-76e33fc52d5f?w=800&auto=format&fit=crop&q=80", "img_tag": "Honor & Recognition"}, {"q": "How should a description of a historic place be structured?", "a": "Introduction & location, physical architecture, historical ambiance, personal impression", "opts": ["Introduction & location, physical architecture, historical ambiance, personal impression", "A single bullet point with the city name", "Arguments arguing against visiting", "A list of spelling errors"], "hint": "Logical descriptive flow", "img": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&auto=format&fit=crop&q=80", "img_tag": "Modern Structure"}]}, {"label": "Description of a Place — Key Term Match", "type": "match", "pairs": [["breathtaking", "taking one's breath away by sheer majesty"], ["atmospheric", "evoking a vivid, evocative emotional atmosphere"], ["panoramic", "offering an unbroken, wide-angle vista"], ["imposing", "grand, formidable, and commanding attention"]]}, {"label": "Description of a Place — Sentence Sprint", "type": "fill", "questions": [{"q": "The castle sits atop a cliff with a ________ view of the coast.", "a": "panoramic", "hint": "Wide-angle view", "img": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&auto=format&fit=crop&q=80", "img_tag": "Conceptual Ideas"}, {"q": "Ancient temples create an extraordinarily ________ experience at dawn.", "a": "atmospheric", "hint": "Evocative mood", "img": "https://images.unsplash.com/photo-1508873696983-2df5293cb32f?w=800&auto=format&fit=crop&q=80", "img_tag": "Outdoor Campfire"}]}];
 
 let activeTemplate = 'all';
 let activeRounds = [];
@@ -739,7 +743,7 @@ function buildFlashcardDeck(){
   ALL_ROUNDS.forEach(r => {
     if (r.type === 'mcq' || r.type === 'fill'){
       r.questions.forEach(q => {
-        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '' });
+        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '', img: q.img, img_tag: q.img_tag });
       });
     }
     if (r.type === 'match'){
@@ -878,7 +882,7 @@ function renderMCQ(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // 1. Real-life Image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -964,7 +968,7 @@ function renderFill(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // Real-life image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -1174,7 +1178,7 @@ function renderFlashcard(){
   const container = document.getElementById('q-card');
   container.innerHTML = '';
 
-  const imgInfo = resolveQuestionImage(cardData.front, cardData.badge);
+  const imgInfo = resolveQuestionImage(cardData, cardData.badge);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.style.height = '180px';

@@ -575,7 +575,11 @@ const CURATED_IMAGE_DATABASE = {
   study:        "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&auto=format&fit=crop&q=80"
 };
 
-function resolveQuestionImage(qText, roundLabel){
+function resolveQuestionImage(qInput, roundLabel){
+  if (qInput && typeof qInput === 'object' && qInput.img) {
+    return { url: qInput.img, tag: qInput.img_tag || 'Illustration' };
+  }
+  const qText = (typeof qInput === 'string' ? qInput : (qInput && qInput.q) ? qInput.q : '') + ' ' + (roundLabel || '');
   const s = ((qText || '') + ' ' + (roundLabel || '')).toLowerCase();
 
   // Plants & Botany
@@ -685,7 +689,7 @@ function resolveQuestionImage(qText, roundLabel){
 })();
 
 // Data injected by generator
-const ALL_ROUNDS = [{"label": "Yes, We Can! (Amazing Achievements) — Quiz Sprint", "type": "mcq", "questions": [{"q": "What is the primary message of 'Yes, We Can!'?", "a": "Determination overcomes adversity", "opts": ["Determination overcomes adversity", "Natural talent is all that matters", "Success depends purely on luck", "Difficult goals should be abandoned"], "hint": "Focus on the athlete's mindset"}, {"q": "What obstacle did the featured young athlete face?", "a": "A severe physical disability from childhood", "opts": ["A severe physical disability from childhood", "Lack of school coaching", "Poor weather conditions", "Financial competition"], "hint": "Check paragraph B"}, {"q": "How did mentors describe her daily routine?", "a": "Disciplined and relentless training", "opts": ["Disciplined and relentless training", "Relaxed and occasional sessions", "Relying on luck", "Training only before competitions"], "hint": "Look for the adjective 'dedicated'"}, {"q": "The word 'resilient' in the text means:", "a": "recovering rapidly from setbacks", "opts": ["recovering rapidly from setbacks", "giving up at the first hurdle", "avoiding all physical challenges", "ignoring friendly advice"], "hint": "Think of flexibility and strength"}]}, {"label": "Yes, We Can! (Amazing Achievements) — Key Term Match", "type": "match", "pairs": [["perseverance", "continued effort despite difficulties"], ["obstacle", "a barrier that prevents progress"], ["resilient", "able to recover quickly from adversity"], ["triumph", "a memorable and celebrated victory"], ["ambition", "a strong desire to achieve greatness"]]}, {"label": "Yes, We Can! (Amazing Achievements) — Sentence Sprint", "type": "fill", "questions": [{"q": "Through sheer ________ and hard work, he passed the difficult exam.", "a": "perseverance", "hint": "Starts with p-"}, {"q": "Financial hardship was a major ________ on her path to graduation.", "a": "obstacle", "hint": "Synonym for hurdle or barrier"}, {"q": "A truly ________ person bounces back stronger after failure.", "a": "resilient", "hint": "Adjective ending in -ent"}]}];
+const ALL_ROUNDS = [{"label": "Yes, We Can! (Amazing Achievements) — Quiz Sprint", "type": "mcq", "questions": [{"q": "What is the primary message of 'Yes, We Can!'?", "a": "Determination overcomes adversity", "opts": ["Determination overcomes adversity", "Natural talent is all that matters", "Success depends purely on luck", "Difficult goals should be abandoned"], "hint": "Focus on the athlete's mindset", "img": "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=800&auto=format&fit=crop&q=80", "img_tag": "Determination in Sports"}, {"q": "What obstacle did the featured young athlete face?", "a": "A severe physical disability from childhood", "opts": ["A severe physical disability from childhood", "Lack of school coaching", "Poor weather conditions", "Financial competition"], "hint": "Check paragraph B", "img": "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=800&auto=format&fit=crop&q=80", "img_tag": "Paralympic Athlete Spirit"}, {"q": "How did mentors describe her daily routine?", "a": "Disciplined and relentless training", "opts": ["Disciplined and relentless training", "Relaxed and occasional sessions", "Relying on luck", "Training only before competitions"], "hint": "Look for the adjective 'dedicated'", "img": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&auto=format&fit=crop&q=80", "img_tag": "Relentless Morning Workout"}, {"q": "The word 'resilient' in the text means:", "a": "recovering rapidly from setbacks", "opts": ["recovering rapidly from setbacks", "giving up at the first hurdle", "avoiding all physical challenges", "ignoring friendly advice"], "hint": "Think of flexibility and strength", "img": "https://images.unsplash.com/photo-1452626038306-9aae5e071dd3?w=800&auto=format&fit=crop&q=80", "img_tag": "Resilient Marathon Finisher"}]}, {"label": "Yes, We Can! (Amazing Achievements) — Key Term Match", "type": "match", "pairs": [["perseverance", "continued effort despite difficulties"], ["obstacle", "a barrier that prevents progress"], ["resilient", "able to recover quickly from adversity"], ["triumph", "a memorable and celebrated victory"], ["ambition", "a strong desire to achieve greatness"]]}, {"label": "Yes, We Can! (Amazing Achievements) — Sentence Sprint", "type": "fill", "questions": [{"q": "Through sheer ________ and hard work, he passed the difficult exam.", "a": "perseverance", "hint": "Starts with p-", "img": "https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?w=800&auto=format&fit=crop&q=80", "img_tag": "Critical Reflection"}, {"q": "Financial hardship was a major ________ on her path to graduation.", "a": "obstacle", "hint": "Synonym for hurdle or barrier", "img": "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800&auto=format&fit=crop&q=80", "img_tag": "Film Premiere Lights"}, {"q": "A truly ________ person bounces back stronger after failure.", "a": "resilient", "hint": "Adjective ending in -ent", "img": "https://images.unsplash.com/photo-1452626038306-9aae5e071dd3?w=800&auto=format&fit=crop&q=80", "img_tag": "Resilient Marathon Finisher"}]}];
 
 let activeTemplate = 'all';
 let activeRounds = [];
@@ -739,7 +743,7 @@ function buildFlashcardDeck(){
   ALL_ROUNDS.forEach(r => {
     if (r.type === 'mcq' || r.type === 'fill'){
       r.questions.forEach(q => {
-        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '' });
+        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '', img: q.img, img_tag: q.img_tag });
       });
     }
     if (r.type === 'match'){
@@ -878,7 +882,7 @@ function renderMCQ(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // 1. Real-life Image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -964,7 +968,7 @@ function renderFill(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // Real-life image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -1174,7 +1178,7 @@ function renderFlashcard(){
   const container = document.getElementById('q-card');
   container.innerHTML = '';
 
-  const imgInfo = resolveQuestionImage(cardData.front, cardData.badge);
+  const imgInfo = resolveQuestionImage(cardData, cardData.badge);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.style.height = '180px';

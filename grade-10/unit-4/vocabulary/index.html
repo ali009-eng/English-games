@@ -575,7 +575,11 @@ const CURATED_IMAGE_DATABASE = {
   study:        "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&auto=format&fit=crop&q=80"
 };
 
-function resolveQuestionImage(qText, roundLabel){
+function resolveQuestionImage(qInput, roundLabel){
+  if (qInput && typeof qInput === 'object' && qInput.img) {
+    return { url: qInput.img, tag: qInput.img_tag || 'Illustration' };
+  }
+  const qText = (typeof qInput === 'string' ? qInput : (qInput && qInput.q) ? qInput.q : '') + ' ' + (roundLabel || '');
   const s = ((qText || '') + ' ' + (roundLabel || '')).toLowerCase();
 
   // Plants & Botany
@@ -685,7 +689,7 @@ function resolveQuestionImage(qText, roundLabel){
 })();
 
 // Data injected by generator
-const ALL_ROUNDS = [{"label": "Environment & Modern Living — Quiz Sprint", "type": "mcq", "questions": [{"q": "Packaging that decomposes naturally in the soil is:", "a": "biodegradable", "opts": ["biodegradable", "synthetic", "toxic", "indestructible"], "hint": "Bio- + degradable"}, {"q": "Using less power to achieve the same result is energy:", "a": "efficiency", "opts": ["efficiency", "exhaustion", "extinction", "pollution"], "hint": "E-f-f-i-c-i-e-n-c-y"}]}, {"label": "Environment & Modern Living — Key Term Match", "type": "match", "pairs": [["biodegradable", "able to decay naturally without pollution"], ["efficiency", "maximizing output while minimizing waste"], ["conservation", "wise protection and management of natural resources"], ["geothermal", "harnessing thermal heat from inside Earth"]]}, {"label": "Environment & Modern Living — Sentence Sprint", "type": "fill", "questions": [{"q": "Modern buildings prioritize energy ________ to cut fuel costs.", "a": "efficiency", "hint": "Starts with e-"}, {"q": "Scientists study the ________ impact of plastic on marine life.", "a": "ecological", "hint": "Relating to ecology"}]}];
+const ALL_ROUNDS = [{"label": "Environment & Modern Living — Quiz Sprint", "type": "mcq", "questions": [{"q": "Packaging that decomposes naturally in the soil is:", "a": "biodegradable", "opts": ["biodegradable", "synthetic", "toxic", "indestructible"], "hint": "Bio- + degradable", "img": "https://images.unsplash.com/photo-1491438590914-bc09fcaaf77a?w=800&auto=format&fit=crop&q=80", "img_tag": "Human Psychology"}, {"q": "Using less power to achieve the same result is energy:", "a": "efficiency", "opts": ["efficiency", "exhaustion", "extinction", "pollution"], "hint": "E-f-f-i-c-i-e-n-c-y", "img": "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=800&auto=format&fit=crop&q=80", "img_tag": "Analytical Deduction"}]}, {"label": "Environment & Modern Living — Key Term Match", "type": "match", "pairs": [["biodegradable", "able to decay naturally without pollution"], ["efficiency", "maximizing output while minimizing waste"], ["conservation", "wise protection and management of natural resources"], ["geothermal", "harnessing thermal heat from inside Earth"]]}, {"label": "Environment & Modern Living — Sentence Sprint", "type": "fill", "questions": [{"q": "Modern buildings prioritize energy ________ to cut fuel costs.", "a": "efficiency", "hint": "Starts with e-", "img": "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=800&auto=format&fit=crop&q=80", "img_tag": "Literary Analysis"}, {"q": "Scientists study the ________ impact of plastic on marine life.", "a": "ecological", "hint": "Relating to ecology", "img": "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=800&auto=format&fit=crop&q=80", "img_tag": "Cinematic Scene"}]}];
 
 let activeTemplate = 'all';
 let activeRounds = [];
@@ -739,7 +743,7 @@ function buildFlashcardDeck(){
   ALL_ROUNDS.forEach(r => {
     if (r.type === 'mcq' || r.type === 'fill'){
       r.questions.forEach(q => {
-        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '' });
+        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '', img: q.img, img_tag: q.img_tag });
       });
     }
     if (r.type === 'match'){
@@ -878,7 +882,7 @@ function renderMCQ(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // 1. Real-life Image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -964,7 +968,7 @@ function renderFill(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // Real-life image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -1174,7 +1178,7 @@ function renderFlashcard(){
   const container = document.getElementById('q-card');
   container.innerHTML = '';
 
-  const imgInfo = resolveQuestionImage(cardData.front, cardData.badge);
+  const imgInfo = resolveQuestionImage(cardData, cardData.badge);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.style.height = '180px';

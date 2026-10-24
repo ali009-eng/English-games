@@ -575,7 +575,11 @@ const CURATED_IMAGE_DATABASE = {
   study:        "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&auto=format&fit=crop&q=80"
 };
 
-function resolveQuestionImage(qText, roundLabel){
+function resolveQuestionImage(qInput, roundLabel){
+  if (qInput && typeof qInput === 'object' && qInput.img) {
+    return { url: qInput.img, tag: qInput.img_tag || 'Illustration' };
+  }
+  const qText = (typeof qInput === 'string' ? qInput : (qInput && qInput.q) ? qInput.q : '') + ' ' + (roundLabel || '');
   const s = ((qText || '') + ' ' + (roundLabel || '')).toLowerCase();
 
   // Plants & Botany
@@ -685,7 +689,7 @@ function resolveQuestionImage(qText, roundLabel){
 })();
 
 // Data injected by generator
-const ALL_ROUNDS = [{"label": "People on the Move — Match", "type": "match", "pairs": [["immigrant", "someone who comes to live permanently in a foreign country"], ["emigrant", "someone who leaves their own country to live in another"], ["commuter", "someone who travels regularly between work and home"], ["refugee", "someone forced to leave their country due to war or disaster"], ["nomad", "a person who moves from place to place rather than living in one place"]]}, {"label": "Collocations with DO and MAKE — MCQ", "type": "mcq", "questions": [{"q": "He worked hard to ______ a fortune in real estate.", "a": "make", "opts": ["make", "do", "have", "build"], "hint": "Money / wealth / fortune takes this verb"}, {"q": "Don't worry if you ______ mistakes, as long as you learn from them.", "a": "make", "opts": ["make", "do", "perform", "produce"], "hint": "Errors and mistakes take this verb"}, {"q": "Regular exercise will ______ wonders for your health.", "a": "do", "opts": ["do", "make", "give", "act"], "hint": "do wonders = have a beneficial effect"}, {"q": "She promised to ______ her best in the English exam.", "a": "do", "opts": ["do", "make", "take", "try"], "hint": "do your best"}]}, {"label": "Town & City Features — Fill in Blank", "type": "fill", "questions": [{"q": "A quiet residential area located outside the centre of a large town or city is called a s________.", "a": "suburb", "hint": "Starts with 'sub'"}, {"q": "A sheltered area of water next to the coast where ships can stay safely is a h________.", "a": "harbour", "hint": "Port / marina for boats"}, {"q": "A vibrant town that has people and cultural influences from all over the world is c________.", "a": "cosmopolitan", "hint": "World-city vibe"}]}];
+const ALL_ROUNDS = [{"label": "People on the Move — Match", "type": "match", "pairs": [["immigrant", "someone who comes to live permanently in a foreign country"], ["emigrant", "someone who leaves their own country to live in another"], ["commuter", "someone who travels regularly between work and home"], ["refugee", "someone forced to leave their country due to war or disaster"], ["nomad", "a person who moves from place to place rather than living in one place"]]}, {"label": "Collocations with DO and MAKE — MCQ", "type": "mcq", "questions": [{"q": "He worked hard to ______ a fortune in real estate.", "a": "make", "opts": ["make", "do", "have", "build"], "hint": "Money / wealth / fortune takes this verb", "img": "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&auto=format&fit=crop&q=80", "img_tag": "Companionship & Dialogue"}, {"q": "Don't worry if you ______ mistakes, as long as you learn from them.", "a": "make", "opts": ["make", "do", "perform", "produce"], "hint": "Errors and mistakes take this verb", "img": "https://images.unsplash.com/photo-1509248961158-e54f6934749c?w=800&auto=format&fit=crop&q=80", "img_tag": "Suspenseful Drama"}, {"q": "Regular exercise will ______ wonders for your health.", "a": "do", "opts": ["do", "make", "give", "act"], "hint": "do wonders = have a beneficial effect", "img": "https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?w=800&auto=format&fit=crop&q=80", "img_tag": "Critical Reflection"}, {"q": "She promised to ______ her best in the English exam.", "a": "do", "opts": ["do", "make", "take", "try"], "hint": "do your best", "img": "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800&auto=format&fit=crop&q=80", "img_tag": "Film Premiere Lights"}]}, {"label": "Town & City Features — Fill in Blank", "type": "fill", "questions": [{"q": "A quiet residential area located outside the centre of a large town or city is called a s________.", "a": "suburb", "hint": "Starts with 'sub'", "img": "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=800&auto=format&fit=crop&q=80", "img_tag": "Suburban Neighborhood"}, {"q": "A sheltered area of water next to the coast where ships can stay safely is a h________.", "a": "harbour", "hint": "Port / marina for boats", "img": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&auto=format&fit=crop&q=80", "img_tag": "Marina Boats Harbour"}, {"q": "A vibrant town that has people and cultural influences from all over the world is c________.", "a": "cosmopolitan", "hint": "World-city vibe", "img": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&auto=format&fit=crop&q=80", "img_tag": "Island Natural Wonder"}]}];
 
 let activeTemplate = 'all';
 let activeRounds = [];
@@ -739,7 +743,7 @@ function buildFlashcardDeck(){
   ALL_ROUNDS.forEach(r => {
     if (r.type === 'mcq' || r.type === 'fill'){
       r.questions.forEach(q => {
-        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '' });
+        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '', img: q.img, img_tag: q.img_tag });
       });
     }
     if (r.type === 'match'){
@@ -878,7 +882,7 @@ function renderMCQ(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // 1. Real-life Image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -964,7 +968,7 @@ function renderFill(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // Real-life image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -1174,7 +1178,7 @@ function renderFlashcard(){
   const container = document.getElementById('q-card');
   container.innerHTML = '';
 
-  const imgInfo = resolveQuestionImage(cardData.front, cardData.badge);
+  const imgInfo = resolveQuestionImage(cardData, cardData.badge);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.style.height = '180px';

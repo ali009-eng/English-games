@@ -575,7 +575,11 @@ const CURATED_IMAGE_DATABASE = {
   study:        "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&auto=format&fit=crop&q=80"
 };
 
-function resolveQuestionImage(qText, roundLabel){
+function resolveQuestionImage(qInput, roundLabel){
+  if (qInput && typeof qInput === 'object' && qInput.img) {
+    return { url: qInput.img, tag: qInput.img_tag || 'Illustration' };
+  }
+  const qText = (typeof qInput === 'string' ? qInput : (qInput && qInput.q) ? qInput.q : '') + ' ' + (roundLabel || '');
   const s = ((qText || '') + ' ' + (roundLabel || '')).toLowerCase();
 
   // Plants & Botany
@@ -685,7 +689,7 @@ function resolveQuestionImage(qText, roundLabel){
 })();
 
 // Data injected by generator
-const ALL_ROUNDS = [{"label": "Modals of Obligation, Advice & Prohibition — Quiz Sprint", "type": "mcq", "questions": [{"q": "You ________ wear a seatbelt by law in this country.", "a": "have to", "opts": ["have to", "should", "might", "needn't"], "hint": "External legal obligation"}, {"q": "You ________ smoke inside the hospital. It is strictly forbidden.", "a": "mustn't", "opts": ["mustn't", "needn't", "should", "ought to"], "hint": "Strict prohibition"}, {"q": "You ________ see a doctor about that persistent cough.", "a": "should", "opts": ["should", "mustn't", "needn't", "cannot"], "hint": "Friendly advice"}, {"q": "Tomorrow is a holiday, so we ________ wake up early.", "a": "needn't", "opts": ["needn't", "mustn't", "ought to", "have to"], "hint": "Absence of necessity"}]}, {"label": "Modals of Obligation, Advice & Prohibition — Key Term Match", "type": "match", "pairs": [["must", "strong internal obligation"], ["have to", "external legal rule or regulation"], ["should", "advisable recommendation"], ["mustn't", "strict prohibition (forbidden)"], ["needn't", "lack of obligation (not required)"]]}, {"label": "Modals of Obligation, Advice & Prohibition — Sentence Sprint", "type": "fill", "questions": [{"q": "You ________ touch that exposed electric wire! It's dangerous.", "a": "mustn't", "hint": "Forbidden"}, {"q": "You ________ bring your textbook tomorrow; I will hand out copies.", "a": "needn't", "hint": "Not necessary"}]}];
+const ALL_ROUNDS = [{"label": "Modals of Obligation, Advice & Prohibition — Quiz Sprint", "type": "mcq", "questions": [{"q": "You ________ wear a seatbelt by law in this country.", "a": "have to", "opts": ["have to", "should", "might", "needn't"], "hint": "External legal obligation", "img": "https://images.unsplash.com/photo-1511895426328-dc8714191300?w=800&auto=format&fit=crop&q=80", "img_tag": "Family Dynamics"}, {"q": "You ________ smoke inside the hospital. It is strictly forbidden.", "a": "mustn't", "opts": ["mustn't", "needn't", "should", "ought to"], "hint": "Strict prohibition", "img": "https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=800&auto=format&fit=crop&q=80", "img_tag": "Theater Showcase"}, {"q": "You ________ see a doctor about that persistent cough.", "a": "should", "opts": ["should", "mustn't", "needn't", "cannot"], "hint": "Friendly advice", "img": "https://images.unsplash.com/photo-1516912481808-3406841bd33c?w=800&auto=format&fit=crop&q=80", "img_tag": "Dynamic Exploration"}, {"q": "Tomorrow is a holiday, so we ________ wake up early.", "a": "needn't", "opts": ["needn't", "mustn't", "ought to", "have to"], "hint": "Absence of necessity", "img": "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800&auto=format&fit=crop&q=80", "img_tag": "Film Premiere Lights"}]}, {"label": "Modals of Obligation, Advice & Prohibition — Key Term Match", "type": "match", "pairs": [["must", "strong internal obligation"], ["have to", "external legal rule or regulation"], ["should", "advisable recommendation"], ["mustn't", "strict prohibition (forbidden)"], ["needn't", "lack of obligation (not required)"]]}, {"label": "Modals of Obligation, Advice & Prohibition — Sentence Sprint", "type": "fill", "questions": [{"q": "You ________ touch that exposed electric wire! It's dangerous.", "a": "mustn't", "hint": "Forbidden", "img": "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=800&auto=format&fit=crop&q=80", "img_tag": "Literary Analysis"}, {"q": "You ________ bring your textbook tomorrow; I will hand out copies.", "a": "needn't", "hint": "Not necessary", "img": "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800&auto=format&fit=crop&q=80", "img_tag": "Film Premiere Lights"}]}];
 
 let activeTemplate = 'all';
 let activeRounds = [];
@@ -739,7 +743,7 @@ function buildFlashcardDeck(){
   ALL_ROUNDS.forEach(r => {
     if (r.type === 'mcq' || r.type === 'fill'){
       r.questions.forEach(q => {
-        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '' });
+        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '', img: q.img, img_tag: q.img_tag });
       });
     }
     if (r.type === 'match'){
@@ -878,7 +882,7 @@ function renderMCQ(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // 1. Real-life Image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -964,7 +968,7 @@ function renderFill(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // Real-life image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -1174,7 +1178,7 @@ function renderFlashcard(){
   const container = document.getElementById('q-card');
   container.innerHTML = '';
 
-  const imgInfo = resolveQuestionImage(cardData.front, cardData.badge);
+  const imgInfo = resolveQuestionImage(cardData, cardData.badge);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.style.height = '180px';

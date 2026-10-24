@@ -575,7 +575,11 @@ const CURATED_IMAGE_DATABASE = {
   study:        "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&auto=format&fit=crop&q=80"
 };
 
-function resolveQuestionImage(qText, roundLabel){
+function resolveQuestionImage(qInput, roundLabel){
+  if (qInput && typeof qInput === 'object' && qInput.img) {
+    return { url: qInput.img, tag: qInput.img_tag || 'Illustration' };
+  }
+  const qText = (typeof qInput === 'string' ? qInput : (qInput && qInput.q) ? qInput.q : '') + ' ' + (roundLabel || '');
   const s = ((qText || '') + ' ' + (roundLabel || '')).toLowerCase();
 
   // Plants & Botany
@@ -685,7 +689,7 @@ function resolveQuestionImage(qText, roundLabel){
 })();
 
 // Data injected by generator
-const ALL_ROUNDS = [{"label": "Quantifiers: some, any, much, many, a lot of — MCQ", "type": "mcq", "questions": [{"q": "There isn't ______ traffic in Monowi because only one person lives there.", "a": "much", "opts": ["much", "many", "some", "a few"], "hint": "Traffic is an uncountable noun"}, {"q": "Are there ______ other shops left open on Main Street?", "a": "any", "opts": ["any", "some", "much", "a little"], "hint": "Questions usually use this quantifier"}, {"q": "Elsie has ______ friends who drive long distances to visit her.", "a": "a lot of", "opts": ["a lot of", "much", "any", "little"], "hint": "Positive sentence with plural countable noun"}, {"q": "We only have ______ time before the bus leaves, so hurry!", "a": "a little", "opts": ["a little", "a few", "many", "several"], "hint": "Time (duration) is uncountable"}]}, {"label": "Articles: a, an, the, or zero article — Fill in Blank", "type": "fill", "questions": [{"q": "Elsie is ________ only resident living in Monowi.", "a": "the", "hint": "Unique / specific person"}, {"q": "Monowi was once ________ important stop on the railway line.", "a": "an", "hint": "Before vowel sound 'important'"}, {"q": "Young people left for ________ bigger cities to find jobs. (Type 'zero' if no article)", "a": "zero", "hint": "Plural countable in general sense"}]}];
+const ALL_ROUNDS = [{"label": "Quantifiers: some, any, much, many, a lot of — MCQ", "type": "mcq", "questions": [{"q": "There isn't ______ traffic in Monowi because only one person lives there.", "a": "much", "opts": ["much", "many", "some", "a few"], "hint": "Traffic is an uncountable noun", "img": "https://images.unsplash.com/photo-1506521781263-d8422e82f27a?w=800&auto=format&fit=crop&q=80", "img_tag": "Open Quiet Road"}, {"q": "Are there ______ other shops left open on Main Street?", "a": "any", "opts": ["any", "some", "much", "a little"], "hint": "Questions usually use this quantifier", "img": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&auto=format&fit=crop&q=80", "img_tag": "Small Town Storefront"}, {"q": "Elsie has ______ friends who drive long distances to visit her.", "a": "a lot of", "opts": ["a lot of", "much", "any", "little"], "hint": "Positive sentence with plural countable noun", "img": "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800&auto=format&fit=crop&q=80", "img_tag": "Road Trip Journey"}, {"q": "We only have ______ time before the bus leaves, so hurry!", "a": "a little", "opts": ["a little", "a few", "many", "several"], "hint": "Time (duration) is uncountable", "img": "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800&auto=format&fit=crop&q=80", "img_tag": "Express City Bus"}]}, {"label": "Articles: a, an, the, or zero article — Fill in Blank", "type": "fill", "questions": [{"q": "Elsie is ________ only resident living in Monowi.", "a": "the", "hint": "Unique / specific person", "img": "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=800&auto=format&fit=crop&q=80", "img_tag": "Historic Prairie Homestead"}, {"q": "Monowi was once ________ important stop on the railway line.", "a": "an", "hint": "Before vowel sound 'important'", "img": "https://images.unsplash.com/photo-1474487548417-781cb71495f3?w=800&auto=format&fit=crop&q=80", "img_tag": "Historic Railway Junction"}, {"q": "Young people left for ________ bigger cities to find jobs. (Type 'zero' if no article)", "a": "zero", "hint": "Plural countable in general sense", "img": "https://images.unsplash.com/photo-1477959858617-67f30bc75b82?w=800&auto=format&fit=crop&q=80", "img_tag": "Modern Metropolis Skyline"}]}];
 
 let activeTemplate = 'all';
 let activeRounds = [];
@@ -739,7 +743,7 @@ function buildFlashcardDeck(){
   ALL_ROUNDS.forEach(r => {
     if (r.type === 'mcq' || r.type === 'fill'){
       r.questions.forEach(q => {
-        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '' });
+        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '', img: q.img, img_tag: q.img_tag });
       });
     }
     if (r.type === 'match'){
@@ -878,7 +882,7 @@ function renderMCQ(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // 1. Real-life Image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -964,7 +968,7 @@ function renderFill(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // Real-life image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -1174,7 +1178,7 @@ function renderFlashcard(){
   const container = document.getElementById('q-card');
   container.innerHTML = '';
 
-  const imgInfo = resolveQuestionImage(cardData.front, cardData.badge);
+  const imgInfo = resolveQuestionImage(cardData, cardData.badge);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.style.height = '180px';

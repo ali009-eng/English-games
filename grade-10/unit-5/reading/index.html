@@ -575,7 +575,11 @@ const CURATED_IMAGE_DATABASE = {
   study:        "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&auto=format&fit=crop&q=80"
 };
 
-function resolveQuestionImage(qText, roundLabel){
+function resolveQuestionImage(qInput, roundLabel){
+  if (qInput && typeof qInput === 'object' && qInput.img) {
+    return { url: qInput.img, tag: qInput.img_tag || 'Illustration' };
+  }
+  const qText = (typeof qInput === 'string' ? qInput : (qInput && qInput.q) ? qInput.q : '') + ' ' + (roundLabel || '');
   const s = ((qText || '') + ' ' + (roundLabel || '')).toLowerCase();
 
   // Plants & Botany
@@ -685,7 +689,7 @@ function resolveQuestionImage(qText, roundLabel){
 })();
 
 // Data injected by generator
-const ALL_ROUNDS = [{"label": "Preserving History & Ancient Wonders — Quiz Sprint", "type": "mcq", "questions": [{"q": "Why are ancient monuments protected under UNESCO treaties?", "a": "Because they have universal cultural value for all humanity", "opts": ["Because they have universal cultural value for all humanity", "To convert them into shopping centers", "To demolish them for new highways", "Because no one visits them"], "hint": "Global cultural legacy"}, {"q": "What threats do ancient heritage sites face today?", "a": "Mass tourism, pollution, erosion, and armed conflict", "opts": ["Mass tourism, pollution, erosion, and armed conflict", "Excessive scientific research", "Having too many protective laws", "Lack of historical significance"], "hint": "Environmental and human damage"}, {"q": "What is the primary role of archaeological excavation?", "a": "Unearthing physical evidence to reconstruct past societies", "opts": ["Unearthing physical evidence to reconstruct past societies", "Finding gold for personal wealth", "Digging foundations for skyscrapers", "Leveling historic hills"], "hint": "Scientific historical inquiry"}]}, {"label": "Preserving History & Ancient Wonders — Key Term Match", "type": "match", "pairs": [["monument", "a lasting structure honoring history"], ["excavation", "the scientific digging up of buried remains"], ["heritage", "cultural traditions and monuments passed to future generations"], ["restoration", "skilled renovation to return an object to its original state"]]}, {"label": "Preserving History & Ancient Wonders — Sentence Sprint", "type": "fill", "questions": [{"q": "Archaeologists uncovered an ancient bronze ________ in the ruins.", "a": "artifact", "hint": "A-r-t-i-f-a-c-t"}, {"q": "UNESCO designated the ancient city as a World ________ site.", "a": "Heritage", "hint": "Starts with H-"}]}];
+const ALL_ROUNDS = [{"label": "Preserving History & Ancient Wonders — Quiz Sprint", "type": "mcq", "questions": [{"q": "Why are ancient monuments protected under UNESCO treaties?", "a": "Because they have universal cultural value for all humanity", "opts": ["Because they have universal cultural value for all humanity", "To convert them into shopping centers", "To demolish them for new highways", "Because no one visits them"], "hint": "Global cultural legacy", "img": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&auto=format&fit=crop&q=80", "img_tag": "Digital Technology"}, {"q": "What threats do ancient heritage sites face today?", "a": "Mass tourism, pollution, erosion, and armed conflict", "opts": ["Mass tourism, pollution, erosion, and armed conflict", "Excessive scientific research", "Having too many protective laws", "Lack of historical significance"], "hint": "Environmental and human damage", "img": "https://images.unsplash.com/photo-1507413245164-6160d8298b31?w=800&auto=format&fit=crop&q=80", "img_tag": "Advanced Nanotech"}, {"q": "What is the primary role of archaeological excavation?", "a": "Unearthing physical evidence to reconstruct past societies", "opts": ["Unearthing physical evidence to reconstruct past societies", "Finding gold for personal wealth", "Digging foundations for skyscrapers", "Leveling historic hills"], "hint": "Scientific historical inquiry", "img": "https://images.unsplash.com/photo-1516912481808-3406841bd33c?w=800&auto=format&fit=crop&q=80", "img_tag": "Dynamic Exploration"}]}, {"label": "Preserving History & Ancient Wonders — Key Term Match", "type": "match", "pairs": [["monument", "a lasting structure honoring history"], ["excavation", "the scientific digging up of buried remains"], ["heritage", "cultural traditions and monuments passed to future generations"], ["restoration", "skilled renovation to return an object to its original state"]]}, {"label": "Preserving History & Ancient Wonders — Sentence Sprint", "type": "fill", "questions": [{"q": "Archaeologists uncovered an ancient bronze ________ in the ruins.", "a": "artifact", "hint": "A-r-t-i-f-a-c-t", "img": "https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80", "img_tag": "Global Perspectives"}, {"q": "UNESCO designated the ancient city as a World ________ site.", "a": "Heritage", "hint": "Starts with H-", "img": "https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?w=800&auto=format&fit=crop&q=80", "img_tag": "Critical Reflection"}]}];
 
 let activeTemplate = 'all';
 let activeRounds = [];
@@ -739,7 +743,7 @@ function buildFlashcardDeck(){
   ALL_ROUNDS.forEach(r => {
     if (r.type === 'mcq' || r.type === 'fill'){
       r.questions.forEach(q => {
-        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '' });
+        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '', img: q.img, img_tag: q.img_tag });
       });
     }
     if (r.type === 'match'){
@@ -878,7 +882,7 @@ function renderMCQ(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // 1. Real-life Image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -964,7 +968,7 @@ function renderFill(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // Real-life image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -1174,7 +1178,7 @@ function renderFlashcard(){
   const container = document.getElementById('q-card');
   container.innerHTML = '';
 
-  const imgInfo = resolveQuestionImage(cardData.front, cardData.badge);
+  const imgInfo = resolveQuestionImage(cardData, cardData.badge);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.style.height = '180px';

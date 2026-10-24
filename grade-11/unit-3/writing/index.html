@@ -575,7 +575,11 @@ const CURATED_IMAGE_DATABASE = {
   study:        "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&auto=format&fit=crop&q=80"
 };
 
-function resolveQuestionImage(qText, roundLabel){
+function resolveQuestionImage(qInput, roundLabel){
+  if (qInput && typeof qInput === 'object' && qInput.img) {
+    return { url: qInput.img, tag: qInput.img_tag || 'Illustration' };
+  }
+  const qText = (typeof qInput === 'string' ? qInput : (qInput && qInput.q) ? qInput.q : '') + ' ' + (roundLabel || '');
   const s = ((qText || '') + ' ' + (roundLabel || '')).toLowerCase();
 
   // Plants & Botany
@@ -685,7 +689,7 @@ function resolveQuestionImage(qText, roundLabel){
 })();
 
 // Data injected by generator
-const ALL_ROUNDS = [{"label": "A Discursive Essay — Quiz Sprint", "type": "mcq", "questions": [{"q": "What distinguishes a discursive essay from a purely one-sided rant?", "a": "It examines contrasting viewpoints with balanced evidence before concluding", "opts": ["It examines contrasting viewpoints with balanced evidence before concluding", "It insults anyone who disagrees", "It only presents the writer's personal feelings", "It uses slang and texting abbreviations"], "hint": "Balanced consideration of arguments"}, {"q": "Which formal linking phrase introduces a contrasting perspective?", "a": "On the other hand, / Conversely, / In contrast,", "opts": ["On the other hand, / Conversely, / In contrast,", "In addition, / Furthermore, / Moreover,", "First of all, / To start with,", "In conclusion, / To sum up,"], "hint": "Contrast transition"}]}, {"label": "A Discursive Essay — Key Term Match", "type": "match", "pairs": [["introduction", "outlines the issue and states the debate's relevance"], ["arguments in favor", "presents evidence supporting the proposition"], ["counter-arguments", "explores objections and alternative viewpoints"], ["balanced conclusion", "synthesizes arguments and delivers a nuanced verdict"]]}, {"label": "A Discursive Essay — Sentence Sprint", "type": "fill", "questions": [{"q": "________, proponents argue that advertising informs consumer choices.", "a": "Firstly", "hint": "Sequence opener"}, {"q": "On the other ________, opponents argue it creates artificial materialism.", "a": "hand", "hint": "On the other ..."}]}];
+const ALL_ROUNDS = [{"label": "A Discursive Essay — Quiz Sprint", "type": "mcq", "questions": [{"q": "What distinguishes a discursive essay from a purely one-sided rant?", "a": "It examines contrasting viewpoints with balanced evidence before concluding", "opts": ["It examines contrasting viewpoints with balanced evidence before concluding", "It insults anyone who disagrees", "It only presents the writer's personal feelings", "It uses slang and texting abbreviations"], "hint": "Balanced consideration of arguments", "img": "https://images.unsplash.com/photo-1471107340929-a87cd0f5b5f3?w=800&auto=format&fit=crop&q=80", "img_tag": "Academic Essay Studio"}, {"q": "Which formal linking phrase introduces a contrasting perspective?", "a": "On the other hand, / Conversely, / In contrast,", "opts": ["On the other hand, / Conversely, / In contrast,", "In addition, / Furthermore, / Moreover,", "First of all, / To start with,", "In conclusion, / To sum up,"], "hint": "Contrast transition", "img": "https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=800&auto=format&fit=crop&q=80", "img_tag": "Theater Showcase"}]}, {"label": "A Discursive Essay — Key Term Match", "type": "match", "pairs": [["introduction", "outlines the issue and states the debate's relevance"], ["arguments in favor", "presents evidence supporting the proposition"], ["counter-arguments", "explores objections and alternative viewpoints"], ["balanced conclusion", "synthesizes arguments and delivers a nuanced verdict"]]}, {"label": "A Discursive Essay — Sentence Sprint", "type": "fill", "questions": [{"q": "________, proponents argue that advertising informs consumer choices.", "a": "Firstly", "hint": "Sequence opener", "img": "https://images.unsplash.com/photo-1471107340929-a87cd0f5b5f3?w=800&auto=format&fit=crop&q=80", "img_tag": "Academic Essay Studio"}, {"q": "On the other ________, opponents argue it creates artificial materialism.", "a": "hand", "hint": "On the other ...", "img": "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&auto=format&fit=crop&q=80", "img_tag": "Companionship & Dialogue"}]}];
 
 let activeTemplate = 'all';
 let activeRounds = [];
@@ -739,7 +743,7 @@ function buildFlashcardDeck(){
   ALL_ROUNDS.forEach(r => {
     if (r.type === 'mcq' || r.type === 'fill'){
       r.questions.forEach(q => {
-        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '' });
+        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '', img: q.img, img_tag: q.img_tag });
       });
     }
     if (r.type === 'match'){
@@ -878,7 +882,7 @@ function renderMCQ(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // 1. Real-life Image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -964,7 +968,7 @@ function renderFill(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // Real-life image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -1174,7 +1178,7 @@ function renderFlashcard(){
   const container = document.getElementById('q-card');
   container.innerHTML = '';
 
-  const imgInfo = resolveQuestionImage(cardData.front, cardData.badge);
+  const imgInfo = resolveQuestionImage(cardData, cardData.badge);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.style.height = '180px';

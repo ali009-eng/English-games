@@ -575,7 +575,11 @@ const CURATED_IMAGE_DATABASE = {
   study:        "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&auto=format&fit=crop&q=80"
 };
 
-function resolveQuestionImage(qText, roundLabel){
+function resolveQuestionImage(qInput, roundLabel){
+  if (qInput && typeof qInput === 'object' && qInput.img) {
+    return { url: qInput.img, tag: qInput.img_tag || 'Illustration' };
+  }
+  const qText = (typeof qInput === 'string' ? qInput : (qInput && qInput.q) ? qInput.q : '') + ' ' + (roundLabel || '');
   const s = ((qText || '') + ' ' + (roundLabel || '')).toLowerCase();
 
   // Plants & Botany
@@ -685,7 +689,7 @@ function resolveQuestionImage(qText, roundLabel){
 })();
 
 // Data injected by generator
-const ALL_ROUNDS = [{"label": "Monowi, Population: 1 — MCQ", "type": "mcq", "questions": [{"q": "Elsie Eiler has lived in Monowi since she was:", "a": "born there", "opts": ["born there", "five years old", "a teenager", "getting married"], "hint": "Check the opening paragraph of the text"}, {"q": "She does 5 jobs in the town. Which of these is NOT one of her jobs?", "a": "School teacher", "opts": ["Mayor", "Library director", "School teacher", "Bar manager"], "hint": "Think about the 5 jobs listed in Monowi"}, {"q": "What happened to the younger generation in Monowi?", "a": "They left for bigger cities to find jobs", "opts": ["They stayed to help Elsie", "They left for bigger cities to find jobs", "They all moved to Australia", "They started small factories"], "hint": "Rural-urban migration"}, {"q": "Elsie's husband Rudy passed away in:", "a": "2004", "opts": ["1999", "2001", "2004", "2010"], "hint": "Check paragraph C"}, {"q": "How does Elsie describe her life living alone in Monowi?", "a": "She is content and happy", "opts": ["She is terrified", "She is desperate to move", "She is content and happy", "She feels angry"], "hint": "She has lots of friends visiting her bar"}]}, {"label": "Town & Country True or False", "type": "mcq", "questions": [{"q": "TRUE or FALSE: Monowi had over 150 inhabitants in the 1930s.", "a": "TRUE", "opts": ["TRUE", "FALSE"], "hint": "It was a thriving railroad town"}, {"q": "TRUE or FALSE: Monowi is located in the state of California.", "a": "FALSE", "opts": ["TRUE", "FALSE"], "hint": "It is in Nebraska"}, {"q": "TRUE or FALSE: Elsie pays taxes to herself because she is the town treasurer.", "a": "TRUE", "opts": ["TRUE", "FALSE"], "hint": "She is both citizen and municipal treasurer"}, {"q": "TRUE or FALSE: Young people moved away because farming became industrialised.", "a": "TRUE", "opts": ["TRUE", "FALSE"], "hint": "Machines replaced human jobs"}]}, {"label": "Key Reading Terms — Match", "type": "match", "pairs": [["inhabitant", "a person who lives in a particular place"], ["abandoned", "left completely empty and no longer used"], ["thriving", "very successful, healthy, and growing"], ["industrialised", "having developed a lot of industry and machinery"], ["treasurer", "an official in charge of managing money"]]}];
+const ALL_ROUNDS = [{"label": "Monowi, Population: 1 — MCQ", "type": "mcq", "questions": [{"q": "Elsie Eiler has lived in Monowi since she was:", "a": "born there", "opts": ["born there", "five years old", "a teenager", "getting married"], "hint": "Check the opening paragraph of the text", "img": "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=800&auto=format&fit=crop&q=80", "img_tag": "Monowi Town Boundary"}, {"q": "She does 5 jobs in the town. Which of these is NOT one of her jobs?", "a": "School teacher", "opts": ["Mayor", "Library director", "School teacher", "Bar manager"], "hint": "Think about the 5 jobs listed in Monowi", "img": "https://images.unsplash.com/photo-1577495508048-b635879837f1?w=800&auto=format&fit=crop&q=80", "img_tag": "Civic Leader & Mayor"}, {"q": "What happened to the younger generation in Monowi?", "a": "They left for bigger cities to find jobs", "opts": ["They stayed to help Elsie", "They left for bigger cities to find jobs", "They all moved to Australia", "They started small factories"], "hint": "Rural-urban migration", "img": "https://images.unsplash.com/photo-1477959858617-67f30bc75b82?w=800&auto=format&fit=crop&q=80", "img_tag": "Modern Metropolis Skyline"}, {"q": "Elsie's husband Rudy passed away in:", "a": "2004", "opts": ["1999", "2001", "2004", "2010"], "hint": "Check paragraph C", "img": "https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=800&auto=format&fit=crop&q=80", "img_tag": "Monowi Tavern & Bar"}, {"q": "How does Elsie describe her life living alone in Monowi?", "a": "She is content and happy", "opts": ["She is terrified", "She is desperate to move", "She is content and happy", "She feels angry"], "hint": "She has lots of friends visiting her bar", "img": "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&auto=format&fit=crop&q=80", "img_tag": "Peaceful Rural Serenity"}]}, {"label": "Town & Country True or False", "type": "mcq", "questions": [{"q": "TRUE or FALSE: Monowi had over 150 inhabitants in the 1930s.", "a": "TRUE", "opts": ["TRUE", "FALSE"], "hint": "It was a thriving railroad town", "img": "https://images.unsplash.com/photo-1474487548417-781cb71495f3?w=800&auto=format&fit=crop&q=80", "img_tag": "Historic Railroad Station"}, {"q": "TRUE or FALSE: Monowi is located in the state of California.", "a": "FALSE", "opts": ["TRUE", "FALSE"], "hint": "It is in Nebraska", "img": "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?w=800&auto=format&fit=crop&q=80", "img_tag": "Nebraska Country Road"}, {"q": "TRUE or FALSE: Elsie pays taxes to herself because she is the town treasurer.", "a": "TRUE", "opts": ["TRUE", "FALSE"], "hint": "She is both citizen and municipal treasurer", "img": "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=800&auto=format&fit=crop&q=80", "img_tag": "Municipal Tax & Ledger"}, {"q": "TRUE or FALSE: Young people moved away because farming became industrialised.", "a": "TRUE", "opts": ["TRUE", "FALSE"], "hint": "Machines replaced human jobs", "img": "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=800&auto=format&fit=crop&q=80", "img_tag": "Modern Farm Harvester"}]}, {"label": "Key Reading Terms — Match", "type": "match", "pairs": [["inhabitant", "a person who lives in a particular place"], ["abandoned", "left completely empty and no longer used"], ["thriving", "very successful, healthy, and growing"], ["industrialised", "having developed a lot of industry and machinery"], ["treasurer", "an official in charge of managing money"]]}];
 
 let activeTemplate = 'all';
 let activeRounds = [];
@@ -739,7 +743,7 @@ function buildFlashcardDeck(){
   ALL_ROUNDS.forEach(r => {
     if (r.type === 'mcq' || r.type === 'fill'){
       r.questions.forEach(q => {
-        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '' });
+        deck.push({ badge: r.label, front: q.q, back: q.a, hint: q.hint || '', img: q.img, img_tag: q.img_tag });
       });
     }
     if (r.type === 'match'){
@@ -878,7 +882,7 @@ function renderMCQ(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // 1. Real-life Image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -964,7 +968,7 @@ function renderFill(round, card){
   renderProgressDots(round.questions.length, qIdx);
 
   // Real-life image in front of question
-  const imgInfo = resolveQuestionImage(q.q, round.label);
+  const imgInfo = resolveQuestionImage(q, round.label);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.innerHTML = `
@@ -1174,7 +1178,7 @@ function renderFlashcard(){
   const container = document.getElementById('q-card');
   container.innerHTML = '';
 
-  const imgInfo = resolveQuestionImage(cardData.front, cardData.badge);
+  const imgInfo = resolveQuestionImage(cardData, cardData.badge);
   const imgWrap = document.createElement('div');
   imgWrap.className = 'q-img-wrap';
   imgWrap.style.height = '180px';
