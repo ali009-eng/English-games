@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Healing Plants — Reading | Grade 11 English Games</title>
+  <title>It's a Must-Have! — Reading | Grade 11 English Games</title>
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     button { font-family: inherit; cursor: pointer; }
     body {
       font-family: 'Outfit', system-ui, sans-serif; min-height: 100vh; color: #fff; overflow-x: hidden;
-      background: radial-gradient(circle at 50% 0%, #064e3b 0%, #047857 55%, #080718 100%);
+      background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #312e81 55%, #080718 100%);
       background-attachment: fixed;
     }
     input { user-select: text; -webkit-user-select: text; }
@@ -64,7 +64,7 @@
     .logo-img { width: 36px; height: 36px; border-radius: 10px; object-fit: cover; border: 1px solid rgba(255,255,255,.2); }
     .hdr-title {
       font-family: 'Baloo 2', sans-serif; font-size: 16px; font-weight: 800;
-      background: linear-gradient(90deg, #34d399, #a7f3d0);
+      background: linear-gradient(90deg, #a855f7, #e9d5ff);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
 
@@ -77,7 +77,7 @@
       font-size: 12px; font-weight: 800; color: rgba(255,255,255,.7); transition: all .2s;
     }
     .mode-tab:hover { color: #fff; }
-    .mode-tab.active { background: #34d399; color: #080718; box-shadow: 0 2px 10px rgba(0,0,0,.35); font-weight: 900; }
+    .mode-tab.active { background: #a855f7; color: #080718; box-shadow: 0 2px 10px rgba(0,0,0,.35); font-weight: 900; }
 
     .score-chip { display: flex; gap: 8px; margin-left: 8px; }
     .chip {
@@ -102,7 +102,7 @@
     @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
     #welcome h1 {
       font-family: 'Baloo 2', sans-serif; font-size: clamp(2.2rem, 5vw, 3.4rem); font-weight: 800;
-      background: linear-gradient(135deg, #fff, #a7f3d0);
+      background: linear-gradient(135deg, #fff, #e9d5ff);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1.15;
     }
     .welcome-sub { color: rgba(255,255,255,.7); font-size: 1.05rem; max-width: 540px; line-height: 1.6; }
@@ -116,9 +116,9 @@
       border-radius: 20px; padding: 18px 12px; text-align: center; cursor: pointer;
       transition: all .2s; color: #fff; backdrop-filter: blur(12px);
     }
-    .tpl-card:hover { background: rgba(255,255,255,.12); border-color: #34d399; transform: translateY(-4px); }
+    .tpl-card:hover { background: rgba(255,255,255,.12); border-color: #a855f7; transform: translateY(-4px); }
     .tpl-card.active {
-      border-color: #34d399; background: rgba(255,255,255,.16);
+      border-color: #a855f7; background: rgba(255,255,255,.16);
       box-shadow: 0 0 24px rgba(255,255,255,.15);
     }
     .tpl-icon { font-size: 34px; display: block; margin-bottom: 6px; }
@@ -126,7 +126,7 @@
     .tpl-desc { font-size: 11px; color: rgba(255,255,255,.55); margin-top: 4px; display: block; }
 
     .start-btn {
-      background: linear-gradient(135deg, #34d399, #047857); border: none; border-radius: 22px;
+      background: linear-gradient(135deg, #a855f7, #312e81); border: none; border-radius: 22px;
       padding: 16px 48px; font-size: 1.2rem; font-weight: 800; color: #fff;
       box-shadow: 0 10px 30px rgba(0,0,0,.4); transition: transform .15s, box-shadow .15s;
     }
@@ -137,7 +137,7 @@
     .progress-bar-wrap { width: 100%; background: rgba(255,255,255,.1); border-radius: 99px; height: 8px; overflow: hidden; }
     .progress-bar {
       height: 100%; border-radius: 99px;
-      background: linear-gradient(90deg, #34d399, #a7f3d0);
+      background: linear-gradient(90deg, #a855f7, #e9d5ff);
       transition: width .35s ease;
     }
 
@@ -150,7 +150,7 @@
       transition: all 0.25s ease;
     }
     .q-dot.done { background: #34d399; }
-    .q-dot.cur { background: #34d399; transform: scale(1.35); box-shadow: 0 0 8px #34d399; }
+    .q-dot.cur { background: #a855f7; transform: scale(1.35); box-shadow: 0 0 8px #a855f7; }
 
     /* Speed Blitz Timer Bar */
     .blitz-timer-wrap {
@@ -210,7 +210,7 @@
     }
     .round-badge {
       display: inline-block; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
-      border-radius: 999px; padding: 5px 16px; font-size: 12px; color: #a7f3d0;
+      border-radius: 999px; padding: 5px 16px; font-size: 12px; color: #e9d5ff;
       margin-bottom: 12px; font-weight: 800; letter-spacing: 0.5px;
     }
 
@@ -223,7 +223,7 @@
       border: 1px solid rgba(255,255,255,0.22); border-radius: 999px; padding: 6px 16px;
       font-size: 13px; font-weight: 800; color: #fff; transition: all 0.2s;
     }
-    .btn-listen:hover { background: rgba(255,255,255,0.18); transform: translateY(-2px); border-color: #34d399; }
+    .btn-listen:hover { background: rgba(255,255,255,0.18); transform: translateY(-2px); border-color: #a855f7; }
 
     /* MCQ */
     .q-text { font-size: 1.35rem; font-weight: 800; line-height: 1.45; margin-bottom: 8px; }
@@ -241,14 +241,14 @@
     .opt-letter {
       width: 32px; height: 32px; border-radius: 10px; background: rgba(255,255,255,0.1);
       display: flex; align-items: center; justify-content: center; font-weight: 900;
-      font-size: 14px; flex-shrink: 0; color: #a7f3d0; border: 1px solid rgba(255,255,255,0.2);
+      font-size: 14px; flex-shrink: 0; color: #e9d5ff; border: 1px solid rgba(255,255,255,0.2);
     }
     .opt-txt { flex: 1; }
     .opt-btn:hover:not(:disabled) {
-      background: rgba(255,255,255,.15); border-color: #34d399; transform: translateY(-2px);
+      background: rgba(255,255,255,.15); border-color: #a855f7; transform: translateY(-2px);
     }
     .opt-btn:hover:not(:disabled) .opt-letter {
-      background: #34d399; color: #080718; border-color: #34d399;
+      background: #a855f7; color: #080718; border-color: #a855f7;
     }
     .opt-btn.correct { background: rgba(16,185,129,.35) !important; border-color: #34d399 !important; color: #a7f3d0 !important; }
     .opt-btn.correct .opt-letter { background: #34d399 !important; color: #064e3b !important; border-color: #34d399 !important; }
@@ -263,11 +263,11 @@
       padding: 14px 20px; font-size: 16px; font-weight: 700; color: #fff; flex: 1; min-width: 200px;
       outline: none; transition: border-color .2s;
     }
-    .blank-input:focus { border-color: #34d399; }
+    .blank-input:focus { border-color: #a855f7; }
     .blank-input.correct { border-color: #34d399; background: rgba(16,185,129,.25); }
     .blank-input.wrong { border-color: #f87171; background: rgba(239,68,68,.2); }
     .submit-btn {
-      background: linear-gradient(135deg, #34d399, #047857); border: none; border-radius: 16px;
+      background: linear-gradient(135deg, #a855f7, #312e81); border: none; border-radius: 16px;
       padding: 14px 30px; font-size: 15px; font-weight: 800; color: #fff; transition: transform .15s;
     }
     .submit-btn:hover { transform: translateY(-2px); }
@@ -294,8 +294,8 @@
       justify-content: center; text-align: center; border: 2px solid rgba(255,255,255,.18);
     }
     .fc-front { background: linear-gradient(135deg, rgba(255,255,255,.1), rgba(255,255,255,.05)); backdrop-filter: blur(18px); }
-    .fc-back { background: linear-gradient(135deg, #047857, #0a081d); transform: rotateY(180deg); border-color: #34d399; }
-    .fc-badge { font-size: 12px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #a7f3d0; margin-bottom: 10px; }
+    .fc-back { background: linear-gradient(135deg, #312e81, #0a081d); transform: rotateY(180deg); border-color: #a855f7; }
+    .fc-badge { font-size: 12px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #e9d5ff; margin-bottom: 10px; }
     .fc-main-text { font-size: 1.35rem; font-weight: 800; line-height: 1.4; }
     .fc-sub-text { font-size: 13px; color: rgba(255,255,255,.55); margin-top: 10px; }
     .fc-controls { display: flex; gap: 12px; justify-content: center; margin-top: 20px; flex-wrap: wrap; }
@@ -310,19 +310,19 @@
     .result-trophy { font-size: 80px; animation: bob 2s ease-in-out infinite; }
     #result h2 {
       font-family: 'Baloo 2', sans-serif; font-size: clamp(2.2rem, 5vw, 3.4rem); font-weight: 800;
-      background: linear-gradient(135deg, #fff, #a7f3d0);
+      background: linear-gradient(135deg, #fff, #e9d5ff);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
     .result-score {
       font-size: 4rem; font-weight: 900; font-family: 'Baloo 2', sans-serif;
-      background: linear-gradient(135deg, #34d399, #a7f3d0);
+      background: linear-gradient(135deg, #a855f7, #e9d5ff);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1;
     }
     .result-msg { color: rgba(255,255,255,.65); font-size: 1.05rem; max-width: 460px; line-height: 1.5; }
     .result-btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 10px; }
     .rbtn { border: none; border-radius: 18px; padding: 14px 30px; font-size: 15px; font-weight: 800; transition: all .15s; text-decoration: none; }
     .rbtn:hover { transform: translateY(-3px); }
-    .rbtn.primary { background: linear-gradient(135deg, #34d399, #047857); color: #fff; }
+    .rbtn.primary { background: linear-gradient(135deg, #a855f7, #312e81); color: #fff; }
     .rbtn.secondary { background: rgba(255,255,255,.1); color: #fff; border: 1px solid rgba(255,255,255,.2); }
     .ws-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 12px; }
     .ws-dl {
@@ -341,7 +341,7 @@
     <div class="hdr-left">
       <a href="../index.html" class="back-btn" onclick="sounds.playPop()">← Unit 4</a>
       <img src="../../../assets/logo.jpg" alt="Logo" class="logo-img" onerror="this.style.display='none'">
-      <div class="hdr-title">📖 Healing Plants — Reading | Grade 11 English Games</div>
+      <div class="hdr-title">📖 It's a Must-Have! — Reading | Grade 11 English Games</div>
     </div>
     
     <!-- Template Switcher in Header -->
@@ -363,7 +363,7 @@
   <!-- WELCOME SCREEN -->
   <section class="screen active" id="welcome">
     <div class="welcome-emoji">📖</div>
-    <h1>Healing Plants — Reading | Grade 11 English Games</h1>
+    <h1>It's a Must-Have! — Reading | Grade 11 English Games</h1>
     <p class="welcome-sub">Choose your game mode. Practice vocabulary, grammar, reading and writing with real-world pictures and pronunciation!</p>
 
     <!-- Template Selection Grid -->
@@ -689,7 +689,7 @@ function resolveQuestionImage(qInput, roundLabel){
 })();
 
 // Data injected by generator
-const ALL_ROUNDS = [{"label": "Plant Medicines & Botanical Remedies — Quiz Sprint", "type": "mcq", "questions": [{"q": "Where does the active compound in modern aspirin originally come from?", "a": "The bark of the willow tree (salicylic acid)", "opts": ["The bark of the willow tree (salicylic acid)", "Petroleum refining byproducts", "Deep sea volcanic minerals", "Cultivated fungal spores"], "hint": "Salix alba (willow bark)", "img": "https://images.unsplash.com/photo-1512069772995-ec65ed45afd6?w=800&auto=format&fit=crop&q=80", "img_tag": "Ancient Willow Tree Bark"}, {"q": "Why are rainforests often termed 'the world's pharmacy'?", "a": "Over a quarter of modern medicines derive from rainforest plant compounds", "opts": ["Over a quarter of modern medicines derive from rainforest plant compounds", "They have modern hospitals built in the canopy", "Doctors train primarily in the jungle", "Prescription drugs grow packaged on trees"], "hint": "Botanical biodiversity as medicine source", "img": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&auto=format&fit=crop&q=80", "img_tag": "Conceptual Ideas"}, {"q": "What risk does deforestation pose to medical research?", "a": "Uncatalogued plant species with potential cures may become extinct forever", "opts": ["Uncatalogued plant species with potential cures may become extinct forever", "Medicines will become too cheap", "Doctors will have nothing to study", "Synthetic drugs will disappear"], "hint": "Loss of undiscovered species", "img": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=800&auto=format&fit=crop&q=80", "img_tag": "Medical Research Lab"}]}, {"label": "Plant Medicines & Botanical Remedies — Key Term Match", "type": "match", "pairs": [["alleviate", "lessen pain or physical discomfort"], ["therapeutic", "having healing or curative properties"], ["extract", "concentrated essence obtained from botanical tissue"], ["pharmaceutical", "connected to medicines and pharmacy production"]]}, {"label": "Plant Medicines & Botanical Remedies — Sentence Sprint", "type": "fill", "questions": [{"q": "The herbal compound helped ________ his chronic joint pain.", "a": "alleviate", "hint": "Verb starting with a-", "img": "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&auto=format&fit=crop&q=80", "img_tag": "Natural Ecosystem"}, {"q": "Tea tree oil has powerful ________ and antiseptic properties.", "a": "therapeutic", "hint": "Healing adjective", "img": "https://images.unsplash.com/photo-1516912481808-3406841bd33c?w=800&auto=format&fit=crop&q=80", "img_tag": "Dynamic Exploration"}]}];
+const ALL_ROUNDS = [{"label": "Targeting Teenagers & Advertising Strategies — Quiz Challenge", "type": "mcq", "questions": [{"q": "Why do commercial marketing firms spend billions targeting adolescents and teenagers?", "a": "They influence household spending and develop lifelong brand loyalty early", "opts": ["They influence household spending and develop lifelong brand loyalty early", "Teenagers have more savings than corporate executives", "Teenagers never use internet browsers or smartphones", "Schools require students to buy luxury branded clothing"], "hint": "Forming purchasing habits in youth pays dividends for decades.", "img": "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&auto=format&fit=crop&q=80", "img_tag": "Teenage Consumers"}, {"q": "What is 'stealth marketing' or 'product placement' in digital media?", "a": "Integrating branded goods subtly into video games, films, and influencer feeds", "opts": ["Integrating branded goods subtly into video games, films, and influencer feeds", "Selling products only at midnight in underground vaults", "Displaying bright neon billboards alongside highways", "Giving away free merchandise with government stamps"], "hint": "Viewers absorb the advertisement without immediately realizing it is sponsored.", "img": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&auto=format&fit=crop&q=80", "img_tag": "Stealth Product Placement"}, {"q": "Which marketing technique relies on the fear of missing out and peer conformity?", "a": "The bandwagon appeal (social proof)", "opts": ["The bandwagon appeal (social proof)", "The scientific medical disclaimer", "The historical archival record", "The antique collectors warranty"], "hint": "Everyone else is buying it, so you feel you must have it too!", "img": "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=800&auto=format&fit=crop&q=80", "img_tag": "Bandwagon Social Appeal"}]}, {"label": "Targeting Teenagers & Advertising Strategies — True or False", "type": "mcq", "questions": [{"q": "TRUE or FALSE: Why do commercial marketing firms spend billions targeting adolescents and teenagers relates directly to: They influence household spending and develop lifelong brand loyalty early.", "a": "TRUE", "opts": ["TRUE", "FALSE"], "hint": "Forming purchasing habits in youth pays dividends for decades.", "img": "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&auto=format&fit=crop&q=80", "img_tag": "Teenage Consumers"}, {"q": "TRUE or FALSE: What is 'stealth marketing' or 'product placement' in digital media is best defined as: Selling products only at midnight in underground vaults.", "a": "FALSE", "opts": ["TRUE", "FALSE"], "hint": "Incorrect. The correct answer is 'Integrating branded goods subtly into video games, films, and influencer feeds'.", "img": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&auto=format&fit=crop&q=80", "img_tag": "Stealth Product Placement"}, {"q": "TRUE or FALSE: In this lesson, 'The bandwagon appeal (social proof)' is the key answer to: Which marketing technique relies on the fear of missing out and peer conformity.", "a": "TRUE", "opts": ["TRUE", "FALSE"], "hint": "Everyone else is buying it, so you feel you must have it too!", "img": "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=800&auto=format&fit=crop&q=80", "img_tag": "Bandwagon Social Appeal"}, {"q": "TRUE or FALSE: Diligent practice in Targeting Teenagers & Advertising Strategies boosts exam mastery.", "a": "TRUE", "opts": ["TRUE", "FALSE"], "hint": "Mastery requires consistent interactive practice.", "img": "", "img_tag": "Learning Fact"}]}, {"label": "Targeting Teenagers & Advertising Strategies — Key Term Match", "type": "match", "pairs": [["demographic", "A specific statistical segment of a consumer population (e.g. 13-19 age bracket)"], ["endorsement", "Celebrity promotion or public backing of a commercial product"], ["product placement", "Integrating commercial products subtly into movies, series, or video games"], ["bandwagon effect", "A psychological effect compelling people to buy things to fit in with peers"], ["brand loyalty", "The long-term tendency of consumers to repurchase the same brand"]]}, {"label": "Targeting Teenagers & Advertising Strategies — Sentence Sprint", "type": "fill", "questions": [{"q": "Social media applications collect analytical data to serve ________ (targeted) advertisements.", "a": "targeted", "hint": "Aimed at specific groups: targeted", "img": "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=800&auto=format&fit=crop&q=80", "img_tag": "Targeted Marketing"}, {"q": "The footwear corporation negotiated an exclusive celebrity ________ (endorsement) contract.", "a": "endorsement", "hint": "Famous backing: endorsement", "img": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&auto=format&fit=crop&q=80", "img_tag": "Celebrity Endorsement"}, {"q": "Teens often purchase trendy sneakers to achieve peer ________ (acceptance).", "a": "acceptance", "hint": "Fitting in with peers: acceptance", "img": "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&auto=format&fit=crop&q=80", "img_tag": "Peer Group Acceptance"}]}];
 
 let activeTemplate = 'all';
 let activeRounds = [];
@@ -1126,7 +1126,7 @@ function selectMatchItem(el, side){
     matchSel[side].style.background = 'rgba(255,255,255,.07)';
   }
   matchSel[side] = el;
-  el.style.borderColor = '#34d399';
+  el.style.borderColor = '#a855f7';
   el.style.background = 'rgba(255,255,255,.2)';
 
   if (matchSel.left && matchSel.right){
@@ -1303,7 +1303,7 @@ function gainPoint(el){
   fp.className = 'fpt';
   const comboTxt = streak > 1 ? `+${earned} x${streak} COMBO!` : `+${earned}`;
   fp.textContent = comboTxt;
-  fp.style.cssText = `left:${rect.left + rect.width/2}px;top:${rect.top - 18}px;color:#a7f3d0`;
+  fp.style.cssText = `left:${rect.left + rect.width/2}px;top:${rect.top - 18}px;color:#e9d5ff`;
   document.body.appendChild(fp);
   setTimeout(() => fp.remove(), 1000);
 
@@ -1312,7 +1312,7 @@ function gainPoint(el){
 
   if (streak === 2) {
     sounds.playCombo(2);
-    toast('⚡ 2x Combo! Keep going!', '#34d399');
+    toast('⚡ 2x Combo! Keep going!', '#a855f7');
   } else if (streak === 3) {
     sounds.playCombo(3);
     toast('🔥 3x Combo! You are ON FIRE!', '#f59e0b');

@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Marketing — Reading | Grade 11 English Games</title>
+  <title>Eureka! — Reading | Grade 11 English Games</title>
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     button { font-family: inherit; cursor: pointer; }
     body {
       font-family: 'Outfit', system-ui, sans-serif; min-height: 100vh; color: #fff; overflow-x: hidden;
-      background: radial-gradient(circle at 50% 0%, #312e81 0%, #4338ca 55%, #080718 100%);
+      background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #312e81 55%, #080718 100%);
       background-attachment: fixed;
     }
     input { user-select: text; -webkit-user-select: text; }
@@ -64,7 +64,7 @@
     .logo-img { width: 36px; height: 36px; border-radius: 10px; object-fit: cover; border: 1px solid rgba(255,255,255,.2); }
     .hdr-title {
       font-family: 'Baloo 2', sans-serif; font-size: 16px; font-weight: 800;
-      background: linear-gradient(90deg, #a5b4fc, #e0e7ff);
+      background: linear-gradient(90deg, #a855f7, #e9d5ff);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
 
@@ -77,7 +77,7 @@
       font-size: 12px; font-weight: 800; color: rgba(255,255,255,.7); transition: all .2s;
     }
     .mode-tab:hover { color: #fff; }
-    .mode-tab.active { background: #a5b4fc; color: #080718; box-shadow: 0 2px 10px rgba(0,0,0,.35); font-weight: 900; }
+    .mode-tab.active { background: #a855f7; color: #080718; box-shadow: 0 2px 10px rgba(0,0,0,.35); font-weight: 900; }
 
     .score-chip { display: flex; gap: 8px; margin-left: 8px; }
     .chip {
@@ -102,7 +102,7 @@
     @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
     #welcome h1 {
       font-family: 'Baloo 2', sans-serif; font-size: clamp(2.2rem, 5vw, 3.4rem); font-weight: 800;
-      background: linear-gradient(135deg, #fff, #e0e7ff);
+      background: linear-gradient(135deg, #fff, #e9d5ff);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1.15;
     }
     .welcome-sub { color: rgba(255,255,255,.7); font-size: 1.05rem; max-width: 540px; line-height: 1.6; }
@@ -116,9 +116,9 @@
       border-radius: 20px; padding: 18px 12px; text-align: center; cursor: pointer;
       transition: all .2s; color: #fff; backdrop-filter: blur(12px);
     }
-    .tpl-card:hover { background: rgba(255,255,255,.12); border-color: #a5b4fc; transform: translateY(-4px); }
+    .tpl-card:hover { background: rgba(255,255,255,.12); border-color: #a855f7; transform: translateY(-4px); }
     .tpl-card.active {
-      border-color: #a5b4fc; background: rgba(255,255,255,.16);
+      border-color: #a855f7; background: rgba(255,255,255,.16);
       box-shadow: 0 0 24px rgba(255,255,255,.15);
     }
     .tpl-icon { font-size: 34px; display: block; margin-bottom: 6px; }
@@ -126,7 +126,7 @@
     .tpl-desc { font-size: 11px; color: rgba(255,255,255,.55); margin-top: 4px; display: block; }
 
     .start-btn {
-      background: linear-gradient(135deg, #a5b4fc, #4338ca); border: none; border-radius: 22px;
+      background: linear-gradient(135deg, #a855f7, #312e81); border: none; border-radius: 22px;
       padding: 16px 48px; font-size: 1.2rem; font-weight: 800; color: #fff;
       box-shadow: 0 10px 30px rgba(0,0,0,.4); transition: transform .15s, box-shadow .15s;
     }
@@ -137,7 +137,7 @@
     .progress-bar-wrap { width: 100%; background: rgba(255,255,255,.1); border-radius: 99px; height: 8px; overflow: hidden; }
     .progress-bar {
       height: 100%; border-radius: 99px;
-      background: linear-gradient(90deg, #a5b4fc, #e0e7ff);
+      background: linear-gradient(90deg, #a855f7, #e9d5ff);
       transition: width .35s ease;
     }
 
@@ -150,7 +150,7 @@
       transition: all 0.25s ease;
     }
     .q-dot.done { background: #34d399; }
-    .q-dot.cur { background: #a5b4fc; transform: scale(1.35); box-shadow: 0 0 8px #a5b4fc; }
+    .q-dot.cur { background: #a855f7; transform: scale(1.35); box-shadow: 0 0 8px #a855f7; }
 
     /* Speed Blitz Timer Bar */
     .blitz-timer-wrap {
@@ -210,7 +210,7 @@
     }
     .round-badge {
       display: inline-block; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
-      border-radius: 999px; padding: 5px 16px; font-size: 12px; color: #e0e7ff;
+      border-radius: 999px; padding: 5px 16px; font-size: 12px; color: #e9d5ff;
       margin-bottom: 12px; font-weight: 800; letter-spacing: 0.5px;
     }
 
@@ -223,7 +223,7 @@
       border: 1px solid rgba(255,255,255,0.22); border-radius: 999px; padding: 6px 16px;
       font-size: 13px; font-weight: 800; color: #fff; transition: all 0.2s;
     }
-    .btn-listen:hover { background: rgba(255,255,255,0.18); transform: translateY(-2px); border-color: #a5b4fc; }
+    .btn-listen:hover { background: rgba(255,255,255,0.18); transform: translateY(-2px); border-color: #a855f7; }
 
     /* MCQ */
     .q-text { font-size: 1.35rem; font-weight: 800; line-height: 1.45; margin-bottom: 8px; }
@@ -241,14 +241,14 @@
     .opt-letter {
       width: 32px; height: 32px; border-radius: 10px; background: rgba(255,255,255,0.1);
       display: flex; align-items: center; justify-content: center; font-weight: 900;
-      font-size: 14px; flex-shrink: 0; color: #e0e7ff; border: 1px solid rgba(255,255,255,0.2);
+      font-size: 14px; flex-shrink: 0; color: #e9d5ff; border: 1px solid rgba(255,255,255,0.2);
     }
     .opt-txt { flex: 1; }
     .opt-btn:hover:not(:disabled) {
-      background: rgba(255,255,255,.15); border-color: #a5b4fc; transform: translateY(-2px);
+      background: rgba(255,255,255,.15); border-color: #a855f7; transform: translateY(-2px);
     }
     .opt-btn:hover:not(:disabled) .opt-letter {
-      background: #a5b4fc; color: #080718; border-color: #a5b4fc;
+      background: #a855f7; color: #080718; border-color: #a855f7;
     }
     .opt-btn.correct { background: rgba(16,185,129,.35) !important; border-color: #34d399 !important; color: #a7f3d0 !important; }
     .opt-btn.correct .opt-letter { background: #34d399 !important; color: #064e3b !important; border-color: #34d399 !important; }
@@ -263,11 +263,11 @@
       padding: 14px 20px; font-size: 16px; font-weight: 700; color: #fff; flex: 1; min-width: 200px;
       outline: none; transition: border-color .2s;
     }
-    .blank-input:focus { border-color: #a5b4fc; }
+    .blank-input:focus { border-color: #a855f7; }
     .blank-input.correct { border-color: #34d399; background: rgba(16,185,129,.25); }
     .blank-input.wrong { border-color: #f87171; background: rgba(239,68,68,.2); }
     .submit-btn {
-      background: linear-gradient(135deg, #a5b4fc, #4338ca); border: none; border-radius: 16px;
+      background: linear-gradient(135deg, #a855f7, #312e81); border: none; border-radius: 16px;
       padding: 14px 30px; font-size: 15px; font-weight: 800; color: #fff; transition: transform .15s;
     }
     .submit-btn:hover { transform: translateY(-2px); }
@@ -294,8 +294,8 @@
       justify-content: center; text-align: center; border: 2px solid rgba(255,255,255,.18);
     }
     .fc-front { background: linear-gradient(135deg, rgba(255,255,255,.1), rgba(255,255,255,.05)); backdrop-filter: blur(18px); }
-    .fc-back { background: linear-gradient(135deg, #4338ca, #0a081d); transform: rotateY(180deg); border-color: #a5b4fc; }
-    .fc-badge { font-size: 12px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #e0e7ff; margin-bottom: 10px; }
+    .fc-back { background: linear-gradient(135deg, #312e81, #0a081d); transform: rotateY(180deg); border-color: #a855f7; }
+    .fc-badge { font-size: 12px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #e9d5ff; margin-bottom: 10px; }
     .fc-main-text { font-size: 1.35rem; font-weight: 800; line-height: 1.4; }
     .fc-sub-text { font-size: 13px; color: rgba(255,255,255,.55); margin-top: 10px; }
     .fc-controls { display: flex; gap: 12px; justify-content: center; margin-top: 20px; flex-wrap: wrap; }
@@ -310,19 +310,19 @@
     .result-trophy { font-size: 80px; animation: bob 2s ease-in-out infinite; }
     #result h2 {
       font-family: 'Baloo 2', sans-serif; font-size: clamp(2.2rem, 5vw, 3.4rem); font-weight: 800;
-      background: linear-gradient(135deg, #fff, #e0e7ff);
+      background: linear-gradient(135deg, #fff, #e9d5ff);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
     .result-score {
       font-size: 4rem; font-weight: 900; font-family: 'Baloo 2', sans-serif;
-      background: linear-gradient(135deg, #a5b4fc, #e0e7ff);
+      background: linear-gradient(135deg, #a855f7, #e9d5ff);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1;
     }
     .result-msg { color: rgba(255,255,255,.65); font-size: 1.05rem; max-width: 460px; line-height: 1.5; }
     .result-btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 10px; }
     .rbtn { border: none; border-radius: 18px; padding: 14px 30px; font-size: 15px; font-weight: 800; transition: all .15s; text-decoration: none; }
     .rbtn:hover { transform: translateY(-3px); }
-    .rbtn.primary { background: linear-gradient(135deg, #a5b4fc, #4338ca); color: #fff; }
+    .rbtn.primary { background: linear-gradient(135deg, #a855f7, #312e81); color: #fff; }
     .rbtn.secondary { background: rgba(255,255,255,.1); color: #fff; border: 1px solid rgba(255,255,255,.2); }
     .ws-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 12px; }
     .ws-dl {
@@ -341,7 +341,7 @@
     <div class="hdr-left">
       <a href="../index.html" class="back-btn" onclick="sounds.playPop()">← Unit 3</a>
       <img src="../../../assets/logo.jpg" alt="Logo" class="logo-img" onerror="this.style.display='none'">
-      <div class="hdr-title">📖 Marketing — Reading | Grade 11 English Games</div>
+      <div class="hdr-title">📖 Eureka! — Reading | Grade 11 English Games</div>
     </div>
     
     <!-- Template Switcher in Header -->
@@ -363,7 +363,7 @@
   <!-- WELCOME SCREEN -->
   <section class="screen active" id="welcome">
     <div class="welcome-emoji">📖</div>
-    <h1>Marketing — Reading | Grade 11 English Games</h1>
+    <h1>Eureka! — Reading | Grade 11 English Games</h1>
     <p class="welcome-sub">Choose your game mode. Practice vocabulary, grammar, reading and writing with real-world pictures and pronunciation!</p>
 
     <!-- Template Selection Grid -->
@@ -689,7 +689,7 @@ function resolveQuestionImage(qInput, roundLabel){
 })();
 
 // Data injected by generator
-const ALL_ROUNDS = [{"label": "Targeting Teenagers & Advertising Strategies — Quiz Sprint", "type": "mcq", "questions": [{"q": "Why do marketing firms specifically target adolescents?", "a": "They influence household spending and develop lifelong brand loyalty", "opts": ["They influence household spending and develop lifelong brand loyalty", "They have no interest in digital media", "They never purchase consumer products", "They only read print newspapers"], "hint": "Early brand habits stick for decades", "img": "https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80", "img_tag": "Brand Identity & Loyalty"}, {"q": "What is 'stealth marketing' or 'product placement'?", "a": "Integrating branded products subtly into movies and social media feeds", "opts": ["Integrating branded products subtly into movies and social media feeds", "Shouting loudly on street corners", "Banning online advertisements", "Selling products in unmarked brown boxes"], "hint": "Subtle, unannounced branding", "img": "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&auto=format&fit=crop&q=80", "img_tag": "Digital Influencer Studio"}, {"q": "Which technique relies on making viewers feel they must belong to a group?", "a": "Bandwagon effect (peer conformity)", "opts": ["Bandwagon effect (peer conformity)", "Scientific mathematical proof", "Price comparison tables", "Historical chronology"], "hint": "Nobody wants to feel left out", "img": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&auto=format&fit=crop&q=80", "img_tag": "Digital Technology"}]}, {"label": "Targeting Teenagers & Advertising Strategies — Key Term Match", "type": "match", "pairs": [["demographic", "a specific statistical group within a population"], ["endorsement", "public promotion of a product by a famous figure"], ["brand loyalty", "commitment to repurchase the same brand repeatedly"], ["subconscious", "mental processes operating below conscious awareness"]]}, {"label": "Targeting Teenagers & Advertising Strategies — Sentence Sprint", "type": "fill", "questions": [{"q": "Social media apps collect user data to deliver ________ advertising.", "a": "targeted", "hint": "Aimed specifically at you", "img": "https://images.unsplash.com/photo-1516912481808-3406841bd33c?w=800&auto=format&fit=crop&q=80", "img_tag": "Dynamic Exploration"}, {"q": "The sports brand signed a multi-million-dollar ________ deal.", "a": "endorsement", "hint": "Celebrity backing", "img": "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=800&auto=format&fit=crop&q=80", "img_tag": "Written Composition"}]}];
+const ALL_ROUNDS = [{"label": "The Origin of Inspiration (Archimedes & Eureka) — Quiz Challenge", "type": "mcq", "questions": [{"q": "What problem did the King of Syracuse commission Archimedes to solve in 260 BC?", "a": "To prove whether the royal crown was made of pure gold without damaging it", "opts": ["To prove whether the royal crown was made of pure gold without damaging it", "To design a fleet of warships to invade Roman ports", "To build an aqueduct carrying fresh river water to the palace", "To calculate the exact circumference of the earth"], "hint": "The king was suspicious that the goldsmith had secretly substituted cheaper silver.", "img": "https://images.unsplash.com/photo-1507413245164-6160d8298b31?w=800&auto=format&fit=crop&q=80", "img_tag": "Archimedes Golden Crown"}, {"q": "Where was Archimedes when the sudden flash of scientific inspiration struck him?", "a": "Lowering himself into a warm public bath", "opts": ["Lowering himself into a warm public bath", "Observing apples dropping in a garden orchard", "Looking through an early brass telescope", "Meditating on top of Mount Etna"], "hint": "Stepping away from frustration and relaxing triggered the insight.", "img": "https://images.unsplash.com/photo-1508873696983-2df5293cb32f?w=800&auto=format&fit=crop&q=80", "img_tag": "The Bath of Inspiration"}, {"q": "What physical phenomenon did Archimedes observe that solved the crown mystery?", "a": "The volume of water displaced was exactly equal to the submerged volume of his body", "opts": ["The volume of water displaced was exactly equal to the submerged volume of his body", "Hot steam rose faster than cold water droplets", "Silver floats while pure gold immediately dissolves", "Water turns into ice under high atmospheric pressure"], "hint": "Water displacement enabled measuring the irregular crown's density.", "img": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&auto=format&fit=crop&q=80", "img_tag": "Water Displacement & Density"}, {"q": "What does the famous Greek exclamation 'Eureka!' literally mean?", "a": "I have found it!", "opts": ["I have found it!", "Victory is ours!", "Behold the truth!", "Praise the king!"], "hint": "He shouted it triumphantly as he ran through the streets of Syracuse.", "img": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&auto=format&fit=crop&q=80", "img_tag": "Eureka Breakthrough"}]}, {"label": "The Origin of Inspiration (Archimedes & Eureka) — True or False", "type": "mcq", "questions": [{"q": "TRUE or FALSE: What problem did the King of Syracuse commission Archimedes to solve in 260 BC relates directly to: To prove whether the royal crown was made of pure gold without damaging it.", "a": "TRUE", "opts": ["TRUE", "FALSE"], "hint": "The king was suspicious that the goldsmith had secretly substituted cheaper silver.", "img": "https://images.unsplash.com/photo-1507413245164-6160d8298b31?w=800&auto=format&fit=crop&q=80", "img_tag": "Archimedes Golden Crown"}, {"q": "TRUE or FALSE: Where was Archimedes when the sudden flash of scientific inspiration struck him is best defined as: Observing apples dropping in a garden orchard.", "a": "FALSE", "opts": ["TRUE", "FALSE"], "hint": "Incorrect. The correct answer is 'Lowering himself into a warm public bath'.", "img": "https://images.unsplash.com/photo-1508873696983-2df5293cb32f?w=800&auto=format&fit=crop&q=80", "img_tag": "The Bath of Inspiration"}, {"q": "TRUE or FALSE: In this lesson, 'The volume of water displaced was exactly equal to the submerged volume of his body' is the key answer to: What physical phenomenon did Archimedes observe that solved the crown mystery.", "a": "TRUE", "opts": ["TRUE", "FALSE"], "hint": "Water displacement enabled measuring the irregular crown's density.", "img": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&auto=format&fit=crop&q=80", "img_tag": "Water Displacement & Density"}, {"q": "TRUE or FALSE: Diligent practice in The Origin of Inspiration (Archimedes & Eureka) boosts exam mastery.", "a": "TRUE", "opts": ["TRUE", "FALSE"], "hint": "Mastery requires consistent interactive practice.", "img": "", "img_tag": "Learning Fact"}]}, {"label": "The Origin of Inspiration (Archimedes & Eureka) — Key Term Match", "type": "match", "pairs": [["breakthrough", "An important discovery or sudden advance that leads to success"], ["displace", "To move water or an object out of its normal position"], ["density", "The degree of compactness and mass of a substance per volume"], ["commission", "To formally authorize or request someone to make or design something"], ["suspicious", "Feeling or showing a belief that someone is guilty of dishonest behavior"]]}, {"label": "The Origin of Inspiration (Archimedes & Eureka) — Sentence Sprint", "type": "fill", "questions": [{"q": "Archimedes had a sudden flash of ________ (inspiration) while stepping into the bath.", "a": "inspiration", "hint": "Sudden creative idea: inspiration", "img": "https://images.unsplash.com/photo-1507413245164-6160d8298b31?w=800&auto=format&fit=crop&q=80", "img_tag": "Flash of Inspiration"}, {"q": "The King of Syracuse was highly ________ (suspicious) of the goldsmith's honesty.", "a": "suspicious", "hint": "Adjective: suspicious", "img": "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=800&auto=format&fit=crop&q=80", "img_tag": "King's Suspicion"}, {"q": "He measured the volume of water ________ (displaced) by the crown in the vessel.", "a": "displaced", "hint": "Moved out of position: displaced", "img": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&auto=format&fit=crop&q=80", "img_tag": "Displaced Water"}]}];
 
 let activeTemplate = 'all';
 let activeRounds = [];
@@ -1126,7 +1126,7 @@ function selectMatchItem(el, side){
     matchSel[side].style.background = 'rgba(255,255,255,.07)';
   }
   matchSel[side] = el;
-  el.style.borderColor = '#a5b4fc';
+  el.style.borderColor = '#a855f7';
   el.style.background = 'rgba(255,255,255,.2)';
 
   if (matchSel.left && matchSel.right){
@@ -1303,7 +1303,7 @@ function gainPoint(el){
   fp.className = 'fpt';
   const comboTxt = streak > 1 ? `+${earned} x${streak} COMBO!` : `+${earned}`;
   fp.textContent = comboTxt;
-  fp.style.cssText = `left:${rect.left + rect.width/2}px;top:${rect.top - 18}px;color:#e0e7ff`;
+  fp.style.cssText = `left:${rect.left + rect.width/2}px;top:${rect.top - 18}px;color:#e9d5ff`;
   document.body.appendChild(fp);
   setTimeout(() => fp.remove(), 1000);
 
@@ -1312,7 +1312,7 @@ function gainPoint(el){
 
   if (streak === 2) {
     sounds.playCombo(2);
-    toast('⚡ 2x Combo! Keep going!', '#a5b4fc');
+    toast('⚡ 2x Combo! Keep going!', '#a855f7');
   } else if (streak === 3) {
     sounds.playCombo(3);
     toast('🔥 3x Combo! You are ON FIRE!', '#f59e0b');

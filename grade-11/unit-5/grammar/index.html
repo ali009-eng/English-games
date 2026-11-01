@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Birth Order — Grammar | Grade 11 English Games</title>
+  <title>You're Cured! — Grammar | Grade 11 English Games</title>
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     button { font-family: inherit; cursor: pointer; }
     body {
       font-family: 'Outfit', system-ui, sans-serif; min-height: 100vh; color: #fff; overflow-x: hidden;
-      background: radial-gradient(circle at 50% 0%, #3730a3 0%, #4338ca 55%, #080718 100%);
+      background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #312e81 55%, #080718 100%);
       background-attachment: fixed;
     }
     input { user-select: text; -webkit-user-select: text; }
@@ -64,7 +64,7 @@
     .logo-img { width: 36px; height: 36px; border-radius: 10px; object-fit: cover; border: 1px solid rgba(255,255,255,.2); }
     .hdr-title {
       font-family: 'Baloo 2', sans-serif; font-size: 16px; font-weight: 800;
-      background: linear-gradient(90deg, #c084fc, #f3e8ff);
+      background: linear-gradient(90deg, #a855f7, #e9d5ff);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
 
@@ -77,7 +77,7 @@
       font-size: 12px; font-weight: 800; color: rgba(255,255,255,.7); transition: all .2s;
     }
     .mode-tab:hover { color: #fff; }
-    .mode-tab.active { background: #c084fc; color: #080718; box-shadow: 0 2px 10px rgba(0,0,0,.35); font-weight: 900; }
+    .mode-tab.active { background: #a855f7; color: #080718; box-shadow: 0 2px 10px rgba(0,0,0,.35); font-weight: 900; }
 
     .score-chip { display: flex; gap: 8px; margin-left: 8px; }
     .chip {
@@ -102,7 +102,7 @@
     @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
     #welcome h1 {
       font-family: 'Baloo 2', sans-serif; font-size: clamp(2.2rem, 5vw, 3.4rem); font-weight: 800;
-      background: linear-gradient(135deg, #fff, #f3e8ff);
+      background: linear-gradient(135deg, #fff, #e9d5ff);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1.15;
     }
     .welcome-sub { color: rgba(255,255,255,.7); font-size: 1.05rem; max-width: 540px; line-height: 1.6; }
@@ -116,9 +116,9 @@
       border-radius: 20px; padding: 18px 12px; text-align: center; cursor: pointer;
       transition: all .2s; color: #fff; backdrop-filter: blur(12px);
     }
-    .tpl-card:hover { background: rgba(255,255,255,.12); border-color: #c084fc; transform: translateY(-4px); }
+    .tpl-card:hover { background: rgba(255,255,255,.12); border-color: #a855f7; transform: translateY(-4px); }
     .tpl-card.active {
-      border-color: #c084fc; background: rgba(255,255,255,.16);
+      border-color: #a855f7; background: rgba(255,255,255,.16);
       box-shadow: 0 0 24px rgba(255,255,255,.15);
     }
     .tpl-icon { font-size: 34px; display: block; margin-bottom: 6px; }
@@ -126,7 +126,7 @@
     .tpl-desc { font-size: 11px; color: rgba(255,255,255,.55); margin-top: 4px; display: block; }
 
     .start-btn {
-      background: linear-gradient(135deg, #c084fc, #4338ca); border: none; border-radius: 22px;
+      background: linear-gradient(135deg, #a855f7, #312e81); border: none; border-radius: 22px;
       padding: 16px 48px; font-size: 1.2rem; font-weight: 800; color: #fff;
       box-shadow: 0 10px 30px rgba(0,0,0,.4); transition: transform .15s, box-shadow .15s;
     }
@@ -137,7 +137,7 @@
     .progress-bar-wrap { width: 100%; background: rgba(255,255,255,.1); border-radius: 99px; height: 8px; overflow: hidden; }
     .progress-bar {
       height: 100%; border-radius: 99px;
-      background: linear-gradient(90deg, #c084fc, #f3e8ff);
+      background: linear-gradient(90deg, #a855f7, #e9d5ff);
       transition: width .35s ease;
     }
 
@@ -150,7 +150,7 @@
       transition: all 0.25s ease;
     }
     .q-dot.done { background: #34d399; }
-    .q-dot.cur { background: #c084fc; transform: scale(1.35); box-shadow: 0 0 8px #c084fc; }
+    .q-dot.cur { background: #a855f7; transform: scale(1.35); box-shadow: 0 0 8px #a855f7; }
 
     /* Speed Blitz Timer Bar */
     .blitz-timer-wrap {
@@ -210,7 +210,7 @@
     }
     .round-badge {
       display: inline-block; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
-      border-radius: 999px; padding: 5px 16px; font-size: 12px; color: #f3e8ff;
+      border-radius: 999px; padding: 5px 16px; font-size: 12px; color: #e9d5ff;
       margin-bottom: 12px; font-weight: 800; letter-spacing: 0.5px;
     }
 
@@ -223,7 +223,7 @@
       border: 1px solid rgba(255,255,255,0.22); border-radius: 999px; padding: 6px 16px;
       font-size: 13px; font-weight: 800; color: #fff; transition: all 0.2s;
     }
-    .btn-listen:hover { background: rgba(255,255,255,0.18); transform: translateY(-2px); border-color: #c084fc; }
+    .btn-listen:hover { background: rgba(255,255,255,0.18); transform: translateY(-2px); border-color: #a855f7; }
 
     /* MCQ */
     .q-text { font-size: 1.35rem; font-weight: 800; line-height: 1.45; margin-bottom: 8px; }
@@ -241,14 +241,14 @@
     .opt-letter {
       width: 32px; height: 32px; border-radius: 10px; background: rgba(255,255,255,0.1);
       display: flex; align-items: center; justify-content: center; font-weight: 900;
-      font-size: 14px; flex-shrink: 0; color: #f3e8ff; border: 1px solid rgba(255,255,255,0.2);
+      font-size: 14px; flex-shrink: 0; color: #e9d5ff; border: 1px solid rgba(255,255,255,0.2);
     }
     .opt-txt { flex: 1; }
     .opt-btn:hover:not(:disabled) {
-      background: rgba(255,255,255,.15); border-color: #c084fc; transform: translateY(-2px);
+      background: rgba(255,255,255,.15); border-color: #a855f7; transform: translateY(-2px);
     }
     .opt-btn:hover:not(:disabled) .opt-letter {
-      background: #c084fc; color: #080718; border-color: #c084fc;
+      background: #a855f7; color: #080718; border-color: #a855f7;
     }
     .opt-btn.correct { background: rgba(16,185,129,.35) !important; border-color: #34d399 !important; color: #a7f3d0 !important; }
     .opt-btn.correct .opt-letter { background: #34d399 !important; color: #064e3b !important; border-color: #34d399 !important; }
@@ -263,11 +263,11 @@
       padding: 14px 20px; font-size: 16px; font-weight: 700; color: #fff; flex: 1; min-width: 200px;
       outline: none; transition: border-color .2s;
     }
-    .blank-input:focus { border-color: #c084fc; }
+    .blank-input:focus { border-color: #a855f7; }
     .blank-input.correct { border-color: #34d399; background: rgba(16,185,129,.25); }
     .blank-input.wrong { border-color: #f87171; background: rgba(239,68,68,.2); }
     .submit-btn {
-      background: linear-gradient(135deg, #c084fc, #4338ca); border: none; border-radius: 16px;
+      background: linear-gradient(135deg, #a855f7, #312e81); border: none; border-radius: 16px;
       padding: 14px 30px; font-size: 15px; font-weight: 800; color: #fff; transition: transform .15s;
     }
     .submit-btn:hover { transform: translateY(-2px); }
@@ -294,8 +294,8 @@
       justify-content: center; text-align: center; border: 2px solid rgba(255,255,255,.18);
     }
     .fc-front { background: linear-gradient(135deg, rgba(255,255,255,.1), rgba(255,255,255,.05)); backdrop-filter: blur(18px); }
-    .fc-back { background: linear-gradient(135deg, #4338ca, #0a081d); transform: rotateY(180deg); border-color: #c084fc; }
-    .fc-badge { font-size: 12px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #f3e8ff; margin-bottom: 10px; }
+    .fc-back { background: linear-gradient(135deg, #312e81, #0a081d); transform: rotateY(180deg); border-color: #a855f7; }
+    .fc-badge { font-size: 12px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #e9d5ff; margin-bottom: 10px; }
     .fc-main-text { font-size: 1.35rem; font-weight: 800; line-height: 1.4; }
     .fc-sub-text { font-size: 13px; color: rgba(255,255,255,.55); margin-top: 10px; }
     .fc-controls { display: flex; gap: 12px; justify-content: center; margin-top: 20px; flex-wrap: wrap; }
@@ -310,19 +310,19 @@
     .result-trophy { font-size: 80px; animation: bob 2s ease-in-out infinite; }
     #result h2 {
       font-family: 'Baloo 2', sans-serif; font-size: clamp(2.2rem, 5vw, 3.4rem); font-weight: 800;
-      background: linear-gradient(135deg, #fff, #f3e8ff);
+      background: linear-gradient(135deg, #fff, #e9d5ff);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
     .result-score {
       font-size: 4rem; font-weight: 900; font-family: 'Baloo 2', sans-serif;
-      background: linear-gradient(135deg, #c084fc, #f3e8ff);
+      background: linear-gradient(135deg, #a855f7, #e9d5ff);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1;
     }
     .result-msg { color: rgba(255,255,255,.65); font-size: 1.05rem; max-width: 460px; line-height: 1.5; }
     .result-btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 10px; }
     .rbtn { border: none; border-radius: 18px; padding: 14px 30px; font-size: 15px; font-weight: 800; transition: all .15s; text-decoration: none; }
     .rbtn:hover { transform: translateY(-3px); }
-    .rbtn.primary { background: linear-gradient(135deg, #c084fc, #4338ca); color: #fff; }
+    .rbtn.primary { background: linear-gradient(135deg, #a855f7, #312e81); color: #fff; }
     .rbtn.secondary { background: rgba(255,255,255,.1); color: #fff; border: 1px solid rgba(255,255,255,.2); }
     .ws-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 12px; }
     .ws-dl {
@@ -341,7 +341,7 @@
     <div class="hdr-left">
       <a href="../index.html" class="back-btn" onclick="sounds.playPop()">← Unit 5</a>
       <img src="../../../assets/logo.jpg" alt="Logo" class="logo-img" onerror="this.style.display='none'">
-      <div class="hdr-title">📐 Birth Order — Grammar | Grade 11 English Games</div>
+      <div class="hdr-title">⚖️ You're Cured! — Grammar | Grade 11 English Games</div>
     </div>
     
     <!-- Template Switcher in Header -->
@@ -362,8 +362,8 @@
 
   <!-- WELCOME SCREEN -->
   <section class="screen active" id="welcome">
-    <div class="welcome-emoji">📐</div>
-    <h1>Birth Order — Grammar | Grade 11 English Games</h1>
+    <div class="welcome-emoji">⚖️</div>
+    <h1>You're Cured! — Grammar | Grade 11 English Games</h1>
     <p class="welcome-sub">Choose your game mode. Practice vocabulary, grammar, reading and writing with real-world pictures and pronunciation!</p>
 
     <!-- Template Selection Grid -->
@@ -689,7 +689,7 @@ function resolveQuestionImage(qInput, roundLabel){
 })();
 
 // Data injected by generator
-const ALL_ROUNDS = [{"label": "Ellipsis with 'Either' / 'Too' & Auxiliary Agreement — Quiz Sprint", "type": "mcq", "questions": [{"q": "'I have visited London.' — '________ have I.'", "a": "So", "opts": ["So", "Neither", "Either", "Too"], "hint": "Positive agreement: So + have + I", "img": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&auto=format&fit=crop&q=80", "img_tag": "Folkloric Fable"}, {"q": "'I cannot solve this calculus problem.' — '________ can I.'", "a": "Neither", "opts": ["Neither", "So", "Too", "Also"], "hint": "Negative agreement: Neither + can + I", "img": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&auto=format&fit=crop&q=80", "img_tag": "Modern Structure"}, {"q": "'She doesn't enjoy sibling arguments.' — 'I don't ________.'", "a": "either", "opts": ["either", "neither", "too", "so"], "hint": "not + either", "img": "https://images.unsplash.com/photo-1509248961158-e54f6934749c?w=800&auto=format&fit=crop&q=80", "img_tag": "Suspenseful Drama"}, {"q": "'My brother is very ambitious.' — 'Mine is ________.'", "a": "too", "opts": ["too", "either", "neither", "so"], "hint": "is + too", "img": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&auto=format&fit=crop&q=80", "img_tag": "Island Natural Wonder"}]}, {"label": "Ellipsis with 'Either' / 'Too' & Auxiliary Agreement — Key Term Match", "type": "match", "pairs": [["So did we", "agreeing with past positive: 'We studied hard.'"], ["Neither will I", "agreeing with future negative: 'I won't give up.'"], ["I have too", "alternative positive agreement with present perfect"], ["They didn't either", "alternative negative agreement with past simple"]]}, {"label": "Ellipsis with 'Either' / 'Too' & Auxiliary Agreement — Sentence Sprint", "type": "fill", "questions": [{"q": "'I am not convinced by the birth order study.' — 'Neither ________ I.'", "a": "am", "hint": "Matching auxiliary of 'am'", "img": "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=800&auto=format&fit=crop&q=80", "img_tag": "Cinematic Scene"}, {"q": "'We enjoyed the psychology lecture.' — 'So ________ we.'", "a": "did", "hint": "Past simple auxiliary", "img": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&auto=format&fit=crop&q=80", "img_tag": "Conceptual Ideas"}]}];
+const ALL_ROUNDS = [{"label": "Preparatory 'It' as Subject (It is vital that... / It emerged that...) — Quiz Challenge", "type": "mcq", "questions": [{"q": "________ is vital to test newly synthesized pharmaceutical compounds thoroughly before clinical trials.", "a": "It", "opts": ["It", "There", "What", "That"], "hint": "Preparatory 'it' serves as the dummy grammatical subject.", "img": "https://images.unsplash.com/photo-1576086213369-97a306d36557?w=800&auto=format&fit=crop&q=80", "img_tag": "Clinical Safety Testing"}, {"q": "Botanists found ________ difficult to classify the newly discovered orchid in the Amazon.", "a": "it", "opts": ["it", "there", "them", "that"], "hint": "Preparatory 'it' functioning as an anticipatory grammatical object.", "img": "https://images.unsplash.com/photo-1512069772995-ec65ed45afd6?w=800&auto=format&fit=crop&q=80", "img_tag": "Amazon Botanical Study"}, {"q": "During the conference, it ________ that indigenous healers had used the root for millennia.", "a": "emerged", "opts": ["emerged", "invented", "exaggerated", "displaced"], "hint": "Collocation: 'It emerged that...' introduces newly shared information.", "img": "https://images.unsplash.com/photo-1540420773420-3366772f4999?w=800&auto=format&fit=crop&q=80", "img_tag": "Indigenous Healers Knowledge"}]}, {"label": "Preparatory 'It' as Subject (It is vital that... / It emerged that...) — True or False", "type": "mcq", "questions": [{"q": "TRUE or FALSE: ________ is vital to test newly synthesized pharmaceutical compounds thoroughly before clinical trials. relates directly to: It.", "a": "TRUE", "opts": ["TRUE", "FALSE"], "hint": "Preparatory 'it' serves as the dummy grammatical subject.", "img": "https://images.unsplash.com/photo-1576086213369-97a306d36557?w=800&auto=format&fit=crop&q=80", "img_tag": "Clinical Safety Testing"}, {"q": "TRUE or FALSE: Botanists found ________ difficult to classify the newly discovered orchid in the Amazon. is best defined as: there.", "a": "FALSE", "opts": ["TRUE", "FALSE"], "hint": "Incorrect. The correct answer is 'it'.", "img": "https://images.unsplash.com/photo-1512069772995-ec65ed45afd6?w=800&auto=format&fit=crop&q=80", "img_tag": "Amazon Botanical Study"}, {"q": "TRUE or FALSE: In this lesson, 'emerged' is the key answer to: During the conference, it ________ that indigenous healers had used the root for millennia..", "a": "TRUE", "opts": ["TRUE", "FALSE"], "hint": "Collocation: 'It emerged that...' introduces newly shared information.", "img": "https://images.unsplash.com/photo-1540420773420-3366772f4999?w=800&auto=format&fit=crop&q=80", "img_tag": "Indigenous Healers Knowledge"}, {"q": "TRUE or FALSE: Diligent practice in Preparatory 'It' as Subject (It is vital that... / It emerged that...) boosts exam mastery.", "a": "TRUE", "opts": ["TRUE", "FALSE"], "hint": "Mastery requires consistent interactive practice.", "img": "", "img_tag": "Learning Fact"}]}, {"label": "Preparatory 'It' as Subject (It is vital that... / It emerged that...) — Key Term Match", "type": "match", "pairs": [["It is vital to", "Introducing an indispensable action: 'Testing drugs is vital.' -> 'It is vital to test drugs.'"], ["It emerged that", "Reporting a newly uncovered scientific discovery impersonally"], ["It is common knowledge that", "Expressing general consensus or undisputed knowledge"], ["Scientists found it difficult to", "Preparatory object pattern: 'Researchers considered that finding an orchid was hard.'"], ["It is believed that", "Expressing widespread conviction regarding medical facts"]]}, {"label": "Preparatory 'It' as Subject (It is vital that... / It emerged that...) — Sentence Sprint", "type": "fill", "questions": [{"q": "________ (It) is common knowledge that physical exercise improves cardiovascular health.", "a": "It", "hint": "Preparatory subject: It", "img": "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=800&auto=format&fit=crop&q=80", "img_tag": "Cardiovascular Health"}, {"q": "Pharmacists found it challenging ________ (to isolate) the unstable active chemical.", "a": "to isolate", "hint": "Infinitive: to isolate", "img": "https://images.unsplash.com/photo-1576086213369-97a306d36557?w=800&auto=format&fit=crop&q=80", "img_tag": "Isolating Active Chemical"}]}];
 
 let activeTemplate = 'all';
 let activeRounds = [];
@@ -1126,7 +1126,7 @@ function selectMatchItem(el, side){
     matchSel[side].style.background = 'rgba(255,255,255,.07)';
   }
   matchSel[side] = el;
-  el.style.borderColor = '#c084fc';
+  el.style.borderColor = '#a855f7';
   el.style.background = 'rgba(255,255,255,.2)';
 
   if (matchSel.left && matchSel.right){
@@ -1303,7 +1303,7 @@ function gainPoint(el){
   fp.className = 'fpt';
   const comboTxt = streak > 1 ? `+${earned} x${streak} COMBO!` : `+${earned}`;
   fp.textContent = comboTxt;
-  fp.style.cssText = `left:${rect.left + rect.width/2}px;top:${rect.top - 18}px;color:#f3e8ff`;
+  fp.style.cssText = `left:${rect.left + rect.width/2}px;top:${rect.top - 18}px;color:#e9d5ff`;
   document.body.appendChild(fp);
   setTimeout(() => fp.remove(), 1000);
 
@@ -1312,7 +1312,7 @@ function gainPoint(el){
 
   if (streak === 2) {
     sounds.playCombo(2);
-    toast('⚡ 2x Combo! Keep going!', '#c084fc');
+    toast('⚡ 2x Combo! Keep going!', '#a855f7');
   } else if (streak === 3) {
     sounds.playCombo(3);
     toast('🔥 3x Combo! You are ON FIRE!', '#f59e0b');

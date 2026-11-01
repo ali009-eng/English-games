@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Healing Plants — Grammar | Grade 11 English Games</title>
+  <title>It's a Must-Have! — Grammar | Grade 11 English Games</title>
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     button { font-family: inherit; cursor: pointer; }
     body {
       font-family: 'Outfit', system-ui, sans-serif; min-height: 100vh; color: #fff; overflow-x: hidden;
-      background: radial-gradient(circle at 50% 0%, #064e3b 0%, #047857 55%, #080718 100%);
+      background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #312e81 55%, #080718 100%);
       background-attachment: fixed;
     }
     input { user-select: text; -webkit-user-select: text; }
@@ -64,7 +64,7 @@
     .logo-img { width: 36px; height: 36px; border-radius: 10px; object-fit: cover; border: 1px solid rgba(255,255,255,.2); }
     .hdr-title {
       font-family: 'Baloo 2', sans-serif; font-size: 16px; font-weight: 800;
-      background: linear-gradient(90deg, #34d399, #a7f3d0);
+      background: linear-gradient(90deg, #a855f7, #e9d5ff);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
 
@@ -77,7 +77,7 @@
       font-size: 12px; font-weight: 800; color: rgba(255,255,255,.7); transition: all .2s;
     }
     .mode-tab:hover { color: #fff; }
-    .mode-tab.active { background: #34d399; color: #080718; box-shadow: 0 2px 10px rgba(0,0,0,.35); font-weight: 900; }
+    .mode-tab.active { background: #a855f7; color: #080718; box-shadow: 0 2px 10px rgba(0,0,0,.35); font-weight: 900; }
 
     .score-chip { display: flex; gap: 8px; margin-left: 8px; }
     .chip {
@@ -102,7 +102,7 @@
     @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
     #welcome h1 {
       font-family: 'Baloo 2', sans-serif; font-size: clamp(2.2rem, 5vw, 3.4rem); font-weight: 800;
-      background: linear-gradient(135deg, #fff, #a7f3d0);
+      background: linear-gradient(135deg, #fff, #e9d5ff);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1.15;
     }
     .welcome-sub { color: rgba(255,255,255,.7); font-size: 1.05rem; max-width: 540px; line-height: 1.6; }
@@ -116,9 +116,9 @@
       border-radius: 20px; padding: 18px 12px; text-align: center; cursor: pointer;
       transition: all .2s; color: #fff; backdrop-filter: blur(12px);
     }
-    .tpl-card:hover { background: rgba(255,255,255,.12); border-color: #34d399; transform: translateY(-4px); }
+    .tpl-card:hover { background: rgba(255,255,255,.12); border-color: #a855f7; transform: translateY(-4px); }
     .tpl-card.active {
-      border-color: #34d399; background: rgba(255,255,255,.16);
+      border-color: #a855f7; background: rgba(255,255,255,.16);
       box-shadow: 0 0 24px rgba(255,255,255,.15);
     }
     .tpl-icon { font-size: 34px; display: block; margin-bottom: 6px; }
@@ -126,7 +126,7 @@
     .tpl-desc { font-size: 11px; color: rgba(255,255,255,.55); margin-top: 4px; display: block; }
 
     .start-btn {
-      background: linear-gradient(135deg, #34d399, #047857); border: none; border-radius: 22px;
+      background: linear-gradient(135deg, #a855f7, #312e81); border: none; border-radius: 22px;
       padding: 16px 48px; font-size: 1.2rem; font-weight: 800; color: #fff;
       box-shadow: 0 10px 30px rgba(0,0,0,.4); transition: transform .15s, box-shadow .15s;
     }
@@ -137,7 +137,7 @@
     .progress-bar-wrap { width: 100%; background: rgba(255,255,255,.1); border-radius: 99px; height: 8px; overflow: hidden; }
     .progress-bar {
       height: 100%; border-radius: 99px;
-      background: linear-gradient(90deg, #34d399, #a7f3d0);
+      background: linear-gradient(90deg, #a855f7, #e9d5ff);
       transition: width .35s ease;
     }
 
@@ -150,7 +150,7 @@
       transition: all 0.25s ease;
     }
     .q-dot.done { background: #34d399; }
-    .q-dot.cur { background: #34d399; transform: scale(1.35); box-shadow: 0 0 8px #34d399; }
+    .q-dot.cur { background: #a855f7; transform: scale(1.35); box-shadow: 0 0 8px #a855f7; }
 
     /* Speed Blitz Timer Bar */
     .blitz-timer-wrap {
@@ -210,7 +210,7 @@
     }
     .round-badge {
       display: inline-block; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
-      border-radius: 999px; padding: 5px 16px; font-size: 12px; color: #a7f3d0;
+      border-radius: 999px; padding: 5px 16px; font-size: 12px; color: #e9d5ff;
       margin-bottom: 12px; font-weight: 800; letter-spacing: 0.5px;
     }
 
@@ -223,7 +223,7 @@
       border: 1px solid rgba(255,255,255,0.22); border-radius: 999px; padding: 6px 16px;
       font-size: 13px; font-weight: 800; color: #fff; transition: all 0.2s;
     }
-    .btn-listen:hover { background: rgba(255,255,255,0.18); transform: translateY(-2px); border-color: #34d399; }
+    .btn-listen:hover { background: rgba(255,255,255,0.18); transform: translateY(-2px); border-color: #a855f7; }
 
     /* MCQ */
     .q-text { font-size: 1.35rem; font-weight: 800; line-height: 1.45; margin-bottom: 8px; }
@@ -241,14 +241,14 @@
     .opt-letter {
       width: 32px; height: 32px; border-radius: 10px; background: rgba(255,255,255,0.1);
       display: flex; align-items: center; justify-content: center; font-weight: 900;
-      font-size: 14px; flex-shrink: 0; color: #a7f3d0; border: 1px solid rgba(255,255,255,0.2);
+      font-size: 14px; flex-shrink: 0; color: #e9d5ff; border: 1px solid rgba(255,255,255,0.2);
     }
     .opt-txt { flex: 1; }
     .opt-btn:hover:not(:disabled) {
-      background: rgba(255,255,255,.15); border-color: #34d399; transform: translateY(-2px);
+      background: rgba(255,255,255,.15); border-color: #a855f7; transform: translateY(-2px);
     }
     .opt-btn:hover:not(:disabled) .opt-letter {
-      background: #34d399; color: #080718; border-color: #34d399;
+      background: #a855f7; color: #080718; border-color: #a855f7;
     }
     .opt-btn.correct { background: rgba(16,185,129,.35) !important; border-color: #34d399 !important; color: #a7f3d0 !important; }
     .opt-btn.correct .opt-letter { background: #34d399 !important; color: #064e3b !important; border-color: #34d399 !important; }
@@ -263,11 +263,11 @@
       padding: 14px 20px; font-size: 16px; font-weight: 700; color: #fff; flex: 1; min-width: 200px;
       outline: none; transition: border-color .2s;
     }
-    .blank-input:focus { border-color: #34d399; }
+    .blank-input:focus { border-color: #a855f7; }
     .blank-input.correct { border-color: #34d399; background: rgba(16,185,129,.25); }
     .blank-input.wrong { border-color: #f87171; background: rgba(239,68,68,.2); }
     .submit-btn {
-      background: linear-gradient(135deg, #34d399, #047857); border: none; border-radius: 16px;
+      background: linear-gradient(135deg, #a855f7, #312e81); border: none; border-radius: 16px;
       padding: 14px 30px; font-size: 15px; font-weight: 800; color: #fff; transition: transform .15s;
     }
     .submit-btn:hover { transform: translateY(-2px); }
@@ -294,8 +294,8 @@
       justify-content: center; text-align: center; border: 2px solid rgba(255,255,255,.18);
     }
     .fc-front { background: linear-gradient(135deg, rgba(255,255,255,.1), rgba(255,255,255,.05)); backdrop-filter: blur(18px); }
-    .fc-back { background: linear-gradient(135deg, #047857, #0a081d); transform: rotateY(180deg); border-color: #34d399; }
-    .fc-badge { font-size: 12px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #a7f3d0; margin-bottom: 10px; }
+    .fc-back { background: linear-gradient(135deg, #312e81, #0a081d); transform: rotateY(180deg); border-color: #a855f7; }
+    .fc-badge { font-size: 12px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #e9d5ff; margin-bottom: 10px; }
     .fc-main-text { font-size: 1.35rem; font-weight: 800; line-height: 1.4; }
     .fc-sub-text { font-size: 13px; color: rgba(255,255,255,.55); margin-top: 10px; }
     .fc-controls { display: flex; gap: 12px; justify-content: center; margin-top: 20px; flex-wrap: wrap; }
@@ -310,19 +310,19 @@
     .result-trophy { font-size: 80px; animation: bob 2s ease-in-out infinite; }
     #result h2 {
       font-family: 'Baloo 2', sans-serif; font-size: clamp(2.2rem, 5vw, 3.4rem); font-weight: 800;
-      background: linear-gradient(135deg, #fff, #a7f3d0);
+      background: linear-gradient(135deg, #fff, #e9d5ff);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
     .result-score {
       font-size: 4rem; font-weight: 900; font-family: 'Baloo 2', sans-serif;
-      background: linear-gradient(135deg, #34d399, #a7f3d0);
+      background: linear-gradient(135deg, #a855f7, #e9d5ff);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1;
     }
     .result-msg { color: rgba(255,255,255,.65); font-size: 1.05rem; max-width: 460px; line-height: 1.5; }
     .result-btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 10px; }
     .rbtn { border: none; border-radius: 18px; padding: 14px 30px; font-size: 15px; font-weight: 800; transition: all .15s; text-decoration: none; }
     .rbtn:hover { transform: translateY(-3px); }
-    .rbtn.primary { background: linear-gradient(135deg, #34d399, #047857); color: #fff; }
+    .rbtn.primary { background: linear-gradient(135deg, #a855f7, #312e81); color: #fff; }
     .rbtn.secondary { background: rgba(255,255,255,.1); color: #fff; border: 1px solid rgba(255,255,255,.2); }
     .ws-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 12px; }
     .ws-dl {
@@ -341,7 +341,7 @@
     <div class="hdr-left">
       <a href="../index.html" class="back-btn" onclick="sounds.playPop()">← Unit 4</a>
       <img src="../../../assets/logo.jpg" alt="Logo" class="logo-img" onerror="this.style.display='none'">
-      <div class="hdr-title">📐 Healing Plants — Grammar | Grade 11 English Games</div>
+      <div class="hdr-title">⚖️ It's a Must-Have! — Grammar | Grade 11 English Games</div>
     </div>
     
     <!-- Template Switcher in Header -->
@@ -362,8 +362,8 @@
 
   <!-- WELCOME SCREEN -->
   <section class="screen active" id="welcome">
-    <div class="welcome-emoji">📐</div>
-    <h1>Healing Plants — Grammar | Grade 11 English Games</h1>
+    <div class="welcome-emoji">⚖️</div>
+    <h1>It's a Must-Have! — Grammar | Grade 11 English Games</h1>
     <p class="welcome-sub">Choose your game mode. Practice vocabulary, grammar, reading and writing with real-world pictures and pronunciation!</p>
 
     <!-- Template Selection Grid -->
@@ -689,7 +689,7 @@ function resolveQuestionImage(qInput, roundLabel){
 })();
 
 // Data injected by generator
-const ALL_ROUNDS = [{"label": "Preparatory 'It' as Subject — Quiz Sprint", "type": "mcq", "questions": [{"q": "________ is vital to test new medications thoroughly before clinical use.", "a": "It", "opts": ["It", "There", "What", "That"], "hint": "Preparatory subject: It is vital to...", "img": "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800&auto=format&fit=crop&q=80", "img_tag": "Film Premiere Lights"}, {"q": "Scientists find ________ difficult to isolate the pure compound without damaging it.", "a": "it", "opts": ["it", "them", "there", "this"], "hint": "find + it + adj + to-V", "img": "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=800&auto=format&fit=crop&q=80", "img_tag": "Analytical Deduction"}, {"q": "It ________ that the patient responded remarkably well to the botanical tea.", "a": "emerged", "opts": ["emerged", "was emerging", "emerges", "is emerging"], "hint": "It emerged that...", "img": "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&auto=format&fit=crop&q=80", "img_tag": "Academic Inquiry"}, {"q": "It is essential ________ consult a qualified doctor before taking herbal extracts.", "a": "to", "opts": ["to", "for", "that", "at"], "hint": "essential + to + infinitive", "img": "https://images.unsplash.com/photo-1509248961158-e54f6934749c?w=800&auto=format&fit=crop&q=80", "img_tag": "Suspenseful Drama"}]}, {"label": "Preparatory 'It' as Subject — Key Term Match", "type": "match", "pairs": [["It is necessary to", "introduces an essential action"], ["It emerged that", "reports a newly discovered fact"], ["We consider it wise to", "preparatory object expressing judgment"], ["It is proven that", "states verified scientific reality"]]}, {"label": "Preparatory 'It' as Subject — Sentence Sprint", "type": "fill", "questions": [{"q": "________ is common knowledge that willow bark relieves fevers.", "a": "It", "hint": "Pronoun starting with I-", "img": "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=800&auto=format&fit=crop&q=80", "img_tag": "Literary Analysis"}, {"q": "Botanists found it hard ________ (classify) the newly discovered orchid.", "a": "to classify", "hint": "to + base form", "img": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&auto=format&fit=crop&q=80", "img_tag": "Verdant Wilderness"}]}];
+const ALL_ROUNDS = [{"label": "The Passive with Preparatory 'There' (There is said to be...) — Quiz Challenge", "type": "mcq", "questions": [{"q": "There ________ to be billions of dollars spent on teenage digital advertising every year.", "a": "is estimated", "opts": ["is estimated", "are estimated", "estimating", "have estimated"], "hint": "The subject phrase 'billions of dollars' acting as a singular amount takes 'is estimated'.", "img": "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&auto=format&fit=crop&q=80", "img_tag": "Passive Estimation"}, {"q": "There are thought ________ hundreds of deceptive promotional accounts operating on that platform.", "a": "to be", "opts": ["to be", "being", "been", "to have"], "hint": "Reporting passive with preparatory there uses infinitive 'to be'.", "img": "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=800&auto=format&fit=crop&q=80", "img_tag": "Preparatory There"}, {"q": "Rewrite: 'Sociologists believe there is a direct connection between screen time and shopping impulses.'", "a": "There is believed to be a direct connection between screen time and shopping impulses.", "opts": ["There is believed to be a direct connection between screen time and shopping impulses.", "There was believed connection between screen and shop.", "Sociologists are there believing a connection.", "Connection is there being believed by screen time."], "hint": "Begin with 'There is believed to be...'", "img": "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&auto=format&fit=crop&q=80", "img_tag": "Passive Syntax"}]}, {"label": "The Passive with Preparatory 'There' (There is said to be...) — True or False", "type": "mcq", "questions": [{"q": "TRUE or FALSE: There ________ to be billions of dollars spent on teenage digital advertising every year. relates directly to: is estimated.", "a": "TRUE", "opts": ["TRUE", "FALSE"], "hint": "The subject phrase 'billions of dollars' acting as a singular amount takes 'is estimated'.", "img": "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&auto=format&fit=crop&q=80", "img_tag": "Passive Estimation"}, {"q": "TRUE or FALSE: There are thought ________ hundreds of deceptive promotional accounts operating on that platform. is best defined as: being.", "a": "FALSE", "opts": ["TRUE", "FALSE"], "hint": "Incorrect. The correct answer is 'to be'.", "img": "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=800&auto=format&fit=crop&q=80", "img_tag": "Preparatory There"}, {"q": "TRUE or FALSE: In this lesson, 'There is believed to be a direct connection between screen time and shopping impulses.' is the key answer to: Rewrite: 'Sociologists believe there is a direct connection between screen time and shopping impulses.'.", "a": "TRUE", "opts": ["TRUE", "FALSE"], "hint": "Begin with 'There is believed to be...'", "img": "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&auto=format&fit=crop&q=80", "img_tag": "Passive Syntax"}, {"q": "TRUE or FALSE: Diligent practice in The Passive with Preparatory 'There' (There is said to be...) boosts exam mastery.", "a": "TRUE", "opts": ["TRUE", "FALSE"], "hint": "Mastery requires consistent interactive practice.", "img": "", "img_tag": "Learning Fact"}]}, {"label": "The Passive with Preparatory 'There' (There is said to be...) — Key Term Match", "type": "match", "pairs": [["There is believed to be", "Reporting a singular phenomenon: 'People believe there is a link.'"], ["There are thought to be", "Reporting plural phenomena: 'Experts think there are millions of bots.'"], ["There was reported to be", "Reporting past occurrences: 'Newspapers reported there was an error.'"], ["There is rumored to be", "Expressing widespread general rumor about a trend"], ["There is estimated to be", "Reporting estimated statistical figures impersonally"]]}, {"label": "The Passive with Preparatory 'There' (There is said to be...) — Sentence Sprint", "type": "fill", "questions": [{"q": "There is said ________ (to be) a dramatic increase in influencer sponsorship spending.", "a": "to be", "hint": "Infinitive: to be", "img": "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&auto=format&fit=crop&q=80", "img_tag": "Influencer Sponsorship"}, {"q": "There are ________ (thought) to be millions of active mobile consumers online right now.", "a": "thought", "hint": "Past participle of think: thought", "img": "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=800&auto=format&fit=crop&q=80", "img_tag": "Online Consumers"}]}];
 
 let activeTemplate = 'all';
 let activeRounds = [];
@@ -1126,7 +1126,7 @@ function selectMatchItem(el, side){
     matchSel[side].style.background = 'rgba(255,255,255,.07)';
   }
   matchSel[side] = el;
-  el.style.borderColor = '#34d399';
+  el.style.borderColor = '#a855f7';
   el.style.background = 'rgba(255,255,255,.2)';
 
   if (matchSel.left && matchSel.right){
@@ -1303,7 +1303,7 @@ function gainPoint(el){
   fp.className = 'fpt';
   const comboTxt = streak > 1 ? `+${earned} x${streak} COMBO!` : `+${earned}`;
   fp.textContent = comboTxt;
-  fp.style.cssText = `left:${rect.left + rect.width/2}px;top:${rect.top - 18}px;color:#a7f3d0`;
+  fp.style.cssText = `left:${rect.left + rect.width/2}px;top:${rect.top - 18}px;color:#e9d5ff`;
   document.body.appendChild(fp);
   setTimeout(() => fp.remove(), 1000);
 
@@ -1312,7 +1312,7 @@ function gainPoint(el){
 
   if (streak === 2) {
     sounds.playCombo(2);
-    toast('⚡ 2x Combo! Keep going!', '#34d399');
+    toast('⚡ 2x Combo! Keep going!', '#a855f7');
   } else if (streak === 3) {
     sounds.playCombo(3);
     toast('🔥 3x Combo! You are ON FIRE!', '#f59e0b');
