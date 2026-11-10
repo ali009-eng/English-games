@@ -339,20 +339,10 @@
 <div id="app">
   <header>
     <div class="hdr-left">
-      <a href="../index.html" class="back-btn" onclick="sounds.playPop()">← Unit 2</a>
       <img src="../../../assets/logo.jpg" alt="Logo" class="logo-img" onerror="this.style.display='none'">
       <div class="hdr-title">✍️ Talking the Talk — Writing | Grade 11 English Games</div>
     </div>
     
-    <!-- Template Switcher in Header -->
-    <div class="mode-bar">
-      <button class="mode-tab active" data-mode="all" onclick="setTemplate('all')">🌟 All</button>
-      <button class="mode-tab" data-mode="blitz" onclick="setTemplate('blitz')">⚡ Blitz</button>
-      <button class="mode-tab" data-mode="quiz" onclick="setTemplate('quiz')">🎮 Quiz</button>
-      <button class="mode-tab" data-mode="match" onclick="setTemplate('match')">🧩 Match</button>
-      <button class="mode-tab" data-mode="flashcards" onclick="setTemplate('flashcards')">🃏 Cards</button>
-    </div>
-
     <div class="score-chip">
       <div class="chip" id="score-chip">⭐ <span id="score-val">0</span></div>
       <div class="chip" id="streak-chip">🔥 <span id="streak-val">0</span></div>
@@ -364,38 +354,9 @@
   <section class="screen active" id="welcome">
     <div class="welcome-emoji">✍️</div>
     <h1>Talking the Talk — Writing | Grade 11 English Games</h1>
-    <p class="welcome-sub">Choose your game mode. Practice vocabulary, grammar, reading and writing with real-world pictures and pronunciation!</p>
+    <p class="welcome-sub">🌟 Full Adventure Mode — Master all challenges with real-world pictures, interactive audio, and quizzes!</p>
 
-    <!-- Template Selection Grid -->
-    <div class="template-card-grid">
-      <div class="tpl-card active" id="tpl-card-all" onclick="selectTemplateCard('all')">
-        <span class="tpl-icon">🌟</span>
-        <span class="tpl-name">Full Adventure</span>
-        <span class="tpl-desc">All rounds combined</span>
-      </div>
-      <div class="tpl-card" id="tpl-card-blitz" onclick="selectTemplateCard('blitz')">
-        <span class="tpl-icon">⚡</span>
-        <span class="tpl-name">Speed Blitz</span>
-        <span class="tpl-desc">10s countdown timer</span>
-      </div>
-      <div class="tpl-card" id="tpl-card-quiz" onclick="selectTemplateCard('quiz')">
-        <span class="tpl-icon">🎮</span>
-        <span class="tpl-name">Quiz Mode</span>
-        <span class="tpl-desc">Multiple-choice</span>
-      </div>
-      <div class="tpl-card" id="tpl-card-match" onclick="selectTemplateCard('match')">
-        <span class="tpl-icon">🧩</span>
-        <span class="tpl-name">Match-Up</span>
-        <span class="tpl-desc">Pair terms & meanings</span>
-      </div>
-      <div class="tpl-card" id="tpl-card-flashcards" onclick="selectTemplateCard('flashcards')">
-        <span class="tpl-icon">🃏</span>
-        <span class="tpl-name">3D Flashcards</span>
-        <span class="tpl-desc">Card study deck</span>
-      </div>
-    </div>
-
-    <button class="start-btn" onclick="startGame()">🚀 Start Playing</button>
+    <button class="start-btn" onclick="startGame()">🚀 Start Adventure</button>
     <div class="ws-row">
       <a href="worksheet_normal.pdf" class="ws-dl">📄 Worksheet — Normal</a>
       <a href="worksheet_weak.pdf" class="ws-dl">📄 Worksheet — Weak</a>
@@ -424,8 +385,6 @@
     <p class="result-msg" id="result-msg">Well done on completing this lesson challenge!</p>
     <div class="result-btns">
       <button class="rbtn primary" onclick="restartGame()">🔄 Play Again</button>
-      <button class="rbtn secondary" onclick="show('welcome')">⚙️ Change Mode</button>
-      <a href="../index.html" class="rbtn secondary">← Back to Unit</a>
     </div>
     <div class="ws-row">
       <a href="worksheet_normal.pdf" class="ws-dl">📄 Worksheet — Normal</a>
